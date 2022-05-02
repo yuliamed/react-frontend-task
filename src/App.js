@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+
+import { NavLink, Routes, Route } from "react-router-dom";
+
+import LoginComponent from "./Components/LoginComponent";
+import SignUpComponent from "./Components/SignUpComponent";
+import NotFound from "./Components/NotFound";
+import { Layout, Space } from "antd"
+const { Header, Footer, Content } = Layout;
+//import Layout from "./Components/Layout"
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <><Layout>
+      <Space>
+        <Header>
+          <NavLink to="/sign-in">SignIn</NavLink>
+          <NavLink to="/sign-up">SignUp</NavLink>
+        </Header>
+      </Space>
+      <Content>
+        <Routes>
+          {/* <Route path="/" element={<Layout/>}> */}
+          <Route path="/sign-in" element={<LoginComponent />} />
+          <Route path="/sign-up" element={<SignUpComponent />} />
+          <Route path="*" element={<NotFound />} />
+          {/* </Route> */}
+        </Routes>
+
+      </Content>
+
+      <Footer>Footer</Footer>
+    </Layout></>
   );
+
 }
 
 export default App;
