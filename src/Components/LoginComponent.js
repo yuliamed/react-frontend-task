@@ -1,12 +1,37 @@
 import React from 'react';
 import { Form, Input, Button, Space } from 'antd';
 import FormItemLabel from "antd/lib/form/FormItemLabel";
+import {connect} from "react-redux";
 
 class LoginComponent extends React.Component {
 
-    state = {
-        email: "", pass: ""
-    };
+    // state = {
+    //     email: "", pass: ""
+    // };
+    //dispatch = useDispatch();
+    constructor(props) {
+        super(props);
+        this.onSignIn = this.onSignIn.bind(this);
+        this.state = {
+            email: "",
+            pass: "",
+            louding: false,
+        };
+    }
+
+    onSignIn(e) {
+        e.preventDefault();
+
+        this.setState(
+            {
+                louding: true,
+            }
+        );
+       // const dispatch = useDispatch();
+        //const{dispatch} = this.props;
+
+        //dispatch({type:"SIGNIN_SUCCEESS", payload :this.state})
+    }
 
     render() {
         return (
@@ -14,7 +39,7 @@ class LoginComponent extends React.Component {
             <Form
                 name="basic"
                 initialValues={{ remember: true }}
-                onSubmitCapture={this.onLogin}
+                onSubmitCapture={this.onSignIn}
                 autoComplete="off">
 
                 <Form.Item>

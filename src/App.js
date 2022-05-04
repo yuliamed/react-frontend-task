@@ -1,6 +1,5 @@
 
 import { NavLink, Routes, Route } from "react-router-dom";
-
 import LoginComponent from "./Components/LoginComponent";
 import SignUpComponent from "./Components/SignUpComponent";
 import NotFound from "./Components/NotFound";
@@ -8,6 +7,9 @@ import Home from "./Components/Home"
 import { Layout, Space } from "antd";
 const { Header, Footer, Content } = Layout;
 //import Layout from "./Components/Layout"
+
+
+
 
 function App() {
   return (
@@ -17,7 +19,6 @@ function App() {
           <NavLink to="/">Home</NavLink>
           <NavLink to="/sign-in">SignIn</NavLink>
           <NavLink to="/sign-up">SignUp</NavLink>
-          
         </Header>
       </Space>
       <Content>
