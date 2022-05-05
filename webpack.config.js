@@ -10,10 +10,19 @@ module.export = {
         filename: "[name].[hash].js"
     },
     resolve: {
-        extentions: ["*", ".js", ".jsx", ".scss"],
+        extensions: ["*", ".js", ".jsx", ".scss"],
     },
     plugins: [
-        new HTMLWebpackPlugin({ template: "./public/index.html" }),
+        new HTMLWebpackPlugin({ template: "./src/index.html" }),
         new CleanWebpackPlugin()
-    ]
+    ],
+    module: {
+        rules: [{
+            test: /\.(js|jsx)$/,
+            exclude: /node_modules/,
+            use: {
+                loader: 'babel-loader'
+            }
+        }]
+    }
 }

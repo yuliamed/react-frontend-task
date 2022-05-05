@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Form, Button, Input } from "antd"
 import { useDispatch, useSelector } from "react-redux";
-import "antd/dist/antd.css"
+//import "antd/dist/antd.css"
 import { Menu, Dropdown, Space } from 'antd';
 import { DownOutlined, SmileOutlined } from '@ant-design/icons';
+import CustomTable from './Table';
 function Home() {
     const [inputValue, setInputValue] = useState(0);
 
@@ -29,27 +30,9 @@ function Home() {
                 <Button onClick={() => loseCash(inputValue)}>Lose cash</Button>
 
             </Form>
-            {<Dropdown overlay={menu}>
-                <a onClick={e => e.preventDefault()}>
-                    <Space>
-                        Hover me
-                        <DownOutlined />
-                    </Space>
-                </a>
-            </Dropdown>}</div>
+        </div>
     );
 
-}
-
-const dropDownMenu = () => {
-    <Dropdown overlay={menu}>
-        <a onClick={e => e.preventDefault()}>
-            <Space>
-                Hover me
-                <DownOutlined />
-            </Space>
-        </a>
-    </Dropdown>
 }
 
 const menu = (
