@@ -1,8 +1,9 @@
 import React from 'react';
 import { Form, Input, Button, Space } from 'antd';
 import FormItemLabel from "antd/lib/form/FormItemLabel";
-import {connect} from "react-redux";
-
+import { connect } from "react-redux";
+import {signIn} from "../actions/auth"
+import { Redirect } from 'react-router-dom';
 class LoginComponent extends React.Component {
 
     // state = {
@@ -27,13 +28,30 @@ class LoginComponent extends React.Component {
                 louding: true,
             }
         );
-       // const dispatch = useDispatch();
+
+        const { dispatch, history } = this.props;
+
+        dispatch(signIn(this.state.email, this.state.pass))
+            // .then(() => {
+            //     // history.push("/home");
+            //     // window.location.reload();
+            // })
+            .catch(() => {
+                this.setState({
+                    loading: false
+                });
+            });
+        // const dispatch = useDispatch();
         //const{dispatch} = this.props;
 
         //dispatch({type:"SIGNIN_SUCCEESS", payload :this.state})
     }
 
     render() {
+        const { isLoggedIn, message } = this.props;
+        if (isLoggedIn) {
+            //return <Redirect to="/home" />;
+        }
         return (
 
             <Form
@@ -66,4 +84,12 @@ class LoginComponent extends React.Component {
     }
 }
 
-export default LoginComponent
+function mapStateToProps(state) {
+    const { isLoggedIn } = state.auth;
+    const { message } = state.message;
+    return {
+        isLoggedIn,
+        message
+    };
+}
+export default connect(mapStateToProps)(LoginComponent);

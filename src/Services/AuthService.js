@@ -1,12 +1,28 @@
 import axios from 'axios';
-import zxios from 'axios'
 
-const AUTH_REST_API_URL = "http://localhost:8080/api/v1/auth/";
-//TODO - надо наверное написать взодные данные
+const API_URL = "http://localhost:8080/api/v1/auth/";
 class AuthService{
-    signIn(){
-        axios.post(AUTH_REST_API_URL);
+    signIn(email, pass){
+        axios.post(API_URL + "sign-in", {email, pass})
+        .then((response)=>{
+            if (response.data.accessToken) {
+                localStorage.setItem("user", JSON.stringify(response.data));
+              }
+              return response.data;
+        });
     }
+    logout() {
+        localStorage.removeItem("user");
+      }
+      register(name, surname, email, password, confirmPass) {
+        return axios.post(API_URL + "sign-up", {
+          name,
+          surname,
+          email,
+          password,
+          confirmPass
+        });
+      }
 }
 
 export default new AuthService()

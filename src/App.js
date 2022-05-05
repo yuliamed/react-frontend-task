@@ -1,9 +1,9 @@
 
 import { NavLink, Routes, Route } from "react-router-dom";
-import LoginComponent from "./Components/LoginComponent";
-import SignUpComponent from "./Components/SignUpComponent";
-import NotFound from "./Components/NotFound";
-import Home from "./Components/Home"
+import LoginComponent from "./components/LoginComponent";
+import SignUpComponent from "./components/SignUpComponent";
+import NotFound from "./components/NotFound";
+import Home from "./components/Home"
 import { Layout, Space } from "antd";
 const { Header, Footer, Content } = Layout;
 //import Layout from "./Components/Layout"
