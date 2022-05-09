@@ -1,48 +1,184 @@
 import React from 'react';
 import { Form, Input, Button } from 'antd';
+import { signUp } from "../actions/auth";
+import { connect } from "react-redux";
 
-import FormItemLabel from "antd/lib/form/FormItemLabel";
-function SignUpComponent() {
+//var isButtonDisabled = true;
+var isHiddenError = true;
 
-    return (
-        <Form
-            name="basic"
-            initialValues={{ remember: true }}
-            autoComplete="off">
+class SignUpComponent extends React.Component {
 
-            <Form.Item>
-                <FormItemLabel label="Sign Up"></FormItemLabel>
-            </Form.Item>
+    constructor(props) {
+        super(props);
+        this.onSignUp = this.onSignUp.bind(this);
+        this.onChange = this.onChange.bind(this);
+        //this.validateMessages = this.validateMessages.bind(this);
+        this.state = {
+            name: "",
+            surname: "",
+            email: "",
+            pass: "",
+            confirmPass: "",
+            louding: false,
+        };
+    }
 
-            <Form.Item>
-                <Input placeholder="Name" />
-            </Form.Item>
+    isButtonDisabled = true;
 
-            <Form.Item>
-                <Input placeholder="Surname" />
-            </Form.Item>
+    onChange(e) {
+        e.preventDefault();
+        isHiddenError = true;
+        this.isButtonDisabled = true;
+        if (this.state.email !== undefined && this.state.pass !== undefined
+            && this.state.email !== "" && this.state.pass !== "") {
+            this.isButtonDisabled = false;
+        }
+        console.log(this.isButtonDisabled);
+    }
 
-            <Form.Item rules={[{ type: 'email', required: true, message: "imput valid email!" }]}>
-                <Input placeholder="email" /*onChange={e => this.setState({ ...this.state, email: e.target.value })}*/ />
-            </Form.Item>
+    onSignUp(e) {
+        e.preventDefault();
 
-            <Form.Item rules={[{ required: true, message: 'Please input your password!' }]}>
-                <Input.Password placeholder="pass" /* onChange={e => this.setState({ ...this.state, pass: e.target.value })} */ />
-            </Form.Item>
+        this.setState(
+            {
+                louding: true,
+            }
+        );
 
-            <Form.Item
-                rules={[{ required: true, message: 'Please input your password!' }]}>
-                <Input.Password placeholder="confirm pass" /* onChange={e => this.setState({ ...this.state, pass: e.target.value })} */ />
-            </Form.Item>
+        const { dispatch, history } = this.props;
+        console.log(this.state.email + " " + this.state.pass + this.state.confirmPass);
+        dispatch(signUp(this.state.name,
+            this.state.surname,
+            this.state.email,
+            this.state.pass,
+            this.state.confirmPass,
+        ))
+            .then(() => {
+                history.push("/home");
+                window.location.reload();
+            })
+            .catch(() => {
+                isHiddenError = false;
+                this.setState({
+                    louding: false
+                });
+                console.log("!!! " + this.state.louding)
+            });
+    }
 
-            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                <Button type="primary" htmlType="submit" shape='round'>
-                    Sign up
-                </Button>
-            </Form.Item>
-        </Form>
-    )
+    validateMessages = {
+
+        required: '${label} is required!',
+        types: {
+            email: '${label} not a valid',
+            number: '${label} is not a valid number!',
+            string: '${label} must be a string!'
+        },
+        pattern: 'The pass must contain digits and letters.',
+        min:
+            "Min length of pass is 6",
+        max: "Max length is 20"
+    };
+
+    render() {
+        return (
+            <Form
+                name="basic"
+                initialValues={{ remember: true }}
+                autoComplete="off"
+                onSubmitCapture={this.onSignUp}
+                validateMessages={this.validateMessages}
+                onChange={this.onChange}>
+
+                <label className='form-label'>Sign Up</label>
+
+                <Form.Item
+                    label="Name"
+                    rules={{
+                        required: true,
+                        type: "string"
+                    }}
+                >
+                    <Input
+                        placeholder="Carrie "
+                        onChange={e => this.setState({ ...this.state, name: e.target.value })} />
+                </Form.Item>
+
+                <Form.Item
+                    label="Surname"
+                    rules={[{
+                        required: true,
+                        type: "string"
+                    }]}
+                >
+                    <Input
+                        placeholder="Bradshaw"
+                        onChange={e => this.setState({ ...this.state, surname: e.target.value })} />
+                </Form.Item>
+
+                <Form.Item
+                    label="Email"
+                    rules={[{
+                        type: 'email',
+                        required: true
+                    }]}>
+                    <Input
+                        placeholder="email@mail.com"
+                        onChange={e => this.setState({ ...this.state, email: e.target.value })} />
+                </Form.Item>
+
+                <Form.Item
+                    label="Pass"
+                    rules={[{
+                        required: true,
+                        pattern: "^(?=.*[0-9])(?=.*[a-zA-Zа-яА-Я]).{6,20}$",
+                        min: 6,
+                        max: 20
+                    }]}>
+                    <Input.Password
+                        placeholder="pass"
+                        onChange={e => this.setState({ ...this.state, pass: e.target.value })} />
+                </Form.Item>
+
+                <Form.Item
+                    label="Confirm pass"
+                    rules={[
+                        {
+                            required: true,
+                            pattern: "^(?=.*[0-9])(?=.*[a-zA-Zа-яА-Я]).{6,20}$",
+                            min: 6,
+                            max: 20
+                        }
+                    ]}>
+                    <Input.Password
+                        placeholder="confirm pass"
+                        onChange={e => this.setState({ ...this.state, confirmPass: e.target.value })} />
+                </Form.Item>
+
+                <Form.Item
+                    wrapperCol={{ offset: 8, span: 16 }}
+
+                >
+                    <Button
+                        type="primary"
+                        htmlType="submit"
+                        shape='round'
+                        isButtonDisabled={this.isButtonDisabled}>
+                        Sign up
+                    </Button>
+                </Form.Item>
+            </Form>
+        )
+    }
 
 }
+function mapStateToProps(state) {
+    const { isLoggedIn } = state.auth;
+    const { message } = state.message;
+    return {
+        isLoggedIn,
+        message
+    };
+}
 
-export default SignUpComponent
+export default connect(mapStateToProps)(SignUpComponent)
