@@ -1,12 +1,12 @@
 
 import { NavLink, Routes, Route } from "react-router-dom";
-import LoginComponent from "./components/LoginComponent";
-import SignUpComponent from "./components/SignUpComponent";
-import NotFound from "./components/NotFound";
-import Home from "./components/Home"
-import Profile from "./components/user/Profile";import { useDispatch } from "react-redux";
+import LoginComponent from "./Components/LoginComponent";
+import SignUpComponent from "./Components/SignUpComponent";
+import NotFound from "./Components/NotFound";
+import Home from "./Components/Home"
+import Profile from "./Components/user/Profile";import { useDispatch } from "react-redux";
 import { Layout, Space } from "antd";
-import { logout } from "./actions/auth";
+import { logout } from "./Actions/auth";
 const { Header, Footer, Content } = Layout;
 //import Layout from "./Components/Layout"
 

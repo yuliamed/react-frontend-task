@@ -5,7 +5,7 @@ import { Form, Input, Button, Space } from 'antd';
 import FormItemLabel from "antd/lib/form/FormItemLabel";
 
 import { connect } from "react-redux";
-import { signIn } from "../actions/auth";
+import { signIn } from "../Actions/auth";
 
 //import 'antd/dist/antd.css';
 var isButtonDisabled = true;
