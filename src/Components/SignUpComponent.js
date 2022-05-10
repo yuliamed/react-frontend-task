@@ -26,14 +26,14 @@ class SignUpComponent extends React.Component {
     isButtonDisabled = true;
 
     onChange(e) {
-        e.preventDefault();
+        //e.preventDefault();
         isHiddenError = true;
         this.isButtonDisabled = true;
         if (this.state.email !== undefined && this.state.pass !== undefined
             && this.state.email !== "" && this.state.pass !== "") {
             this.isButtonDisabled = false;
         }
-        console.log(this.isButtonDisabled);
+        console.log("onChange = " + this.isButtonDisabled);
     }
 
     onSignUp(e) {
@@ -85,10 +85,11 @@ class SignUpComponent extends React.Component {
             <Form
                 name="basic"
                 initialValues={{ remember: true }}
+                onChange={this.onChange()}
                 autoComplete="off"
                 onSubmitCapture={this.onSignUp}
                 validateMessages={this.validateMessages}
-                onChange={this.onChange}>
+                >
 
                 <label className='form-label'>Sign Up</label>
 
@@ -96,7 +97,7 @@ class SignUpComponent extends React.Component {
                     label="Name"
                     rules={{
                         required: true,
-                        type: "string"
+                        //type: "string"
                     }}
                 >
                     <Input
@@ -108,7 +109,7 @@ class SignUpComponent extends React.Component {
                     label="Surname"
                     rules={[{
                         required: true,
-                        type: "string"
+                        //type: "string"
                     }]}
                 >
                     <Input
@@ -120,7 +121,7 @@ class SignUpComponent extends React.Component {
                     label="Email"
                     rules={[{
                         type: 'email',
-                        required: true
+                        //required: true
                     }]}>
                     <Input
                         placeholder="email@mail.com"
@@ -130,10 +131,10 @@ class SignUpComponent extends React.Component {
                 <Form.Item
                     label="Pass"
                     rules={[{
-                        required: true,
+                        //required: true,
                         pattern: "^(?=.*[0-9])(?=.*[a-zA-Zа-яА-Я]).{6,20}$",
-                        min: 6,
-                        max: 20
+                        //min: 6,
+                        //max: 20
                     }]}>
                     <Input.Password
                         placeholder="pass"
@@ -144,10 +145,10 @@ class SignUpComponent extends React.Component {
                     label="Confirm pass"
                     rules={[
                         {
-                            required: true,
+                            //required: true,
                             pattern: "^(?=.*[0-9])(?=.*[a-zA-Zа-яА-Я]).{6,20}$",
-                            min: 6,
-                            max: 20
+                            //min: 6,
+                            //max: 20
                         }
                     ]}>
                     <Input.Password
@@ -163,7 +164,7 @@ class SignUpComponent extends React.Component {
                         type="primary"
                         htmlType="submit"
                         shape='round'
-                        isButtonDisabled={this.isButtonDisabled}>
+                        disabled={this.isButtonDisabled}>
                         Sign up
                     </Button>
                 </Form.Item>

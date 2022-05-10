@@ -16,8 +16,10 @@ class AuthService {
     return axios
       .post(API_URL + "sign-in", { email, pass })
       .then((response) => {
-        if (response.data.accessToken) {
+        console.log(response.data.token);
+        if (response.data.token) {
           localStorage.setItem("user", JSON.stringify(response.data));
+          
           //response.headers("Access-Control-Allow-Origin", "*");
         }
         return response.data;

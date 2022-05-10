@@ -7,6 +7,7 @@ import {
   SET_MESSAGE,
 } from "./types";
 import AuthService from "../services/authService";
+import jwt from 'jwt-decode'
 
 export const signUp = (name, surname, email, pass, confirmPass) => (dispatch) => {
   return AuthService.register(name, surname, email, pass, confirmPass).then(
@@ -42,9 +43,16 @@ export const signUp = (name, surname, email, pass, confirmPass) => (dispatch) =>
 export const signIn = (email, pass) => (dispatch) => {
   return AuthService.signIn(email, pass).then(
     (data) => {
+      let decodedToken = jwt(data.token);
+      let userData = {
+        token: data.token,
+        id: decodedToken.id,
+        email: decodedToken.email,
+        roles: decodedToken.role,
+      }
       dispatch({
         type: SIGNIN_SUCCESS,
-        payload: { user: data },
+        payload: { user: userData },
       });
       return Promise.resolve();
     },

@@ -5,8 +5,7 @@ import { Form, Input, Button, Space } from 'antd';
 import FormItemLabel from "antd/lib/form/FormItemLabel";
 
 import { connect } from "react-redux";
-import { signIn } from "../actions/auth"
-import { isEmail } from "validator";
+import { signIn } from "../actions/auth";
 
 //import 'antd/dist/antd.css';
 var isButtonDisabled = true;
@@ -17,7 +16,6 @@ class LoginComponent extends React.Component {
         super(props);
         this.onSignIn = this.onSignIn.bind(this);
         this.onChange = this.onChange.bind(this);
-        //this.validateMessages = this.validateMessages.bind(this);
         this.state = {
             email: "",
             pass: "",
@@ -25,8 +23,7 @@ class LoginComponent extends React.Component {
         };
     }
 
-    onChange(e) {
-        e.preventDefault();
+    onChange() {
         isHiddenError = true;
         isButtonDisabled = true;
         if (this.state.email != undefined && this.state.pass != undefined 
@@ -48,7 +45,8 @@ class LoginComponent extends React.Component {
         const { dispatch, history } = this.props;
         console.log(this.state.email + " " + this.state.pass);
         dispatch(signIn(this.state.email, this.state.pass))
-            .then(() => {
+            .then((data) => {
+                console.log("DATA:" + data);
                 history.push("/home");
                 window.location.reload();
             })
@@ -79,7 +77,7 @@ class LoginComponent extends React.Component {
 
             <Form
                 name="basic"
-                onChange={this.onChange}
+                onChange={this.onChange()}
                 initialValues={{ remember: true }}
                 onSubmitCapture={this.onSignIn}
                 autoComplete="off"
@@ -99,11 +97,11 @@ class LoginComponent extends React.Component {
                 </Form.Item>
 
                 <Form.Item
-                    label="pass"
+                    label="Pass"
                     name="pass"
                     rules={[{
                         required: true,
-                       message: 'Please input your password!'
+                       //message: 'Please input your password!'
                     }]}>
                     <Input.Password placeholder="pass"
                         onChange={(e) => {
