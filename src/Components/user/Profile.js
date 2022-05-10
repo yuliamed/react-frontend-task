@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Navigate } from 'react-router-dom';
 import { connect } from "react-redux";
 import UserService from "../../services/userService";
-import jwt from 'jwt-decode'
+//import jwt from 'jwt-decode'
 
 class Profile extends Component {
     constructor(props) {
