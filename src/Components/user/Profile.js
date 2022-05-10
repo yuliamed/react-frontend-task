@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Navigate } from 'react-router-dom';
 import { connect } from "react-redux";
 import UserService from "../../services/userService";
-//import jwt from 'jwt-decode'
+import jwt from 'jwt-decode'
 
 class Profile extends Component {
     constructor(props) {
@@ -28,8 +28,8 @@ class Profile extends Component {
             return <Navigate to="/sign-in" />;
         }
 
-        // let decodedToken = jwt(currentUser.token);//JSON.parse(localStorage.getItem('user'));
-        const userProfile = UserService.getProfile(currentUser.id)
+         let decodedToken = jwt(currentUser.token);//JSON.parse(localStorage.getItem('user'));
+        const userProfile = UserService.getProfile(decodedToken.id)
             .then(response => {
                 const res = response.data;
                 //this.setState({name: res.id});

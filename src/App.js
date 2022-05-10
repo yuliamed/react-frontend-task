@@ -1,9 +1,9 @@
 
 import { NavLink, Routes, Route } from "react-router-dom";
-import LoginComponent from "./components/LoginComponent";
-import SignUpComponent from "./components/SignUpComponent";
-import NotFound from "./components/NotFound";
-import Home from "./components/Home"
+import LoginComponent from "./components/auth/LoginComponent";
+import SignUpComponent from "./components/auth/SignUpComponent";
+import NotFound from "./components/common/NotFound";
+import Home from "./components/user/Home"
 import Profile from "./components/user/Profile";import { useDispatch } from "react-redux";
 import { Layout, Space } from "antd";
 import { logout } from "./actions/auth";
@@ -31,7 +31,7 @@ function App() {
           <Route path="/sign-in" element={<LoginComponent />} />
           <Route path="/sign-up" element={<SignUpComponent />} />
           <Route path="/*" element={<NotFound />} />
-          {/* </Route> */}
+          {/* </Route> */}s
         </Routes>
 
       </Content>

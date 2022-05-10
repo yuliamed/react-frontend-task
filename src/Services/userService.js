@@ -1,7 +1,6 @@
-import axios from 'axios';
+import axios from  "./commom-axios";
 import authHeader from './auth-header';
 
-const API_URL = "http://localhost:8080/api/v1/users/";
 
 class UserService {
   // getHeader = () => {
@@ -16,7 +15,7 @@ class UserService {
   getProfile(id) {
     const user = JSON.parse(localStorage.getItem('user'));
     return axios
-      .get(API_URL + `${id}`,
+      .get("/users/"+ `${id}`,
         {
           headers: {
             'Authorization': `Bearer ${user.token}`,
@@ -24,9 +23,9 @@ class UserService {
         });
   }
 
-  getProfileEmail(id) {
-    return axios.get(API_URL + id, { headers: authHeader() });
-  }
+  // getProfileEmail(id) {
+  //   return axios.get(API_URL + id, { headers: authHeader() });
+  // }
 }
 
 export default new UserService()

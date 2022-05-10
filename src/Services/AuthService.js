@@ -1,6 +1,7 @@
-import axios from 'axios';
+//import axios from 'axios';
+import axios from "./commom-axios";
 
-const API_URL = "http://localhost:8080/api/v1/auth/";
+//const API_URL = "http://localhost:8080/api/v1/auth/";
 class AuthService {
 
   getHeader = () => {
@@ -14,7 +15,7 @@ class AuthService {
 
   signIn(email, pass) {
     return axios
-      .post(API_URL + "sign-in", { email, pass })
+      .post("/auth/sign-in", { email, pass })
       .then((response) => {
         console.log(response.data.token);
         if (response.data.token) {
@@ -31,7 +32,7 @@ class AuthService {
   }
 
   register(name, surname, email, pass, confirmPass) {
-    return axios.post(API_URL + "sign-up", {
+    return axios.post("/auth/sign-up", {
       name,
       surname,
       email,

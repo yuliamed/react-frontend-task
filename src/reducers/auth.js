@@ -4,7 +4,7 @@ import {
     SIGNIN_SUCCESS,
     SIGNIN_FAIL,
     LOGOUT,
-  } from "../Actions/types";
+  } from "../actions/types";
 
 const user = JSON.parse(localStorage.getItem("user"));
 

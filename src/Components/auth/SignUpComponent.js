@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Input, Button } from 'antd';
-import { signUp } from "../Actions/auth";
+import { signUp } from "../../actions/auth";
 import { connect } from "react-redux";
 
 //var isButtonDisabled = true;
