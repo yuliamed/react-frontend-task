@@ -3,23 +3,39 @@ import { Navigate } from 'react-router-dom';
 import { connect } from "react-redux";
 import UserService from "../../services/userService";
 import jwt from 'jwt-decode'
-
+import { Button, Input} from "antd";
+let thisObj;
 class Profile extends Component {
     constructor(props) {
         super(props);
         //this.onSignUp = this.onSignUp.bind(this);
-        //this.onChange = this.onChange.bind(this);
+        this.onChangeProfile = this.onChangeProfile.bind(this);
         this.state = {
-            email: "",
+            email: localStorage.getItem("email"),
             id: "",
             roles: "",
             user: {
                 name: "",
-                surName: "",
+                surname: "",
                 image: ""
             },
             louding: false,
         };
+        thisObj = this;
+    }
+
+onChangeProfile(){
+    console.log("Change!")
+}
+
+    async componentDidMount() {
+        const { user: currentUser } = this.props;
+        let decodedToken = jwt(currentUser.token);//JSON.parse(localStorage.getItem('user'));
+        UserService.getProfile(decodedToken.id).then(
+            data=>{
+                thisObj.setState({ user: data, isLoading: false  })
+            }
+        )
     }
 
     render() {
@@ -27,19 +43,7 @@ class Profile extends Component {
         if (!currentUser) {
             return <Navigate to="/sign-in" />;
         }
-
-         let decodedToken = jwt(currentUser.token);//JSON.parse(localStorage.getItem('user'));
-        const userProfile = UserService.getProfile(decodedToken.id)
-            .then(response => {
-                const res = response.data;
-                //this.setState({name: res.id});
-                return res;
-            }).catch(error => {
-                console.log(error);
-            });
-        //const userProfile = JSON.parse(userProfile0);
-        console.log("currnt user " + currentUser.id)
-        console.log(userProfile.id);
+        
         return (
             <div className="container">
                 HI FROM PROFILE
@@ -49,26 +53,30 @@ class Profile extends Component {
                         <strong>{currentUser.username}</strong> Profile
                     </h3>
                 </header> */}
-                <p>
+                {/* <p>
                     <strong>Token:</strong> {currentUser.token}
-                </p>
+                </p> */}
                 {/* <p>
                     <strong>Id:</strong> {decodedToken.id}
+                </p>*/}
+                <p>
+                    <strong>Email:</strong> <Input placeholder="Surname" value= {this.state.user.email}></Input>
+                </p> 
+                <p>
+                    <strong>Name:</strong> <Input placeholder="Surname" value={this.state.user.name}></Input> 
                 </p>
                 <p>
-                    <strong>Email:</strong> {decodedToken.email}
-                </p> */}
-                <p>
-                    <strong>Name:</strong> {this.state.user.name}
+                    <strong>Surname:</strong> <Input placeholder="Surname" value={this.state.user.surname}></Input>
                 </p>
                 <p>
-                    <strong>Surname:</strong> {userProfile.surname}
+                    <strong>Image:</strong> {this.state.user.image}
                 </p>
-                <strong>Authorities:</strong>
-                {/* <ul>
+                <Button onClick={this.onChangeProfile()} value>Change Profile</Button>
+                {/* <strong>Authorities:</strong>
+                 <ul>
                     {decodedToken.role &&
                         decodedToken.role.map((index) => <li key={index}>{index.authority}</li>)}
-                </ul> */}
+                </ul>  */}
             </div>
         );
     }

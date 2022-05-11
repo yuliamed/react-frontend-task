@@ -1,31 +1,25 @@
-import axios from  "./commom-axios";
-import authHeader from './auth-header';
+import commonReq from './commom-axios';
 
 
 class UserService {
-  // getHeader = () => {
-  //     let config = {
-  //       headers: {
-  //         "Access-Control-Allow-Origin": "*"
-  //       }
-  //     }
-  //     return config;
-  //   }
 
   getProfile(id) {
     const user = JSON.parse(localStorage.getItem('user'));
-    return axios
-      .get("/users/"+ `${id}`,
+    console.log("user.id: "+user.token);
+    return commonReq
+      ("get", "/users/" + `${id}`,
         {
           headers: {
             'Authorization': `Bearer ${user.token}`,
           }
+        }).then((response) => {
+          if (response.data.token) {
+            localStorage.setItem("user", JSON.stringify(response.data));
+          }
+          return response.data;
         });
   }
 
-  // getProfileEmail(id) {
-  //   return axios.get(API_URL + id, { headers: authHeader() });
-  // }
 }
 
 export default new UserService()
