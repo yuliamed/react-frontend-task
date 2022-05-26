@@ -21,7 +21,7 @@ FROM nginx:1.17.0-alpine
 RUN rm -rf /var/www/*
 
 # Copy from the stahg 1
-COPY --from=build /app/dist /var/www
+COPY --from=build /app/build /var/www
 
 COPY nginx.conf /etc/nginx/nginx.conf
 
