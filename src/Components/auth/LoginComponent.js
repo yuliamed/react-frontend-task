@@ -1,12 +1,13 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
-import { Form, Input, Button, Space } from 'antd';
+import { Form, Input, Button, Space, Alert, Anchor } from 'antd';
+
 import FormItemLabel from "antd/lib/form/FormItemLabel";
 
 import { connect } from "react-redux";
 import { signIn } from "../../actions/auth";
-
+const { Link } = Anchor;
 //import 'antd/dist/antd.css';
 var isButtonDisabled = true;
 var isHiddenError = true;
@@ -26,15 +27,15 @@ class LoginComponent extends React.Component {
     onChange() {
         isHiddenError = true;
         isButtonDisabled = true;
-        if (this.state.email != undefined && this.state.pass != undefined 
+        if (this.state.email != undefined && this.state.pass != undefined
             && this.state.email != "" && this.state.pass != "") {
             isButtonDisabled = false;
-        } 
-        console.log(isButtonDisabled);
+        }
+        //console.log(isButtonDisabled);
     }
 
     onSignIn(e) {
-        e.preventDefault();
+        //e.preventDefault();
 
         this.setState(
             {
@@ -42,25 +43,30 @@ class LoginComponent extends React.Component {
             }
         );
 
-        const { dispatch, history } = this.props;
-        console.log(this.state.email + " " + this.state.pass);
+        const { dispatch } = this.props;
         dispatch(signIn(this.state.email, this.state.pass))
-            .then((data) => {
-                console.log("DATA:" + data);
-                history.push("/home");
-                window.location.reload();
+            .then(() => {
+                console.log("Lets redirect!!");
+                let props = this.props;
+                props.history.push('/profile/');
+                // let history = useNavigate();
+                // history.replace("/profile/");
+                let history = useNavigate();
+                history.replace("/profile");
+                e.preventDefault();
+                //    const navigate = useNavigate();
+                //    navigate('/profile', {replace: true});
             })
             .catch(() => {
                 isHiddenError = false;
-                this.setState({
-                    louding: false
-                });
-                console.log("!!! " + this.state.louding)
+                this.setState({ ...this.state, louding: false })
+                console.log("!!!catch " + this.state.louding)
             });
+        return <Navigate to="/profile/" />;
     }
 
     validateMessages = {
-        
+
         required: '${label} is required!',
         types: {
             email: '${label} not a valid',
@@ -71,7 +77,8 @@ class LoginComponent extends React.Component {
     render() {
         const { isLoggedIn, message } = this.props;
         if (isLoggedIn) {
-            return <Navigate to="/home" />;
+            console.log("is logged in " + isLoggedIn);
+            return <Navigate to="/home/" />;
         }
         return (
 
@@ -85,11 +92,16 @@ class LoginComponent extends React.Component {
             >
 
                 <Form.Item>
-                    <FormItemLabel label="Welcomе!"></FormItemLabel>
+                    <h1 >Welcomе!</h1>
                 </Form.Item>
 
                 <Form.Item
-                    label="Email" rules={[{ type: 'email' }]}
+                    name="Email"
+                    label="Email" rules={[
+                        {
+                            type: 'email',
+                            required: true,
+                        }]}
                 >
                     <Input placeholder="email"
                         onChange={e =>
@@ -101,7 +113,6 @@ class LoginComponent extends React.Component {
                     name="pass"
                     rules={[{
                         required: true,
-                       //message: 'Please input your password!'
                     }]}>
                     <Input.Password placeholder="pass"
                         onChange={(e) => {
@@ -119,7 +130,17 @@ class LoginComponent extends React.Component {
                     <Button type="primary" htmlType="submit" disabled={isButtonDisabled}>
                         Sign in
                     </Button>
+                    {message && (
+                        // <div className="form-group">
+                        <p className="alert alert-danger" role="alert">
+                            {message}
+                        </p>
+                        //</div>
+                    )}
                 </Form.Item>
+                {/* <Form.Item><Navigate to="/profile/" >Forget password? Click here!</Navigate></Form.Item> */}
+
+
             </Form>
 
         );
