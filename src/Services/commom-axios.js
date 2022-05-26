@@ -6,30 +6,13 @@ import {
 const user = JSON.parse(localStorage.getItem('user'));
 
 function commonReq(type, url, body) {
-    let headers = new Headers({
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-    });
-
-    if (user) {
-        // console.log(user.token);
-        // headers.append("Authorization", 'Bearer ' + user.token);
-        headers = new Headers({
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            "Authorization": 'Bearer ' + user.token
-        });
-        console.log(headers)
-    }
-
-    const defaults = { headers: headers };
 
     let axiosReq = user ? axios.create({
         baseURL: API_BASE_URL,
         headers: {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*',
-            "Authorization": 'Bearer ' + user.token
+            "Authorization": 'Bearer ' + user.token,
         },
     }) : axios.create({
         baseURL: API_BASE_URL, 
@@ -41,22 +24,23 @@ function commonReq(type, url, body) {
 
     switch (type) {
         case GET: {
+            console.log("user.token "+user.token);
             return axiosReq.get(url, body)
         }
         case POST: {
-            console.log(body)
+            //console.log(body)
             return axiosReq.post(url, body)
         }
         case PUT: {
-            console.log(body)
+            //console.log(body)
             return axiosReq.put(url, body)
         }
         case PATCH: {
-            console.log(body)
+            //console.log(body)
             return axiosReq.patch(url, body)
         }
         case DELETE: {
-            console.log(body)
+            //console.log(body)
             return axiosReq.delete(url, body)
         }
     }

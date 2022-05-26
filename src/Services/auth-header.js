@@ -1,5 +1,4 @@
 
-
 export default function authHeader() {
   const user = JSON.parse(localStorage.getItem('user'));
 
@@ -9,6 +8,7 @@ export default function authHeader() {
       Authorization: 'Bearer ' + user.token,
       Content: "application/json",
       Access: '*',
+      //Authorization: `Bearer ${user.token}`,
       // Content- Type: ,
       //   Access - Control - Allow - Origin: '*',
 
