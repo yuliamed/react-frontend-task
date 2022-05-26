@@ -31,9 +31,10 @@ export const signUp = (name, surname, email, pass, confirmPass) => (dispatch) =>
       dispatch({
         type: SIGNUP_FAIL,
       });
+      console.log("Error message " + error );
       dispatch({
         type: SET_MESSAGE,
-        payload: message,
+        payload: error.message,
       });
       return Promise.reject();
     }
@@ -44,6 +45,7 @@ export const signIn = (email, pass) => (dispatch) => {
   return AuthService.signIn(email, pass).then(
     (data) => {
       let decodedToken = jwt(data.token);
+      
       let userData = {
         token: data.token,
         id: decodedToken.id,
@@ -54,9 +56,16 @@ export const signIn = (email, pass) => (dispatch) => {
         type: SIGNIN_SUCCESS,
         payload: { user: userData },
       });
+      
+      console.log("login token " + userData.token);
+      // dispatch({
+      //   type: SIGNIN_SUCCESS,
+      //   payload: { user: data },
+      // });
       return Promise.resolve();
     },
     (error) => {
+      console.log("error ")
       const message = (error.response &&
         error.response.data &&
         error.response.data.message) ||
