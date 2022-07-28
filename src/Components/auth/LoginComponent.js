@@ -36,7 +36,7 @@ class LoginComponent extends React.Component {
 
     onSignIn(e) {
         //e.preventDefault();
-
+        isHiddenError = true;
         this.setState(
             {
                 louding: true,
@@ -44,25 +44,20 @@ class LoginComponent extends React.Component {
         );
 
         const { dispatch } = this.props;
+        let props = this.props;
         dispatch(signIn(this.state.email, this.state.pass))
             .then(() => {
-                console.log("Lets redirect!!");
-                let props = this.props;
-                props.history.push('/profile/');
-                // let history = useNavigate();
-                // history.replace("/profile/");
-                let history = useNavigate();
-                history.replace("/profile");
-                e.preventDefault();
-                //    const navigate = useNavigate();
-                //    navigate('/profile', {replace: true});
+                let history = this.props.history;
+                    history.replace("/sign-in");
+                    e.preventDefault();
             })
             .catch(() => {
                 isHiddenError = false;
                 this.setState({ ...this.state, louding: false })
                 console.log("!!!catch " + this.state.louding)
             });
-        return <Navigate to="/profile/" />;
+            e.preventDefault();
+        //return <Navigate to="/profile/" />;
     }
 
     validateMessages = {
@@ -76,10 +71,10 @@ class LoginComponent extends React.Component {
 
     render() {
         const { isLoggedIn, message } = this.props;
-        if (isLoggedIn) {
-            console.log("is logged in " + isLoggedIn);
-            return <Navigate to="/home/" />;
-        }
+        // if (isLoggedIn) {
+        //     console.log("is logged in " + isLoggedIn);
+        //     return <Navigate to="/home/" />;
+        // }
         return (
 
             <Form

@@ -157,7 +157,7 @@ class Profile extends Component {
                             width: '95%',
                             padding: "2%"
                         }}
-                        src={this.getPictureUrl()}
+                        src={BASE_USER_PICTURE}
                         preview={false}
                     />
                     <ImgCrop rotate>

@@ -31,10 +31,10 @@ export const signUp = (name, surname, email, pass, confirmPass) => (dispatch) =>
       dispatch({
         type: SIGNUP_FAIL,
       });
-      console.log("Error message " + error );
+      console.log("Error message " + message );
       dispatch({
         type: SET_MESSAGE,
-        payload: error.message,
+        payload: message,
       });
       return Promise.reject();
     }

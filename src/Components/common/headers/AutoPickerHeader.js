@@ -13,7 +13,7 @@ const UserHeaderContainer = () => {
             <Header>
                 <NavLink to="/home">Home</NavLink>
                 <NavLink to="/profile">Profile</NavLink>
-                <NavLink to="/users">Users</NavLink>
+                <NavLink to="/orders">Users</NavLink>
                 <NavLink to="/logout" onClick={
                     (event) => {
                         let history = useNavigate;

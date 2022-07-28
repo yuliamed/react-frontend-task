@@ -7,7 +7,7 @@ function Home() {
 
     const dispatch = useDispatch();
     const cash = useSelector(store => store.cash.cash);
-    console.log(cash);
+    //console.log(cash);
 
     const loseCash = (inputValue) => {
         dispatch({ type: "GET_CASH", payload: inputValue })

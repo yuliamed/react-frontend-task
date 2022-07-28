@@ -1,4 +1,5 @@
 import commonReq from "./commom-axios";
+import jwt from 'jwt-decode'
 
 class AuthService {
 
@@ -14,6 +15,11 @@ class AuthService {
   signIn(email, pass) {
     return commonReq("post", "/auth/sign-in", { email, pass })
       .then((response) => {
+        let decodedToken = jwt(response.data.token);
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("userId", decodedToken.id);
+        localStorage.setItem("roles", decodedToken.role);
+        localStorage.setItem("email", decodedToken.email);
         localStorage.setItem("user", JSON.stringify(response.data));
         return response.data;
       });
