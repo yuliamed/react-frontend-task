@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Button, Input } from "antd"
 import { useDispatch, useSelector } from "react-redux";
+import Header from '../common/headers/Header';
 
 function Home() {
     const [inputValue, setInputValue] = useState(0);
@@ -19,6 +20,7 @@ function Home() {
 
     return (
         <div>
+            <Header/>
             <Form>
                 <h1> home</h1>
                 <label >{cash} </label>

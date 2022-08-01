@@ -31,22 +31,22 @@ class UserService {
         return response.data;
       });
   }
-//TODO - ???
-  changePass(id, newUser) {
-    return commonReq
-      (PUT, "/users/" + `${id}`,
-        {
-          name: newUser.name,
-          surname: newUser.surname,
-          email: newUser.email
-        }
-      ).then((response) => {
-        if (response.data.token) {
-          localStorage.setItem("user", JSON.stringify(response.data));
-        }
-        return response.data;
-      });
-  }
+  //TODO - ???
+  // changePass(id, token, newPass) {
+  //   return commonReq
+  //     (PUT, "/users/" + `${id}` + "/change-password",
+  //       {
+  //         name: newUser.name,
+  //         surname: newUser.surname,
+  //         email: newUser.email
+  //       }
+  //     ).then((response) => {
+  //       if (response.data.token) {
+  //         localStorage.setItem("user", JSON.stringify(response.data));
+  //       }
+  //       return response.data;
+  //     });
+  // }
 
   addPicture(id, imagePath) {
     return commonReq
@@ -55,6 +55,39 @@ class UserService {
           imagePath: imagePath,
         }
       ).then((response) => {
+        return response.data;
+      });
+  }
+
+  recoverPass(user_email) {
+    return commonReq
+      (POST, "/mail/recovery-password",
+        {
+          email: user_email
+        }
+      ).catch(
+        (resp) => {
+          console.log("ERROR FROM SERVICE " + resp.message)
+        }
+      ).then((response) => {
+        if (response.data) {
+          localStorage.setItem("messageRecover", JSON.stringify(response.data));
+        }
+        return response.data;
+      });
+  }
+
+  resetPass(token, pass) {
+    return commonReq
+      (PUT, "/mail/reset-password",
+        {
+          token: token,
+          pass: pass
+        }
+      ).then((response) => {
+        if (response.data) {
+          localStorage.setItem("isPassChangedMessage", JSON.stringify(response.data));
+        }
         return response.data;
       });
   }

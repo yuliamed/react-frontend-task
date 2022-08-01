@@ -7,11 +7,13 @@ import { LoadingOutlined, PlusOutlined, PlusSquareOutlined, DeleteOutlined, User
 import { Button, Input, Card, Modal, Form, Image, Upload, message } from "antd";
 import { BASE_USER_PICTURE } from "../../constants/const";
 import ImgCrop from 'antd-img-crop';
-import UserHeaderContainer from "../common/headers/UserHeaderContainer";
+import Header from "../common/headers/Header";
+import './modal.css';
+import { changePass } from "../../actions/account";
 
 let thisObj;
 let isEdited = false;
-
+var isHiddenError = true;
 const uploadButton = (
     <div>
         {<PlusOutlined />}
@@ -32,8 +34,19 @@ class Profile extends Component {
                 email: "",
                 imageUrl: "",
             },
+            account: {
+                isPassChanged: "",
+            },
             louding: false,
+            isModalVisible: false,
+            isPassChanging: false,
+            token: "",
+            newPass: "",
+            confirmNewPass: "",
+            message: props.message,
+
         };
+        //const [isModalVisible, setIsModalVisible] = useState(false);
         this.getPictureUrl = this.getPictureUrl.bind(this);
         this.onChangeProfile = this.onChangeProfile.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -41,6 +54,8 @@ class Profile extends Component {
         this.addPicture = this.addPicture.bind(this);
         this.getBase64 = this.getBase64.bind(this);
         this.beforeUpload = this.beforeUpload.bind(this);
+        this.onChangePass = this.onChangePass.bind(this);
+
         thisObj = this;
     }
 
@@ -67,11 +82,45 @@ class Profile extends Component {
         }
     }
 
-    onChangePass() {
-        if (isEdited) {
-            UserService.editProfile(this.state.id, this.state.user).then(
-                () => alert("User new profile data was saved!")
-            );
+    onChangePass(e) {
+
+
+        UserService.recoverPass(this.state.user.email).then(
+            () => {
+
+                alert("Check your email and input reset token to change password!");
+                this.setState({ isPassChanging: true });
+                this.render();
+            }
+        ).catch(() => {
+            alert("Error with your email or network!");
+            this.setState({ isPassChanging: false });
+            this.render();
+        });
+
+    };
+
+    onSaveNewPass(e) {
+
+        const { dispatch } = this.props;
+        if (this.state.newPass == this.state.confirmNewPass) {
+            e.preventDefault();
+            dispatch(changePass(this.state.newPass, this.state.token))
+                .then(
+                    () => {
+                        alert("We changed your pass!");
+                        this.setState({ isPassChanging: false });
+                        this.render();
+                    }
+                )
+                .catch(() => {
+                    const { message } = this.props;
+                    isHiddenError = false;
+                    this.setState({ ...this.state, message: message, });
+                })
+
+        } else {
+            alert("You didn't confirm yoour new pass!")
         }
     }
 
@@ -92,7 +141,7 @@ class Profile extends Component {
 
     getPictureUrl() {
         const { user } = this.state;
-       // console.log("picture: " + this.state.user.imageUrl)
+        // console.log("picture: " + this.state.user.imageUrl)
         if (user.imageUrl == null || this.state.user.imageUrl == "") {
             return BASE_USER_PICTURE;
         } else {
@@ -135,11 +184,64 @@ class Profile extends Component {
         const { user, louding } = this.state;
 
         //console.log("user name " + this.state.user.imageUrl + ":" + this.state.louding);
-
+        let modal = null;
+        if (this.state.isPassChanging) {
+            modal =
+                <div >
+                    <p>
+                        <strong>Token:</strong>
+                        <Form.Item
+                            name="Token"
+                            rules={[
+                                {
+                                    required: true,
+                                }
+                            ]}>
+                            <Input
+                                placeholder="Token"
+                                onChange={e => this.setState({ ...this.state, token: e.target.value })} />
+                        </Form.Item>
+                    </p>
+                    <p >
+                        <strong>New Pass:</strong>
+                        <Form.Item
+                            name="New pass"
+                            rules={[
+                                {
+                                    required: true,
+                                }
+                            ]}>
+                            <Input.Password
+                                placeholder="New pass"
+                                onChange={e => this.setState({ ...this.state, newPass: e.target.value })} />
+                        </Form.Item>
+                    </p>
+                    <p>
+                        <strong>Confirm new pass:</strong>
+                        <Form.Item
+                            name="Confirm new pass"
+                            rules={[
+                                {
+                                    required: true,
+                                }
+                            ]}>
+                            <Input.Password
+                                placeholder="Confirm new pass"
+                                onChange={e => this.setState({ ...this.state, confirmNewPass: e.target.value })} />
+                        </Form.Item>
+                    </p>
+                    <Button onClick={(e) => this.onSaveNewPass(e)} >Save new pass</Button>
+                    <label hidden={isHiddenError}
+                    style={
+                        {color: "red"}
+                    }>Error of changing pass - {this.state.message}</label>
+                </div>
+        }
         return (
 
             <div className="site-card-border-less-wrapper"
             >
+                <Header />
                 <Card bordered={true}
                     style={{
                         marginLeft: '2%',
@@ -215,24 +317,28 @@ class Profile extends Component {
                         </Input>
                     </p>
                     <Button onClick={() => this.onChangeProfile()} disabled={!isEdited}>Save Profile</Button>
-                    <Button onClick={() => this.onChangePass()} >Change Pass</Button>
+                    <Button onClick={(e) => {
+                        this.onChangePass(e)
+                    }} disabled={false} hidden={this.state.isPassChanging}>Change Pass</Button>
 
-                    {/* <strong>Authorities:</strong>
-                 <ul>
-                    {decodedToken.role &&
-                        decodedToken.role.map((index) => <li key={index}>{index.authority}</li>)}
-                </ul>  */}
-                </Card>
-            </div>
+                    {modal}
+                </Card >
+            </div >
         );
     }
 }
 
 function mapStateToProps(state) {
     const { user } = state.auth;
+    const { account } = state.account;
+    const { message } = state.message;
     return {
         user,
+        account,
+        message
     };
+
+
 }
 
 export default connect(mapStateToProps)(Profile);

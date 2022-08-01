@@ -20,6 +20,7 @@ header {
   background-color: var(--color-bg);
   padding: 2rem 0;
   text-align: right;
+  
 }
 
 header>a {
@@ -51,10 +52,10 @@ main {
   padding-bottom: 1.5rem;
 }
 
-main a {
+/* main a {
   text-decoration: none;
   color: var(--color-bg);
-}
+} */
 
 main a:hover {
   text-decoration: underline;
@@ -129,7 +130,7 @@ button,
 select,
 optgroup,
 textarea,
-label {
+label, a {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -164,7 +165,14 @@ input {
   color: inherit;
   font-size: 55;
 }
-
+.ant-radio-button-wrapper .ant-radio-inner,
+.ant-radio-button-wrapper input[type='checkbox'],
+.ant-radio-button-wrapper input[type='radio'] {
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
 .ant-alert {
   box-sizing: border-box;
   margin: 0;

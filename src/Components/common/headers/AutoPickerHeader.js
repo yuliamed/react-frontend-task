@@ -7,19 +7,19 @@ const { Header, Footer, Content } = Layout;
 const UserHeaderContainer = () => {
     const dispatch = useDispatch();
     console.log("UserHeaderContainer");
-    //
+    let history = useNavigate();
     return (
         <Space>
             <Header>
                 <NavLink to="/home">Home</NavLink>
                 <NavLink to="/profile">Profile</NavLink>
-                <NavLink to="/orders">Users</NavLink>
+                <NavLink to="/orders">Orders</NavLink>
                 <NavLink to="/logout" onClick={
                     (event) => {
-                        let history = useNavigate;
-                        history.replace("/sign-in");
+                        dispatch(logout());
                         event.preventDefault();
-                        dispatch(logout())
+                        //let history = useNavigate();
+                        history("/sign-in", { replace: true });
                     }}>LogOut</NavLink>
             </Header>
         </Space>);

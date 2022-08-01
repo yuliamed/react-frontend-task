@@ -29,13 +29,14 @@ class AuthService {
     localStorage.removeItem("user");
   }
 
-  register(name, surname, email, pass, confirmPass) {
+  register(name, surname, email, pass, confirmPass, isAutoPicker) {
     return commonReq('post', "/auth/sign-up", {
       name,
       surname,
       email,
       pass,
-      confirmPass
+      confirmPass, 
+      isAutoPicker
     });
   }
 }

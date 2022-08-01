@@ -4,9 +4,10 @@ import { connect } from "react-redux";
 import UserService from "../../services/userService";
 import jwt from 'jwt-decode'
 import { LoadingOutlined, PlusOutlined, PlusSquareOutlined, DeleteOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Input, Card, Modal, Form, Image, Upload, message} from "antd";
+import { Button, Input, Card, Modal, Form, Image, Upload, message } from "antd";
 import { BASE_USER_PICTURE } from "../../constants/const";
 import ImgCrop from 'antd-img-crop';
+import Header from "../common/headers/Header";
 
 let thisObj;
 let isEdited = false;
@@ -34,12 +35,12 @@ class AdminComponent extends Component {
         };
     }
 
-   
+
     render() {
 
         return (
-
-           <h1>I will kill myself.</h1>
+            <div><Header />
+                <h1>Nobody care.</h1></div>
         );
     }
 }
