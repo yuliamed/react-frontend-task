@@ -10,8 +10,8 @@ const UserHeaderContainer = () => {
     let history = useNavigate();
     //
     return (
-        <Space>
-            <Header>
+        <Layout>
+            <Header align="center">
                 <NavLink to="/home">Home</NavLink>
                 <NavLink to="/profile">Profile</NavLink>
                 <NavLink to="/users">Users</NavLink>
@@ -23,7 +23,7 @@ const UserHeaderContainer = () => {
                         history("/sign-in", { replace: true });
                     }}>LogOut</NavLink>
             </Header>
-        </Space>);
+        </Layout>);
     //
 }
 

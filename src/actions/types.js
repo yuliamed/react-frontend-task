@@ -11,6 +11,9 @@ export const CHANGE_PASS_FAIL = "CHANGE_PASS_FAIL";
 
 
 export const FIND_ALL = "FIND_ALL";
-export const BAN_USER = "BAN_USER";
-export const ADD_USER_ROLE = "ADD_USER_ROLE";
-export const APPROVE_USER = "APPROVE_USER";
+export const BAN_USER_SUCCESS = "BAN_USER_SUCCESS";
+export const BAN_USER_FAIL = "BAN_USER_FAIL";
+export const ADD_USER_ROLE_SUCCESS = "ADD_USER_ROLE_SUCCESS";
+export const ADD_USER_ROLE_FAIL = "ADD_USER_ROLE_FAIL";
+export const APPROVE_USER_SUCCESS = "APPROVE_USER_SUCCESS";
+export const APPROVE_USER_FAIL = "APPROVE_USER_FAIL";

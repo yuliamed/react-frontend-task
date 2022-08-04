@@ -1,9 +1,9 @@
 import commonReq from "./commom-axios";
 import jwt from 'jwt-decode';
 import {
-    POST, GET, PATCH
+    POST, GET, PATCH, GET_WITH_PARAMS
 } from "./requesrTypes";
-class AuthService {
+class ManageUsersService {
 
     getHeader = () => {
         let config = {
@@ -14,9 +14,24 @@ class AuthService {
         return config;
     }
 
-    findAll(reqParams) {
+    findAll(p_pageNumber = 0, p_pageSize = 20, p_typeOfRole = "", p_name = "",
+    p_surname = "", p_isActive) {
+        let reqParams={
+            pageNumber: p_pageNumber,
+            pageSize: p_pageSize,
+            name:p_name,
+            surname: p_surname
+        };
+        
         return commonReq
-            (GET, "/admin/users", reqParams).then((response) => {
+            (GET, "/admin/users").then((response) => {
+                return response.data;
+            });
+    }
+
+    findAllAll(){
+        return commonReq
+            (GET, "/admin/users").then((response) => {
                 return response.data;
             });
     }
@@ -43,4 +58,4 @@ class AuthService {
 
 }
 
-export default new AuthService()
+export default new ManageUsersService()

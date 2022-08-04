@@ -1,91 +1,153 @@
 import {
     FIND_ALL,
-    BAN_USER,
-    ADD_USER_ROLE,
-    APPROVE_USER
-  } from "./types";
-  import manageUsersService from "../services/manageUsersService.js";
-  import jwt from 'jwt-decode'
-  
-  export const findAll = (pageNumber, pageSize, typeOfRole, name, surname, isActive) => (dispatch) => {
-    return manageUsersService.findAll(
-            
-    ).then(
-      (response) => {
-        dispatch({
-          type: FIND_ALL,
-        });
-        dispatch({
-          type: SET_MESSAGE,
-          payload: response.data.message,
-        });
-        return Promise.resolve();
-      },
-      (error) => {
-        const message =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-        dispatch({
-          type: SIGNUP_FAIL,
-        });
-        console.log("Error message " + message );
-        dispatch({
-          type: SET_MESSAGE,
-          payload: message,
-        });
-        return Promise.reject();
-      }
-    );
-  };
-  
-  export const signIn = (email, pass) => (dispatch) => {
-    return AuthService.signIn(email, pass).then(
-      (data) => {
-        let decodedToken = jwt(data.token);
-        
-        let userData = {
-          token: data.token,
-          id: decodedToken.id,
-          email: decodedToken.email,
-          roles: decodedToken.role,
+    BAN_USER_SUCCESS,
+    BAN_USER_FAIL,
+    APPROVE_USER_SUCCESS,
+    APPROVE_USER_FAIL,
+    ADD_USER_ROLE_SUCCESS,
+    ADD_USER_ROLE_FAIL, SET_MESSAGE
+} from "./types";
+import ManageUsersService from "../services/manageUsersService";
+import jwt from 'jwt-decode'
+export const findAllAll = () => (dispatch) => {
+    return ManageUsersService.findAllAll().then((resp) => {
+        console.log("FIND ALL ALL WORKED! + " + resp)
+    })
+}
+export const findAll =
+    (p_pageNumber = 0, p_pageSize = 20, p_typeOfRole = "", p_name = "",
+        p_surname = "", p_isActive) =>
+        (dispatch) => {
+            return ManageUsersService.findAll(
+                p_pageNumber, p_pageSize, p_typeOfRole, p_name,
+                p_surname, p_isActive
+
+            ).then(
+                (response) => {
+                    console.log("Response find all " + response.objects)
+                    // dispatch({
+                    //     type: FIND_ALL,
+                    //     payload: response
+                    // });
+                    // return Promise.resolve();
+                    dispatch({
+                        type: FIND_ALL,
+                        //payload: response
+                    });
+                    return response;
+                },
+                (error) => {
+                    const message =
+                        (error.response &&
+                            error.response.data &&
+                            error.response.data.message) ||
+                        error.message ||
+                        error.toString();
+
+                    dispatch({
+                        type: SET_MESSAGE,
+                        payload: message,
+                    });
+                    return Promise.reject();
+                }
+            );
+        };
+
+export const banUser = (id, p_isBanned) => (dispatch) => {
+    return ManageUsersService.banUser(id,
+        {
+            isBanned: p_isBanned
         }
-        dispatch({
-          type: SIGNIN_SUCCESS,
-          payload: { user: userData },
-        });
-        
-        console.log("login token " + userData.token);
-        // dispatch({
-        //   type: SIGNIN_SUCCESS,
-        //   payload: { user: data },
-        // });
-        return Promise.resolve();
-      },
-      (error) => {
-        console.log("error ")
-        const message = (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-          error.message ||
-          error.toString();
-        dispatch({
-          type: SIGNIN_FAIL,
-        });
-        dispatch({
-          type: SET_MESSAGE,
-          payload: message,
-        });
-        return Promise.reject();
-      }
+    ).then(
+        (response) => {
+            dispatch({
+                type: BAN_USER_SUCCESS,
+            });
+            // dispatch({
+            //     type: SET_MESSAGE,
+            //     payload: response.data.message,
+            // });
+            //return Promise.resolve();
+            return response;
+        },
+        (error) => {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString();
+            dispatch({
+                type: BAN_USER_FAIL,
+            });
+            console.log("Error message " + message);
+            dispatch({
+                type: SET_MESSAGE,
+                payload: message,
+            });
+            return Promise.reject();
+        }
     );
-  };
-  
-  export const logout = () => (dispatch) => {
-    AuthService.logout();
-    dispatch({
-      type: LOGOUT,
-    });
-  };
+};
+
+export const approveUser = (id) => (dispatch) => {
+    return ManageUsersService.approveUser(id
+    ).then(
+        (response) => {
+            dispatch({
+                type: APPROVE_USER_SUCCESS,
+            });
+            return response;
+        },
+        (error) => {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString();
+            dispatch({
+                type: APPROVE_USER_FAIL,
+            });
+            console.log("Error message " + message);
+            dispatch({
+                type: SET_MESSAGE,
+                payload: message,
+            });
+            return Promise.reject();
+        }
+    );
+};
+
+
+export const addUserRole = (id, p_typeOfRole) => (dispatch) => {
+    return ManageUsersService.addUserRole(id,
+        {
+            typeOfRole: p_typeOfRole
+        }
+    ).then(
+        (response) => {
+            dispatch({
+                type: ADD_USER_ROLE_SUCCESS,
+            });
+            return response;
+        },
+        (error) => {
+            const message =
+                (error.response &&
+                    error.response.data &&
+                    error.response.data.message) ||
+                error.message ||
+                error.toString();
+            dispatch({
+                type: ADD_USER_ROLE_FAIL,
+            });
+            console.log("Error message " + message);
+            dispatch({
+                type: SET_MESSAGE,
+                payload: message,
+            });
+            return Promise.reject();
+        }
+    );
+};

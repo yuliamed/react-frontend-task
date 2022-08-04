@@ -1,4 +1,3 @@
-//import { Space,Header } from "antd";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Layout, Space } from "antd";
 import { useDispatch } from "react-redux";
@@ -8,11 +7,13 @@ const UserHeaderContainer = () => {
     const dispatch = useDispatch();
     console.log("UserHeaderContainer");
     let history = useNavigate();
+    //
     return (
         <Layout>
             <Header align="center">
                 <NavLink to="/home">Home</NavLink>
                 <NavLink to="/profile">Profile</NavLink>
+                <NavLink to="/users">Users</NavLink>
                 <NavLink to="/orders">Orders</NavLink>
                 <NavLink to="/logout" onClick={
                     (event) => {

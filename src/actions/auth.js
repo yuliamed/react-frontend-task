@@ -9,7 +9,8 @@ import {
 import AuthService from "../services/authService";
 import jwt from 'jwt-decode'
 
-export const signUp = (name, surname, email, pass, confirmPass, isAutoPicker) => (dispatch) => {
+export const signUp =
+ (name, surname, email, pass, confirmPass, isAutoPicker) => (dispatch) => {
   return AuthService.register(name, surname, email, pass, confirmPass, isAutoPicker).then(
     (response) => {
       dispatch({

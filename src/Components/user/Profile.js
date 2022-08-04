@@ -77,7 +77,11 @@ class Profile extends Component {
         if (isEdited) {
             console.log("id for saving: " + this.state.id);
             UserService.editProfile(this.state.id, this.state.user).then(
-                () => alert("User new profile data was saved!")
+                () => {
+                    alert("User new profile data was saved!");
+                    isEdited = false;
+                    this.render();
+                }
             );
         }
     }
@@ -232,9 +236,9 @@ class Profile extends Component {
                     </p>
                     <Button onClick={(e) => this.onSaveNewPass(e)} >Save new pass</Button>
                     <label hidden={isHiddenError}
-                    style={
-                        {color: "red"}
-                    }>Error of changing pass - {this.state.message}</label>
+                        style={
+                            { color: "red" }
+                        }>Error of changing pass - {this.state.message}</label>
                 </div>
         }
         return (

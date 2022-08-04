@@ -1,7 +1,7 @@
 import axios from "axios";
 import { API_BASE_URL } from '../constants/const';
 import {
-    POST, GET, PUT, PATCH, DELETE,
+    POST, GET, PUT, PATCH, DELETE,GET_WITH_PARAMS,
 } from "./requesrTypes";
 const user = JSON.parse(localStorage.getItem('user'));
 
@@ -42,6 +42,9 @@ function commonReq(type, url, body) {
         case DELETE: {
             //console.log(body)
             return axiosReq.delete(url, body)
+        }
+        case GET_WITH_PARAMS:{
+            return axiosReq.get(url, null, body)
         }
     }
 }
