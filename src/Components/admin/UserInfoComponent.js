@@ -9,14 +9,6 @@ import { BASE_USER_PICTURE } from "../../constants/const";
 
 const CheckboxGroup = Checkbox.Group;
 let thisObj;
-let isEdited = false;
-var isHiddenError = true;
-const uploadButton = (
-    <div>
-        {<PlusOutlined />}
-        <div style={{ marginTop: 8 }}>Upload</div>
-    </div>
-);
 
 class UserInfoComponent extends Component {
     constructor(props) {

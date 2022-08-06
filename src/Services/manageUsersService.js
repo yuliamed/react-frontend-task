@@ -24,7 +24,7 @@ class ManageUsersService {
         };
         
         return commonReq
-            (GET, "/admin/users").then((response) => {
+            (GET, "/admin/users" + "?pageNumber="+`${p_pageNumber}`+"&pageSize="+`${p_pageSize}`).then((response) => {
                 return response.data;
             });
     }

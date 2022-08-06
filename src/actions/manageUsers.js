@@ -15,9 +15,11 @@ export const findAllAll = () => (dispatch) => {
     })
 }
 export const findAll =
-    (p_pageNumber = 0, p_pageSize = 20, p_typeOfRole = "", p_name = "",
+    (p_pageNumber, p_pageSize, p_typeOfRole = "", p_name = "",
         p_surname = "", p_isActive) =>
         (dispatch) => {
+            //if (p_pageNumber == undefined) p_pageNumber = 0;
+            //if (p_pageSize == undefined) p_pageSize = 20;
             return ManageUsersService.findAll(
                 p_pageNumber, p_pageSize, p_typeOfRole, p_name,
                 p_surname, p_isActive
@@ -25,14 +27,10 @@ export const findAll =
             ).then(
                 (response) => {
                     console.log("Response find all " + response.objects)
-                    // dispatch({
-                    //     type: FIND_ALL,
-                    //     payload: response
-                    // });
-                    // return Promise.resolve();
+                    
                     dispatch({
                         type: FIND_ALL,
-                        //payload: response
+                        
                     });
                     return response;
                 },

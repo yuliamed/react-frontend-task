@@ -10,10 +10,11 @@ const UserHeaderContainer = () => {
     const history = useNavigate();
     //
     return (
-        <Space>
-            <Header>
+        
+            <Header align="center">
                 <NavLink to="/home">Home</NavLink>
                 <NavLink to="/profile">Profile</NavLink>
+                <NavLink to="/user-orders">My orders</NavLink>
                 <NavLink to="/logout" onClick={(event) => {
                     dispatch(logout());
                     event.preventDefault();
@@ -22,7 +23,7 @@ const UserHeaderContainer = () => {
 
                 }}>LogOut</NavLink>
             </Header>
-        </Space>);
+        );
     //
 }
 

@@ -9,7 +9,6 @@ import { findAll, findAllAll } from "../../actions/manageUsers";
 const { Footer, Sider, Content } = Layout;
 
 let thisObj;
-let isEdited = false;
 
 const uploadButton = (
     <div>
@@ -41,63 +40,73 @@ class AdminComponent extends Component {
         thisObj = this;
     }
     async componentDidMount() {
-        this.findUsers();
-    }
-
-    findUsers() {
+        // this.findUsers(this.state.pagination.page, this.state.pagination.elementsCount);
         const { dispatch } = this.props;
-        dispatch(findAll()).then((data) => {
+        dispatch(findAll(this.state.pagination.page, this.state.pagination.elementsCount))
+        .then((data) => {
             console.log(data.objects)
             thisObj.setState({ users: data.objects });
             thisObj.setState({ pagination: data, isLoading: false });
         });
+
+    }
+
+    async findUsers(page, pageNumber) {
+        const { dispatch } = this.props;
+        this.setState({ isLoading: true });
+        dispatch(findAll(page, pageNumber)).then((data) => {
+            console.log(data.objects)
+            this.setState({ users: data.objects });
+            this.setState({ pagination: data, isLoading: false });
+        });
+
+
     }
 
     render() {
         if (this.state.isLoading) {
             return <p>Loading...</p>;
         }
-        const { users } = this.state.users;
-        console.log(users)
-        console.log(this.state.users)
-        const userList = null;
-        
-         
-        // this.state.users.map((u) => {
-        //     console.log("MAPPING" + u)
-        //     return <UserInfoComponent
-                
-        //         user_account={u}
-        //     />
-        // });
-
-
 
         return (
             <><Header />
-                <h1>Nobody care.</h1>
-                <Layout align="left"><h1>Nobody care.</h1>
-                    {/* <Content>{userList}</Content> */}
+                <Layout align="left">
                     <Space size={[8, 16]} wrap>
                         {this.state.users.map(
                             (
                                 u,
-                                index, // eslint-disable-next-line react/no-array-index-key
+                                index,
                             ) => (
-                        <UserInfoComponent
-                            key={index}
-                            user_account={u}
-                        />
-                        ),
+                                <UserInfoComponent
+                                    key={index}
+                                    user_account={u}
+                                />
+                            ),
                         )}
                     </Space>
                 </Layout>
                 <br></br><br></br><br></br>
                 <Pagination
-                    // onChange={this.findUsers()}
+                    onChange={(page, elementsCount) => {
+
+                        console.log(page + " " + elementsCount)
+                        let pag = {
+                            page: page - 1,
+                            elementsCount: elementsCount,
+                            totalElements: this.state.pagination.totalElements,
+                            totalPages: this.state.pagination.totalPages,
+                        }
+                        this.setState({ ...this.state.pagination, page: page });
+                        console.log(this.state.pagination.page + " " + this.state.pagination.elementsCount)
+
+                        this.findUsers(page - 1, elementsCount);
+                        console.log("NEW LIST " + this.state.users)
+
+                    }}
                     total={this.state.pagination.totalElements}
                     showSizeChanger
                     showQuickJumper
+                    pageSize={this.state.pagination.elementsCount}
                     showTotal={(total) => `Total ${total} items`}
                 />
 

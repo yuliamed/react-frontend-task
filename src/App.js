@@ -9,6 +9,7 @@ import Home from "./components/user/Home"
 import Profile from "./components/user/Profile"; 
 import { Layout, Space } from "antd";
 import Header from './components/common/headers/Header';
+import UserOrdersComponent from './components/user/UserOrdersComponent';
 const { Footer, Content} = Layout;
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
           <Route path="/" exact={true} element={<LoginComponent />} />
           <Route path="/sign-up" exact={true} element={<SignUpComponent />} />
           <Route path="/orders" exact={true} element={<OrdersComponent />} />
+          <Route path="/user-orders" exact={true} element={<UserOrdersComponent />} />
           <Route path="/users" exact={true} element={<AdminComponent />} />
           <Route path="/*"exact={true} element={<NotFound />} />
           
