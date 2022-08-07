@@ -51,6 +51,32 @@ export const findAll =
             );
         };
 
+export const findAllAutoPickers = () =>(dispatch)=>{
+    return ManageUsersService.findAllAutoPickers().then((resp)=>{
+        dispatch({
+            type: FIND_ALL
+        })
+        return resp;
+        
+    }, (error) => {
+        const message =
+            (error.response &&
+                error.response.data &&
+                error.response.data.message) ||
+            error.message ||
+            error.toString();
+        dispatch({
+            type: APPROVE_USER_FAIL,
+        });
+        console.log("Error message " + message);
+        dispatch({
+            type: SET_MESSAGE,
+            payload: message,
+        });
+        return Promise.reject();
+    })
+}
+
 export const banUser = (id, p_isBanned) => (dispatch) => {
     return ManageUsersService.banUser(id,
         {

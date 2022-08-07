@@ -29,9 +29,9 @@ class ManageUsersService {
             });
     }
 
-    findAllAll(){
+    findAllAutoPickers(){
         return commonReq
-            (GET, "/admin/users").then((response) => {
+            (GET, "/admin/users"+ "?typeOfRole="+"AUTO_PICKER"+"&isActive="+"true").then((response) => {
                 return response.data;
             });
     }

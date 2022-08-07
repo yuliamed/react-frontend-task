@@ -13,6 +13,9 @@ import './modal.css';
 import { findUserOrders } from "../../actions/orders/userOrder";
 import InspectionOrderComponent from "./InspectionOrderComponent"
 import SelectionOrderComponent from "./SelectionOrderComponent"
+import SelectionOrderCreatingComponent from "./SelectionOrderCreatingComponent";
+import InspectionOrderCreatingComponent from "./InspectionOrderCreatingComponent";
+
 const { Content } = Layout;
 let thisObj;
 let isEdited = false;
@@ -39,7 +42,13 @@ class UserOrdersComponent extends Component {
 
         this.onCreateNewSelectionOrder = this.onCreateNewSelectionOrder.bind(this);
         this.onCreateNewInspectionOrder = this.onCreateNewInspectionOrder.bind(this);
+        this.cancelNewOrder = this.cancelNewOrder.bind(this)
         thisObj = this;
+    }
+
+    cancelNewOrder() {
+        console.log("ЗАКРОЙ МЕНЯ ПОЖАЛУЙСТА И ЛОЖИСЬ СПАЦ")
+        this.setState({isNewOrderHidden: true})
     }
 
     onCreateNewSelectionOrder(e) {
@@ -72,8 +81,14 @@ class UserOrdersComponent extends Component {
         console.log(this.state.orders)
 
         let newOrder = null;
-        this.state.typeOfNewOrder == "inspection" ? newOrder = <InspectionOrderCreatingComponent></InspectionOrderCreatingComponent>
-            : <SelectionOrderCreatingComponent></SelectionOrderCreatingComponent>
+        this.state.typeOfNewOrder == "inspection" ?
+            newOrder = <InspectionOrderCreatingComponent
+                user_id={this.state.userId}
+                on_cancel={this.cancelNewOrder}>
+            </InspectionOrderCreatingComponent>
+            :
+            <SelectionOrderCreatingComponent>
+            </SelectionOrderCreatingComponent>
         let orders = <Button>HEY</Button>
         if (this.state.orders.length == 0) orders = <h2>You haven`t got any orders(</h2>
         else {
@@ -117,8 +132,9 @@ class UserOrdersComponent extends Component {
                 <Space hidden={this.state.isNewOrderHidden} direction="vertical" size="large" style={{ display: 'flex' }}>
 
                     <Space direction="vertical" wrap >
-                        <Space direction="vertical" wrap>{newOrder}
-                            <h1>aaaaaaaaaaa</h1>
+                        <Space direction="vertical" wrap>
+                            {newOrder}
+                            
                         </Space>
 
                     </Space>
