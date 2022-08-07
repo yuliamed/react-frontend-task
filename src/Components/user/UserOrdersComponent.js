@@ -3,8 +3,9 @@ import { Navigate } from 'react-router-dom';
 import { connect } from "react-redux";
 import UserService from "../../services/userService";
 import jwt from 'jwt-decode'
+import { EditOutlined, MenuUnfoldOutlined, CloseOutlined, SaveOutlined } from '@ant-design/icons';
 import { LoadingOutlined, PlusOutlined, PlusSquareOutlined, DeleteOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Space, Input, Card, Modal, Form, Image, Upload, message, Row, Col } from "antd";
+import { Button, Space, Input, Card, Layout, Modal, Form, Image, Upload, message, Row, Col } from "antd";
 import { BASE_USER_PICTURE } from "../../constants/const";
 import ImgCrop from 'antd-img-crop';
 import Header from "../common/headers/Header";
@@ -12,6 +13,7 @@ import './modal.css';
 import { findUserOrders } from "../../actions/orders/userOrder";
 import InspectionOrderComponent from "./InspectionOrderComponent"
 import SelectionOrderComponent from "./SelectionOrderComponent"
+const { Content } = Layout;
 let thisObj;
 let isEdited = false;
 var isHiddenError = true;
@@ -30,7 +32,9 @@ class UserOrdersComponent extends Component {
             isLoading: true,
             userId: decodedToken.id,
             roles: decodedToken.role,
-            orders: []
+            orders: [],
+            isNewOrderHidden: true,
+            typeOfNewOrder: null
         };
 
         this.onCreateNewSelectionOrder = this.onCreateNewSelectionOrder.bind(this);
@@ -39,11 +43,15 @@ class UserOrdersComponent extends Component {
     }
 
     onCreateNewSelectionOrder(e) {
+        this.setState({ isNewOrderHidden: false })
+        this.setState({ typeOfNewOrder: "selection" })
         console.log("Selection order")
     }
 
 
     onCreateNewInspectionOrder(e) {
+        this.setState({ isNewOrderHidden: false })
+        this.setState({ typeOfNewOrder: "inspection" })
         console.log("Inspection order")
     }
 
@@ -57,14 +65,15 @@ class UserOrdersComponent extends Component {
     }
 
 
-
-
     render() {
         if (this.state.isLoading) {
             return <p>Loading...</p>;
         }
         console.log(this.state.orders)
 
+        let newOrder = null;
+        this.state.typeOfNewOrder == "inspection" ? newOrder = <InspectionOrderCreatingComponent></InspectionOrderCreatingComponent>
+            : <SelectionOrderCreatingComponent></SelectionOrderCreatingComponent>
         let orders = <Button>HEY</Button>
         if (this.state.orders.length == 0) orders = <h2>You haven`t got any orders(</h2>
         else {
@@ -105,6 +114,16 @@ class UserOrdersComponent extends Component {
                     </Button>
                     </Col>
                 </Row>
+                <Space hidden={this.state.isNewOrderHidden} direction="vertical" size="large" style={{ display: 'flex' }}>
+
+                    <Space direction="vertical" wrap >
+                        <Space direction="vertical" wrap>{newOrder}
+                            <h1>aaaaaaaaaaa</h1>
+                        </Space>
+
+                    </Space>
+
+                </Space>
 
                 <Space direction="vertical" size="large" style={{ display: 'flex' }}>
 

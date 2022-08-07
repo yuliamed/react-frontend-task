@@ -1,7 +1,7 @@
 import commonReq from "../commom-axios";
 import jwt from 'jwt-decode';
 import {
-    POST, GET, PATCH, GET_WITH_PARAMS
+    POST, GET, PATCH, PUT
 } from "../requesrTypes";
 class UserSelectionOrderService {
 
@@ -22,6 +22,7 @@ class UserSelectionOrderService {
     }
 
     updateOrder(userId, orderId, orderUpdateReq) {
+        console.log(orderUpdateReq)
         return commonReq
             (PUT, "/users/" + `${userId}` + "/selection-orders/" + `${orderId}`, orderUpdateReq).then((response) => {
                 return response.data;
