@@ -102,6 +102,10 @@ class SignUpComponent extends React.Component {
         return (
             <div><Header />
                 <Form
+                style={{
+                    width: "50%",
+                    marginLeft:"10%"
+                }}
                     name="basic"
                     initialValues={{ remember: true }}
                     onChange={this.onChange()}

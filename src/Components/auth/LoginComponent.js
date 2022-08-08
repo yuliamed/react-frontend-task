@@ -76,14 +76,14 @@ class WithNavigate extends React.Component {
         });
     }
 
-    onSaveNewPass(e){
+    onSaveNewPass(e) {
         const { dispatch } = this.props;
         if (this.state.newPass == this.state.confirmNewPass) {
             e.preventDefault();
             dispatch(changePass(this.state.newPass, this.state.token))
                 .then(
                     () => {
-                        
+
                         alert("We changed your pass!");
                         this.setState({ isPassChanging: false });
                         this.render();
@@ -178,6 +178,11 @@ class WithNavigate extends React.Component {
 
 
                 <Form
+                    style={{
+                        width: "50%",
+                        marginLeft:"10%"
+                    }}
+                    
                     name="basic"
                     onChange={this.onChange()}
                     initialValues={{ remember: true }}
