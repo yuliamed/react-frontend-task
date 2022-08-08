@@ -3,16 +3,16 @@ import { API_BASE_URL } from '../constants/const';
 import {
     POST, GET, PUT, PATCH, DELETE,GET_WITH_PARAMS,
 } from "./requesrTypes";
-const user = JSON.parse(localStorage.getItem('user'));
-
+//const user = JSON.parse(localStorage.getItem('user'));
+//localStorage.clear();
 function commonReq(type, url, body) {
 
-    let axiosReq = user ? axios.create({
+    let axiosReq = JSON.parse(localStorage.getItem('user')) ? axios.create({
         baseURL: API_BASE_URL,
         headers: {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*',
-            "Authorization": 'Bearer ' + user.token,
+            "Authorization": 'Bearer ' + JSON.parse(localStorage.getItem('user')).token,
         },
     }) : axios.create({
         baseURL: API_BASE_URL, 
@@ -24,7 +24,7 @@ function commonReq(type, url, body) {
 
     switch (type) {
         case GET: {
-            console.log("user.token "+user.token);
+            //console.log("user.token "+user.token);
             return axiosReq.get(url, body)
         }
         case POST: {
