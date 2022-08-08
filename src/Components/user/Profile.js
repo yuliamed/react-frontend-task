@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import UserService from "../../services/userService";
 import jwt from 'jwt-decode'
 import { LoadingOutlined, PlusOutlined, PlusSquareOutlined, DeleteOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Input, Card, Modal, Form, Image, Upload, message } from "antd";
+import { Button, Input, Card, Col, Row, Form, Image, Upload, message } from "antd";
 import { BASE_USER_PICTURE } from "../../constants/const";
 import ImgCrop from 'antd-img-crop';
 import Header from "../common/headers/Header";
@@ -55,7 +55,7 @@ class Profile extends Component {
         this.getBase64 = this.getBase64.bind(this);
         this.beforeUpload = this.beforeUpload.bind(this);
         this.onChangePass = this.onChangePass.bind(this);
-
+        this.onCancelNewPass = this.onCancelNewPass.bind(this);
         thisObj = this;
     }
 
@@ -71,6 +71,10 @@ class Profile extends Component {
                 thisObj.setState({ user: data, louding: true })
             }
         );
+    }
+
+    onCancelNewPass(e) {
+
     }
 
     onChangeProfile() {
@@ -191,55 +195,65 @@ class Profile extends Component {
         let modal = null;
         if (this.state.isPassChanging) {
             modal =
-                <div >
-                    <p>
-                        <strong>Token:</strong>
-                        <Form.Item
-                            name="Token"
-                            rules={[
-                                {
-                                    required: true,
-                                }
-                            ]}>
-                            <Input
-                                placeholder="Token"
-                                onChange={e => this.setState({ ...this.state, token: e.target.value })} />
-                        </Form.Item>
-                    </p>
-                    <p >
-                        <strong>New Pass:</strong>
-                        <Form.Item
-                            name="New pass"
-                            rules={[
-                                {
-                                    required: true,
-                                }
-                            ]}>
-                            <Input.Password
-                                placeholder="New pass"
-                                onChange={e => this.setState({ ...this.state, newPass: e.target.value })} />
-                        </Form.Item>
-                    </p>
-                    <p>
-                        <strong>Confirm new pass:</strong>
-                        <Form.Item
-                            name="Confirm new pass"
-                            rules={[
-                                {
-                                    required: true,
-                                }
-                            ]}>
-                            <Input.Password
-                                placeholder="Confirm new pass"
-                                onChange={e => this.setState({ ...this.state, confirmNewPass: e.target.value })} />
-                        </Form.Item>
-                    </p>
-                    <Button onClick={(e) => this.onSaveNewPass(e)} >Save new pass</Button>
+                <Form>
+
+
+                    <Form.Item
+                        label="Token:"
+                        name="Token"
+                        rules={[
+                            {
+                                required: true,
+                            }
+                        ]}>
+                        <Input
+                            placeholder="Token"
+                            onChange={e => this.setState({ ...this.state, token: e.target.value })} />
+                    </Form.Item>
+
+
+                    <Form.Item
+                        label="New pass"
+                        name="New pass"
+                        rules={[
+                            {
+                                required: true,
+                            }
+                        ]}>
+                        <Input.Password
+                            placeholder="New pass"
+                            onChange={e => this.setState({ ...this.state, newPass: e.target.value })} />
+                    </Form.Item>
+
+
+
+                    <Form.Item
+                        label="Confirm new pass"
+                        name="Confirm new pass"
+                        rules={[
+                            {
+                                required: true,
+                            }
+                        ]}>
+                        <Input.Password
+                            placeholder="Confirm new pass"
+                            onChange={e => this.setState({ ...this.state, confirmNewPass: e.target.value })} />
+                    </Form.Item>
+                    <Row>
+                        <Col>
+                            <Button onClick={(e) => this.onSaveNewPass(e)} >Save new pass</Button>
+                        </Col>
+                        <Col>
+                            <Button onClick={(e) => this.onCancelNewPass(e)} >Cancel</Button>
+                        </Col>
+                    </Row>
+
+
                     <label hidden={isHiddenError}
                         style={
                             { color: "red" }
                         }>Error of changing pass - {this.state.message}</label>
-                </div>
+                </Form>
         }
         return (
 
@@ -249,7 +263,7 @@ class Profile extends Component {
                 <Card bordered={true}
                     style={{
                         marginLeft: '2%',
-                        width: '35%',
+                        width: '60%',
                         backgroundColor: "#f0f2f5",
                         padding: "2%"
                     }}
@@ -258,74 +272,83 @@ class Profile extends Component {
                             isEdited = true;
                         }
                     }>
-                    <Image
-                        style={{
-                            width: '95%',
-                            padding: "2%"
-                        }}
-                        src={BASE_USER_PICTURE}
-                        preview={false}
-                    />
-                    <ImgCrop rotate>
-                        <Upload
-                            name="avatar"
-                            listType="picture-card"
-                            className="avatar-uploader"
-                            action={"https://www.mocky.io/v2/5cc8019d300000980a055e76"}
-                            showUploadList={false}
-                            beforeUpload={this.beforeUpload}
-                            onChange={this.addPicture}
-                        >
-                            <Button style={{
-                                marginLeft: '2%',
-                                width: '35%',
-                                backgroundColor: "#FFFFFF",
+                    <Form>
+                        <Image
+                            style={{
+                                width: '95%',
                                 padding: "2%"
-                            }} icon={<PlusSquareOutlined />} ></Button>
-                        </Upload>
-                    </ImgCrop>
+                            }}
+                            src={BASE_USER_PICTURE}
+                            preview={false}
+                        />
+                        <Row >
+                            <Col>
+                                <ImgCrop
+                                style={{
+                                    height:"30px"
+                                }}
+                                //rotate
+                                >
+                                    <Upload
+                                    
+                                        name="avatar"
+                                        listType="picture-card"
+                                        //className="avatar-uploader"
+                                        action={"https://www.mocky.io/v2/5cc8019d300000980a055e76"}
+                                        showUploadList={false}
+                                        beforeUpload={this.beforeUpload}
+                                        onChange={this.addPicture}
+                                    >
+                                        <Button  icon={<PlusSquareOutlined />} ></Button>
+                                    </Upload>
+                                </ImgCrop>
+                            </Col>
+                            <Col> <Button label="Delete photo" style={{
 
-                    <Button label="Delete photo" style={{
-                        marginLeft: '2%',
-                        width: '35%',
-                        backgroundColor: "#FFFFFF",
-                        padding: "2%"
-                    }} onClick={e => { this.onDeleteImage(e) }}><DeleteOutlined /></Button>
-                    <p>
-                        <strong>Email:</strong>
-                        <Input label="Email" placeholder="Email"
-                            value={user.email}
-                            type='email'
-                            name="email"
-                            onChange={e =>
-                                this.handleChange(e)}
-                        ></Input>
-                    </p>
-                    <p>
-                        <strong>Name:</strong>
-                        <Input placeholder="Name"
-                            value={user.name}
-                            autoComplete="name"
-                            name="name"
-                            type="text"
-                            onInput={e => this.handleChange(e)}></Input>
-                    </p>
-                    <p>
-                        <strong>Surname:</strong>
-                        <Input placeholder="Surname"
-                            value={user.surname}
-                            type="text"
-                            name="surname"
-                            onChange={e => this.handleChange(e)}>
+                            }} onClick={e => { this.onDeleteImage(e) }}><DeleteOutlined />
+                            </Button>
 
-                        </Input>
-                    </p>
-                    <Button onClick={() => this.onChangeProfile()} disabled={!isEdited}>Save Profile</Button>
-                    <Button onClick={(e) => {
-                        this.onChangePass(e)
-                    }} disabled={false} hidden={this.state.isPassChanging}>Change Pass</Button>
+                            </Col>
+                        </Row>
 
-                    {modal}
+
+
+
+                        <Form.Item
+                            label="Email">
+                            <Input label="Email" placeholder="Email"
+                                value={user.email}
+                                type='email'
+                                name="email"
+                                onChange={e =>
+                                    this.handleChange(e)}
+                            ></Input>
+                        </Form.Item>
+                        <Form.Item label="Name">
+                            <Input placeholder="Name"
+                                value={user.name}
+                                autoComplete="name"
+                                name="name"
+                                type="text"
+                                onInput={e => this.handleChange(e)}></Input>
+                        </Form.Item>
+
+                        <Form.Item label="Surname">
+                            <Input placeholder="Surname"
+                                value={user.surname}
+                                type="text"
+                                name="surname"
+                                onChange={e => this.handleChange(e)}>
+
+                            </Input></Form.Item>
+
+                        <Button onClick={() => this.onChangeProfile()} disabled={!isEdited}>Save Profile</Button>
+                        <Button onClick={(e) => {
+                            this.onChangePass(e)
+                        }} disabled={false} hidden={this.state.isPassChanging}>Change Pass</Button>
+
+                        {modal}
+                    </Form>
                 </Card >
             </div >
         );

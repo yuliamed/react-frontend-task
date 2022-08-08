@@ -40,7 +40,7 @@ class OrdersComponent extends Component {
 
         return (
             <div><Header />
-                <h1>Nobody care.</h1></div>
+                <h1>Auto-picker orders will be here soon...</h1></div>
         );
     }
 }
