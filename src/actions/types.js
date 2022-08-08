@@ -6,8 +6,10 @@ export const LOGOUT = "LOGOUT";
 export const SET_MESSAGE = "SET_MESSAGE";
 export const CLEAR_MESSAGE = "CLEAR_MESSAGE";
 
+
 export const CHANGE_PASS_SUCCESS = "CHANGE_PASS_SUCCESS";
 export const CHANGE_PASS_FAIL = "CHANGE_PASS_FAIL";
+export const GET_PROFILE = "GET_PROFILE";
 
 
 export const FIND_ALL = "FIND_ALL";

@@ -61,7 +61,7 @@ main a:hover {
   text-decoration: underline;
 }
 
-form {
+.form-user-card {
   border-radius: 7px;
   /* border-radius: 5px; */
   -moz-border-radius: 5px;
@@ -130,12 +130,12 @@ input {
   overflow: visible;
 }
 
-.form-label {
+/* .form-label {
   margin-bottom: 15px;
   align-self: center;
   color: inherit;
   font-size: 55;
-}
+} */
 .ant-radio-button-wrapper .ant-radio-inner,
 .ant-radio-button-wrapper input[type='checkbox'],
 .ant-radio-button-wrapper input[type='radio'] {

@@ -142,7 +142,7 @@ class UserInfoComponent extends Component {
             < 
             >
 
-                <Form bordered={true} 
+                <Form className="form-user-card" bordered={true} 
                     style={{
                         marginLeft: '2%',
                         width: '290',

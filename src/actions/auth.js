@@ -6,7 +6,7 @@ import {
   LOGOUT,
   SET_MESSAGE,
 } from "./types";
-import AuthService from "../services/authService";
+import AuthService from "../services/AuthService";
 import jwt from 'jwt-decode'
 
 export const signUp =

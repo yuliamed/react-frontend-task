@@ -12,7 +12,6 @@ const UserHeaderContainer = () => {
     return (
         
             <Header align="center">
-                <NavLink to="/home">Home</NavLink>
                 <NavLink to="/profile">Profile</NavLink>
                 <NavLink to="/user-orders">My orders</NavLink>
                 <NavLink to="/logout" onClick={(event) => {

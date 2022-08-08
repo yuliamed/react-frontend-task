@@ -12,7 +12,7 @@ const UserHeaderContainer = () => {
     return (
         <Layout>
             <Header align="center">
-                <NavLink to="/home">Home</NavLink>
+                
                 <NavLink to="/profile">Profile</NavLink>
                 <NavLink to="/users">Users</NavLink>
                 <NavLink to="/logout" onClick={
