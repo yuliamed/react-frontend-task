@@ -51,7 +51,7 @@ class AdminComponent extends Component {
 
     }
 
-    async findUsers(page, pageNumber) {
+    findUsers(page, pageNumber) {
         const { dispatch } = this.props;
         this.setState({ isLoading: true });
         dispatch(findAll(page, pageNumber)).then((data) => {
@@ -78,7 +78,7 @@ class AdminComponent extends Component {
                                 index,
                             ) => (
                                 <UserInfoComponent
-                                    key={index}
+                                    key={u.id}
                                     user_account={u}
                                 />
                             ),
@@ -103,6 +103,7 @@ class AdminComponent extends Component {
                         console.log("NEW LIST " + this.state.users)
 
                     }}
+                    current={this.state.pagination.page+1}
                     total={this.state.pagination.totalElements}
                     showSizeChanger
                     showQuickJumper
