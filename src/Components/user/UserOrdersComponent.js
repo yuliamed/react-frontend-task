@@ -43,12 +43,20 @@ class UserOrdersComponent extends Component {
         this.onCreateNewSelectionOrder = this.onCreateNewSelectionOrder.bind(this);
         this.onCreateNewInspectionOrder = this.onCreateNewInspectionOrder.bind(this);
         this.cancelNewOrder = this.cancelNewOrder.bind(this)
+        this.onSaveNewOrder = this.onSaveNewOrder.bind(this);
         thisObj = this;
     }
 
     cancelNewOrder() {
         console.log("ЗАКРОЙ МЕНЯ ПОЖАЛУЙСТА И ЛОЖИСЬ СПАЦ")
         this.setState({isNewOrderHidden: true})
+    }
+
+    onSaveNewOrder(){
+        console.log("New order created!")
+        this.setState({isNewOrderHidden: true})
+        this.componentDidMount();
+        this.render();
     }
 
     onCreateNewSelectionOrder(e) {
@@ -84,7 +92,8 @@ class UserOrdersComponent extends Component {
         this.state.typeOfNewOrder == "inspection" ?
             newOrder = <InspectionOrderCreatingComponent
                 user_id={this.state.userId}
-                on_cancel={this.cancelNewOrder}>
+                on_cancel={this.cancelNewOrder}
+                on_save = {this.onSaveNewOrder}>
             </InspectionOrderCreatingComponent>
             :
             <SelectionOrderCreatingComponent>

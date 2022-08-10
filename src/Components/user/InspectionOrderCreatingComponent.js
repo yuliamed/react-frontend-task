@@ -32,6 +32,7 @@ class InspectionOrderCreatingComponent extends Component {
         this.onSaveNewOrder = this.onSaveNewOrder.bind(this);
         this.onCancelOrder = this.onCancelOrder.bind(this);
         this.cancelOrder = props.on_cancel;
+        this.onSave = props.on_save;
         this.createOptionArrForAutoPickers = this.createOptionArrForAutoPickers.bind(this);
         thisObj = this;
     }
@@ -52,9 +53,9 @@ class InspectionOrderCreatingComponent extends Component {
             autoPickerId: this.state.autoPickerId
         }
         dispatch(createOrder(this.state.userID, orderParams)).then((resp) => {
-            console.log(resp)
+            alert("Order created!");
         })
-        this.onCancelOrder(e);
+        this.onSave();
         this.render();
     }
 
@@ -159,15 +160,13 @@ class InspectionOrderCreatingComponent extends Component {
                         </Content>
                     </Layout>
                 </Card >
-                <Modal title="Really??" visible={this.state.isOrderCancelling}
+                <Modal title="Are you sure??" visible={this.state.isOrderCancelling}
                     onOk={() => {
                         this.cancelOrder();
                         this.setState({ isOrderCancelling: false })
                     }}
                     onCancel={() => this.setState({ isOrderCancelling: false })}>
-
-                    <h2>Do you really want to cancel this order? </h2><br></br><h4>Auto Picker will stop processing it(</h4>
-
+                    <h2>Do you really want to save this order? </h2>
                 </Modal>
             </ >
         );
