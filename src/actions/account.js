@@ -11,11 +11,11 @@ import {
         dispatch({
           type: CHANGE_PASS_SUCCESS,
         });
-        dispatch({
-          type: SET_MESSAGE,
-          payload: response.data.message,
-        });
-        return Promise.resolve();
+        // dispatch({
+        //   type: SET_MESSAGE,
+        //   payload: response.data.message,
+        // });
+        return response;
       },
       (error) => {
         const message =

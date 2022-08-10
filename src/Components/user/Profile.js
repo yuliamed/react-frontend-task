@@ -74,7 +74,8 @@ class Profile extends Component {
     }
 
     onCancelNewPass(e) {
-
+        this.setState({ isPassChanging: false });
+        this.render();
     }
 
     onChangeProfile() {
@@ -112,11 +113,12 @@ class Profile extends Component {
 
         const { dispatch } = this.props;
         if (this.state.newPass == this.state.confirmNewPass) {
-            e.preventDefault();
+
             dispatch(changePass(this.state.newPass, this.state.token))
                 .then(
-                    () => {
+                    (responce) => {
                         alert("We changed your pass!");
+                        console.log(responce)
                         this.setState({ isPassChanging: false });
                         this.render();
                     }
@@ -126,7 +128,6 @@ class Profile extends Component {
                     isHiddenError = false;
                     this.setState({ ...this.state, message: message, });
                 })
-
         } else {
             alert("You didn't confirm yoour new pass!")
         }
@@ -267,12 +268,12 @@ class Profile extends Component {
                         backgroundColor: "#f0f2f5",
                         padding: "2%"
                     }}
-                    onChange={
+                >
+                    <Form onChange={
                         () => {
                             isEdited = true;
                         }
                     }>
-                    <Form>
                         <Image
                             style={{
                                 width: '95%',
@@ -284,13 +285,13 @@ class Profile extends Component {
                         <Row >
                             <Col>
                                 <ImgCrop
-                                style={{
-                                    height:"30px"
-                                }}
+                                    style={{
+                                        height: "30px"
+                                    }}
                                 //rotate
                                 >
                                     <Upload
-                                    
+
                                         name="avatar"
                                         listType="picture-card"
                                         //className="avatar-uploader"
@@ -299,7 +300,7 @@ class Profile extends Component {
                                         beforeUpload={this.beforeUpload}
                                         onChange={this.addPicture}
                                     >
-                                        <Button  icon={<PlusSquareOutlined />} ></Button>
+                                        <Button icon={<PlusSquareOutlined />} ></Button>
                                     </Upload>
                                 </ImgCrop>
                             </Col>
@@ -347,8 +348,8 @@ class Profile extends Component {
                             this.onChangePass(e)
                         }} disabled={false} hidden={this.state.isPassChanging}>Change Pass</Button>
 
-                        {modal}
-                    </Form>
+
+                    </Form>{modal}
                 </Card >
             </div >
         );

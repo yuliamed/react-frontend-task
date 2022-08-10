@@ -85,9 +85,9 @@ class UserService {
           pass: pass
         }
       ).then((response) => {
-        if (response.data) {
-          localStorage.setItem("isPassChangedMessage", JSON.stringify(response.data));
-        }
+        // if (response.data) {
+        //   localStorage.setItem("isPassChangedMessage", JSON.stringify(response.data));
+        // }
         return response.data;
       });
   }

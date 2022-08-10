@@ -5,6 +5,7 @@ import {
   SIGNIN_FAIL,
   LOGOUT,
   SET_MESSAGE,
+  CLEAR_MESSAGE,
 } from "./types";
 import AuthService from "../services/AuthService";
 import jwt from 'jwt-decode'
@@ -88,5 +89,8 @@ export const logout = () => (dispatch) => {
   AuthService.logout();
   dispatch({
     type: LOGOUT,
+  });
+  dispatch({
+    type: CLEAR_MESSAGE,
   });
 };
