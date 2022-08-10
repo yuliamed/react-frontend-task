@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_BASE_URL } from '../constants/const';
+//import { REACT_APP_API_URL } from '../constants/const';
 import {
     POST, GET, PUT, PATCH, DELETE,GET_WITH_PARAMS,
 } from "./requesrTypes";
@@ -8,14 +8,14 @@ import {
 function commonReq(type, url, body) {
 
     let axiosReq = JSON.parse(localStorage.getItem('user')) ? axios.create({
-        baseURL: API_BASE_URL,
+        baseURL: process.env.REACT_APP_API_URL,
         headers: {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*',
             "Authorization": 'Bearer ' + JSON.parse(localStorage.getItem('user')).token,
         },
     }) : axios.create({
-        baseURL: API_BASE_URL, 
+        baseURL: process.env.REACT_APP_API_URL, 
         headers: {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*'

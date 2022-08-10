@@ -14,17 +14,17 @@ COPY . ./
 # Build the application
 RUN npm run build
 
-# FROM nginx:1.17.0-alpine
-# #!/bin/sh
+FROM nginx:1.17.0-alpine
+#!/bin/sh
 
-# ## Remove default nginx index page
-# RUN rm -rf /var/www/*
+## Remove default nginx index page
+RUN rm -rf /var/www/*
 
-# # Copy from the stahg 1
-# COPY --from=build /app/build /var/www
+# Copy from the stahg 1
+COPY --from=build /app/build /var/www
 
-# COPY nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/nginx.conf
 
-# EXPOSE 80
+EXPOSE 80
 
-# ENTRYPOINT ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
