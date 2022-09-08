@@ -1,34 +1,49 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { EditOutlined, MenuUnfoldOutlined, CloseOutlined, SaveOutlined } from '@ant-design/icons';
-import { Card, Layout, Form, Input, Modal, Select, Row, Col, Slider, InputNumber } from 'antd';
-import { updateOrder } from "../../actions/orders/userSelectionOrders"
+import { CloseOutlined, SaveOutlined } from '@ant-design/icons';
+import { Card, Layout, Form, Input, Modal, Select, Row, Col, Popover, InputNumber } from 'antd';
+import { createOrder } from "../../actions/orders/userSelectionOrders"
 import { changeOrderStatus } from "../../actions/orders/userOrder"
 import { CANCEL_ORDER_STATUS } from "../../constants/const"
-import { BodyTypeArr, BrandNameArr, TransmissionArr, OrderStatusArr, EngineTypeArr, DriveTypeArr, CurrencyArr, } from "../../constants/enums"
+import { BodyTypeArr, BrandNameArr, TransmissionArr, EngineTypeArr, DriveTypeArr, CurrencyArr, } from "../../constants/enums"
+import AutoPickerSelector from "./orders/AutoPickerSelector";
+import { findAllAutoPickers } from "../../actions/manageUsers";
 const { Content } = Layout;
 const { TextArea } = Input;
 const { Option } = Select;
 
 let thisObj;
-
 class SelectionOrderCreatingComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            order: props.user_order,
-            isDisabled: true,
+            order: {
+            },
+            userId: props.user_id,
             isOrderCancelling: false,
             isOrderCancelled: false,
+            isSavingAllowed: false,
         };
-        this.onEditInfo = this.onEditInfo.bind(this);
-        this.onSaveEditedInfo = this.onSaveEditedInfo.bind(this);
+        //this.validateMessages=this.validateMessages.bund(this);
+        this.onSaveOrder = this.onSaveOrder.bind(this);
         this.onCancelOrder = this.onCancelOrder.bind(this);
         this.cancelOrder = this.cancelOrder.bind(this);
         this.getArrByNames = this.getArrByNames.bind(this);
         this.createOptionArr = this.createOptionArr.bind(this);
         this.createArrWithName = this.createArrWithName.bind(this);
+        this.checkAllowingSave = this.checkAllowingSave.bind(this);
+        this.getAutoPickers = this.getAutoPickers.bind(this);
         thisObj = this;
+    }
+
+    checkAllowingSave() {
+        if (this.state.order.minYear != null &&
+            this.state.order.mileage != null &&
+            this.state.order.rangeFrom != null &&
+            this.state.order.rangeTo != null &&
+            this.state.order.currencyType != null) {
+            this.setState({ isSavingAllowed: true });
+        }
     }
 
     cancelOrder() {
@@ -46,21 +61,26 @@ class SelectionOrderCreatingComponent extends Component {
         this.setState({ isOrderCancelling: true })
     }
 
-    onEditInfo(e) {
-        this.setState({ isDisabled: false })
-        this.render();
-        console.log(e)
-    }
-
-    onSaveEditedInfo(e) {
-        this.setState({ isDisabled: true })
+    onSaveOrder(e) {
+        console.log("Save order")
         const { dispatch } = this.props;
-
-        dispatch(updateOrder(this.state.order.creator.id, this.state.order.id, this.state.order)).this((resp) => {
+        //if (this.state.isSavingAllowed) {
+        dispatch(createOrder(this.state.userId, this.state.order)).this((resp) => {
             this.setState({ order: resp })
         })
         console.log(this.state.newTransmissions)
+        //}
         this.render();
+    }
+
+    getSelectedAutoPicker = (value) => {
+        this.setState((state) => ({
+            ...state,
+            order: {
+                ...state.order,
+                autoPickerId: value
+            }
+        }))
     }
 
     createArrWithName(arr) {
@@ -75,10 +95,10 @@ class SelectionOrderCreatingComponent extends Component {
     }
 
     async componentDidMount() {
-        this.setState({ order: this.props.user_order });
-        let isOrderCancelled = this.props.user_order.status.name == CANCEL_ORDER_STATUS ? true : false
-        console.log(isOrderCancelled)
-        this.setState({ isOrderCancelled: isOrderCancelled })
+        // this.setState({ order: this.props.user_order });
+        // let isOrderCancelled = this.props.user_order.status.name == CANCEL_ORDER_STATUS ? true : false
+        // console.log(isOrderCancelled)
+        // this.setState({ isOrderCancelled: isOrderCancelled })
     }
 
     getArrByNames(inputArr) {
@@ -98,206 +118,234 @@ class SelectionOrderCreatingComponent extends Component {
         return children
     }
 
-    render() {
+    getAutoPickers() {
+        const { dispatch } = this.props;
+        let arr = null;
+        //thisObj.setState({ userID: this.props.user_id })
+        dispatch(findAllAutoPickers()).then((resp) => {
+            console.log(resp)
+            //thisObj.setState({ autoPickers: resp.objects })
+            arr = resp.objects;
+        })
+        return arr;
+    }
 
+    validateMessages = {
+        required: '${label} is required!',
+        pattern: '${label} must contain digits and letters.',
+        types: {
+            email: '${label} not a valid',
+            number: '${label} is not a valid number!',
+            string: '${label} must be a string!'
+        },
+    };
+
+    render() {
+        //const [form] = useForm();
         return (
             <>
                 <Card style={{
                     width: "800px"
-                }} align="start" title="Inspection order"
-                    actions={[this.state.isOrderCancelled ? <></> :
-                        this.state.isDisabled ?
-                            <EditOutlined title="Edit order" visible={false} onClick={(e) => this.onEditInfo(e)} /> :
-                            <SaveOutlined title="save order" onClick={(e) => this.onSaveEditedInfo(e)} />
+                }}
+                    align="start"
+                    title="Selection order"
+                    actions={[
+                        <SaveOutlined title="save order"
+                            onClick={(e) => this.onSaveOrder(e)}
+                        // disabled={
+                        //     !form.isFieldsTouched(true) ||
+                        //     !!form.getFieldsError().filter(({ errors }) => errors.length).length
+                        //}
+                        />
+                        // !this.state.isSavingAllowed ?
+                        //     <Popover content={content} title="Title" trigger="hover">
+                        //         <SaveOutlined title="save order"
+                        //         />
+                        //     </Popover> :
+                        //     <SaveOutlined title="save order"
+                        //         onClick={(e) => this.onSaveOrder(e)}
+                        //         disabled={true} />
                         ,
-                    this.state.isOrderCancelled ? <></> : <CloseOutlined title="Cancel order" onClick={(e) => this.onCancelOrder(e)} />,
-                    ]}>
+                        <CloseOutlined title="Cancel order" onClick={(e) => this.onCancelOrder(e)}
+                        />,
+                    ]}
+                >
                     <Layout >
                         <Content >
                             <Layout style={{ display: 'flex', padding: 15 }} align="horizontal" >
                                 <Content >
-                                    <Card title="Main data" size="small">
-                                        <p><b>Date of order: </b>{this.state.order.creationDate.substr(0, 10)} </p>
-                                        <p><b>Status of order: </b>{this.state.order.status.name}</p>
-                                        <p><b>Auto-picker: </b> {this.state.order.autoPicker == null ? "does not set yet" : this.state.order.autoPicker.name}</p>
-
-                                    </Card>
-                                    <Card title="Order info" size="small">
-
-                                        <Row style={{ marginBottom: "10px" }}>
-                                            <Col >
-                                                <p>Min year:</p>
-                                            </Col>
-                                            <Col span={10}>
-                                                <InputNumber
-                                                    disabled={this.state.isDisabled}
-                                                    min={1900}
-                                                    max={2022}
-                                                    style={{ margin: '0 16px' }}
-                                                    value={this.state.order.minYear}
-
-                                                    onChange={(value) => {
-                                                        this.setState((state) => ({
-                                                            ...state,
-                                                            order: {
-                                                                ...state.order,
-                                                                minYear: value
-                                                            }
-                                                        }))
-                                                    }}
-                                                />
-                                            </Col>
-                                            <p>Mileage: </p>
-                                            <Col span={4}>
-                                                <InputNumber
-                                                    min={100}
-                                                    disabled={this.state.isDisabled}
-                                                    style={{ margin: '0 16px' }}
-                                                    value={this.state.order.mileage}
-                                                    onChange={(value) => {
-                                                        this.setState((state) => ({
-                                                            ...state,
-                                                            order: {
-                                                                ...state.order,
-                                                                mileage: value
-                                                            }
-                                                        }))
-                                                    }}
-                                                />
-                                            </Col>
-                                            <Col span={4}>
-                                                <p>km</p>
-                                            </Col>
-
-                                        </Row>
-                                        <Row >
-                                            <Col>
-                                                <p>Car price:</p>
-                                            </Col>
-                                        </Row>
-                                        <Row style={{ marginBottom: "20px" }}>
-                                            <p>from: </p>
-                                            <Col span={4}>
-                                                <InputNumber
-
-                                                    disabled={this.state.isDisabled}
-
-                                                    style={{ margin: '0 16px' }}
-                                                    value={this.state.order.rangeFrom}
-                                                    onChange={(value) => {
-                                                        this.setState((state) => ({
-                                                            ...state,
-                                                            order: {
-                                                                ...state.order,
-                                                                rangeFrom: value
-                                                            }
-                                                        }))
-                                                    }}
-                                                />
-                                            </Col>
-                                            <p>to: </p>
-                                            <Col span={4}>
-                                                <InputNumber
-
-                                                    disabled={this.state.isDisabled}
-                                                    style={{ margin: '0 16px' }}
-                                                    value={this.state.order.rangeTo}
-                                                // onChange={onChange}
-                                                />
-                                            </Col>
-                                            <Col span={4}>
-
-                                                <Select
-                                                    disabled={this.state.isDisabled}
-
-                                                    style={{ margin: '0 16px' }}
-                                                    placeholder="Please select"
-                                                    defaultValue={this.state.order.currencyType.name}
-                                                    onChange={(value) => this.setState((state) => ({
-                                                        ...state,
-                                                        order: {
-                                                            ...state.order,
-                                                            currencyType: this.createArrWithName([value])[0]
-                                                        }
-                                                    }))}
+                                    <Card title="Order info" size="small"
+                                    >
+                                        <Form
+                                            //form={form}
+                                            validateMessages={this.validateMessages}
+                                        >
+                                            <Row>
+                                                <Form.Item
+                                                    label="Min year:"
+                                                    name="min year"
+                                                    rules={[{ required: true },
+                                                    ]}
                                                 >
-                                                    {this.createOptionArr(CurrencyArr)}
-                                                </Select>
+                                                    <InputNumber
+                                                        min={1900}
+                                                        max={2022}
+                                                        style={{ margin: '0 16px' }}
 
+                                                        onChange={(value) => {
+                                                            this.setState((state) => ({
+                                                                ...state,
+                                                                order: {
+                                                                    ...state.order,
+                                                                    minYear: value
+                                                                }
+                                                            }))
+                                                        }}
+                                                    />
+                                                </Form.Item>
+                                                <Form.Item
+                                                    name="Mileage"
+                                                    label="Mileage: "
+                                                    rules={[{ required: true },
+                                                    ]}>
+                                                    <InputNumber
+                                                        min={100}
 
-                                            </Col>
+                                                        style={{ margin: '0 16px' }}
+                                                        onChange={(value) => {
+                                                            this.setState((state) => ({
+                                                                ...state,
+                                                                order: {
+                                                                    ...state.order,
+                                                                    mileage: value
+                                                                }
+                                                            }))
+                                                        }}
+                                                    /><span className="ant-form-text">km</span>
+                                                </Form.Item>
+                                            </Row>
+                                            <p>Car price:</p>
+                                            <Row>
+                                                <Form.Item
+                                                    label="from"
+                                                    name="car price from"
+                                                    style={{ marginRight: '16px' }}
+                                                    rules={[{ required: true },
+                                                    ]}>
+                                                    <InputNumber
+                                                        onChange={(value) => {
+                                                            this.setState((state) => ({
+                                                                ...state,
+                                                                order: {
+                                                                    ...state.order,
+                                                                    rangeFrom: value
+                                                                }
+                                                            }))
+                                                        }}
+                                                    />
+                                                </Form.Item>
+                                                <Form.Item
+                                                    style={{ marginRight: '16px' }}
+                                                    name="car price to"
+                                                    rules={[{ required: true },
+                                                    ]}
+                                                    label="to">
+                                                    <InputNumber
+                                                        onChange={(value) => {
+                                                            this.setState((state) => ({
+                                                                ...state,
+                                                                order: {
+                                                                    ...state.order,
+                                                                    rangeTo: value
+                                                                }
+                                                            }))
+                                                        }}
+                                                    />
+                                                </Form.Item>
+                                                <Form.Item
 
-                                        </Row>
+                                                    label="Currency type"
+                                                    name="currency type"
+                                                    rules={[{ required: true },
+                                                    ]}>
+                                                    <Select
+                                                        style={{ margin: '0 16px' }}
+                                                        placeholder="Please select"
+                                                        onChange={(value) => this.setState
+                                                            ((state) => ({
+                                                                ...state,
+                                                                order: {
+                                                                    ...state.order,
+                                                                    currencyType: this.createArrWithName([value])[0]
+                                                                }
+                                                            })
+                                                            )
+                                                        }
+                                                    >
+                                                        {this.createOptionArr(CurrencyArr)}
+                                                    </Select>
+                                                </Form.Item>
+                                            </Row>
 
-                                        <Row >
-                                            <Col>
-                                                <p>Car engine volume:</p>
-                                            </Col>
-                                        </Row>
-                                        <Row style={{ marginBottom: "20px" }}>
-                                            <p>min: </p>
-                                            <Col span={4}>
-                                                <InputNumber
-                                                    min={0.5}
-                                                    max={20}
-                                                    disabled={this.state.isDisabled}
-                                                    style={{ margin: '0 16px' }}
-                                                    value={this.state.order.minEngineVolume}
-                                                    onChange={(value) => {
-                                                        this.setState((state) => ({
-                                                            ...state,
-                                                            order: {
-                                                                ...state.order,
-                                                                minEngineVolume: value
-                                                            }
-                                                        }))
-                                                    }}
-                                                />
-                                            </Col>
-                                            <p>max: </p>
-                                            <Col span={4}>
-                                                <InputNumber
-                                                    min={1}
-                                                    disabled={this.state.isDisabled}
-                                                    max={20}
-                                                    style={{ margin: '0 16px' }}
-                                                    value={this.state.order.maxEngineVolume}
-                                                    onChange={(value) => {
-                                                        this.setState((state) => ({
-                                                            ...state,
-                                                            order: {
-                                                                ...state.order,
-                                                                maxEngineVolume: value
-                                                            }
-                                                        }))
-                                                    }}
-                                                />
-                                            </Col>
-                                            <Col span={4}>
-                                                <p>L</p>
-                                            </Col>
+                                            <Row >
+                                                <Col>
+                                                    <p>Car engine volume:</p>
+                                                </Col>
+                                            </Row>
+                                            <Row>
+                                                <Form.Item
+                                                    label="min:"
+                                                >
+                                                    <InputNumber
+                                                        min={0.5}
+                                                        max={20}
+                                                        style={{ margin: '0 16px' }}
+                                                        onChange={(value) => {
+                                                            this.setState((state) => ({
+                                                                ...state,
+                                                                order: {
+                                                                    ...state.order,
+                                                                    minEngineVolume: value
+                                                                }
+                                                            }))
+                                                        }}
+                                                    />
+                                                </Form.Item>
 
-                                        </Row>
-                                        <Row >
+                                                <Form.Item
+                                                    label="max:">
+                                                    <InputNumber
+                                                        min={1}
 
-                                        </Row>
+                                                        max={20}
+                                                        style={{ margin: '0 16px' }}
+                                                        onChange={(value) => {
+                                                            this.setState((state) => ({
+                                                                ...state,
+                                                                order: {
+                                                                    ...state.order,
+                                                                    maxEngineVolume: value
+                                                                }
+                                                            }))
+                                                        }}
+                                                    />
+                                                    <span className="ant-form-text">L</span>
+                                                </Form.Item>
+                                            </Row>
+                                        </Form>
 
                                         <Form.Item
                                             label="Engine types"
                                         >
                                             <Select
-                                                disabled={this.state.isDisabled}
+
                                                 mode="multiple"
                                                 allowClear
                                                 style={{
                                                     width: '100%',
                                                 }}
                                                 placeholder="Please select"
-                                                defaultValue={() => {
-                                                    let arr = this.getArrByNames(this.state.order.engines);
-                                                    this.setState({ newTransmissions: arr });
-                                                    return arr;
-                                                }}
+
                                                 onChange={(value) => this.setState((state) => ({
                                                     ...state,
                                                     order: {
@@ -310,39 +358,18 @@ class SelectionOrderCreatingComponent extends Component {
                                             </Select>
 
                                         </Form.Item>
-                                        <Form.Item
-                                            label="Additional Info"
-                                        >
-                                            <TextArea placeholder="info about order" disabled={this.state.isDisabled} defaultValue={this.state.order.additionalInfo}
-                                                onChange={(value) => {
-                                                    this.setState((state) => ({
-                                                        ...state,
-                                                        order: {
-                                                            ...state.order,
-                                                            additionalInfo: value
-                                                        }
-                                                    }))
-                                                }} />
-                                        </Form.Item>
+
                                         <Form.Item
                                             label="Body typies"
                                         >
                                             <Select
-                                                disabled={this.state.isDisabled}
+
                                                 mode="multiple"
                                                 allowClear
                                                 style={{
                                                     width: '100%',
                                                 }}
                                                 placeholder="Please select"
-                                                defaultValue={
-                                                    () => {
-                                                        let arr = this.getArrByNames(this.state.order.bodies);
-                                                        this.setState({ newTransmissions: arr });
-                                                        return arr;
-                                                    }
-
-                                                }
                                                 onChange={(value) => this.setState((state) => ({
                                                     ...state,
                                                     order: {
@@ -360,18 +387,13 @@ class SelectionOrderCreatingComponent extends Component {
                                             label="Brands"
                                         >
                                             <Select
-                                                disabled={this.state.isDisabled}
                                                 mode="multiple"
                                                 allowClear
                                                 style={{
                                                     width: '100%',
                                                 }}
                                                 placeholder="Please select"
-                                                defaultValue={() => {
-                                                    let arr = this.getArrByNames(this.state.order.brands);
-                                                    this.setState({ newBrands: arr });
-                                                    return arr;
-                                                }}
+
                                                 onChange={(value) => this.setState((state) => ({
                                                     ...state,
                                                     order: {
@@ -389,20 +411,14 @@ class SelectionOrderCreatingComponent extends Component {
                                             label="Drives"
                                         >
                                             <Select
-                                                disabled={this.state.isDisabled}
+
                                                 mode="multiple"
                                                 allowClear
                                                 style={{
                                                     width: '100%',
                                                 }}
                                                 placeholder="Please select"
-                                                defaultValue={
-                                                    () => {
-                                                        let arr = this.getArrByNames(this.state.order.drives);
-                                                        this.setState({ newDrives: arr });
-                                                        return arr;
-                                                    }
-                                                }
+
                                                 onChange={(value) => this.setState((state) => ({
                                                     ...state,
                                                     order: {
@@ -420,18 +436,14 @@ class SelectionOrderCreatingComponent extends Component {
                                             label="Transmissions"
                                         >
                                             <Select
-                                                disabled={this.state.isDisabled}
+
                                                 mode="multiple"
                                                 allowClear
                                                 style={{
                                                     width: '100%',
                                                 }}
                                                 placeholder="Please select"
-                                                defaultValue={() => {
-                                                    let arr = this.getArrByNames(this.state.order.transmissions);
-                                                    this.setState({ newTransmissions: arr });
-                                                    return arr;
-                                                }}
+
                                                 onChange={(value) => this.setState((state) => ({
                                                     ...state,
                                                     order: {
@@ -445,8 +457,28 @@ class SelectionOrderCreatingComponent extends Component {
 
                                         </Form.Item>
 
-
-
+                                        <Form.Item
+                                            label="Auto-picker"
+                                        >
+                                            <AutoPickerSelector
+                                                getSelectedAutoPicker={this.getSelectedAutoPicker}
+                                                array={this.getAutoPickers()}
+                                            />
+                                        </Form.Item>
+                                        <Form.Item
+                                            label="Additional Info"
+                                        >
+                                            <TextArea placeholder="info about order"
+                                                onChange={(value) => {
+                                                    this.setState((state) => ({
+                                                        ...state,
+                                                        order: {
+                                                            ...state.order,
+                                                            additionalInfo: value
+                                                        }
+                                                    }))
+                                                }} />
+                                        </Form.Item>
                                     </Card>
 
                                 </Content>
@@ -455,9 +487,7 @@ class SelectionOrderCreatingComponent extends Component {
                     </Layout>
                 </Card>
                 <Modal title="Really??" visible={this.state.isOrderCancelling} onOk={() => this.cancelOrder()} onCancel={() => this.setState({ isOrderCancelling: false })}>
-
-                    <h2>Do you really want to cancel this order? </h2><br></br><h4>Auto Picker will stop processing it(</h4>
-
+                    <h2>Do you really want to cancel this order? </h2><br></br><h4></h4>
                 </Modal>
             </ >
         );

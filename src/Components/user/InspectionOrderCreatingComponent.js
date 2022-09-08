@@ -43,8 +43,6 @@ class InspectionOrderCreatingComponent extends Component {
     }
 
     onSaveNewOrder(e) {
-        // if (!this.state.isSavingAllowed) re
-
         const { dispatch } = this.props;
 
         let orderParams = {
@@ -82,7 +80,9 @@ class InspectionOrderCreatingComponent extends Component {
             <>
                 <Card style={{
                     width: "800px"
-                }} align="start" title="Inspection order"
+                }}
+                    align="start"
+                    title="Inspection order"
                     actions={[
                         !this.state.isSavingAllowed ?
                             <Popover content={content} title="Title" trigger="hover">
@@ -99,7 +99,6 @@ class InspectionOrderCreatingComponent extends Component {
                         <Content >
                             <Layout style={{ display: 'flex', padding: 15 }} align="horizontal" >
                                 <Content >
-
                                     <Card title="Order info" size="small"
                                     >
                                         <Form>

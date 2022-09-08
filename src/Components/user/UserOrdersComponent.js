@@ -49,12 +49,12 @@ class UserOrdersComponent extends Component {
 
     cancelNewOrder() {
         console.log("ЗАКРОЙ МЕНЯ ПОЖАЛУЙСТА И ЛОЖИСЬ СПАЦ")
-        this.setState({isNewOrderHidden: true})
+        this.setState({ isNewOrderHidden: true })
     }
 
-    onSaveNewOrder(){
+    onSaveNewOrder() {
         console.log("New order created!")
-        this.setState({isNewOrderHidden: true})
+        this.setState({ isNewOrderHidden: true })
         this.componentDidMount();
         this.render();
     }
@@ -93,9 +93,9 @@ class UserOrdersComponent extends Component {
             newOrder = <InspectionOrderCreatingComponent
                 user_id={this.state.userId}
                 on_cancel={this.cancelNewOrder}
-                on_save = {this.onSaveNewOrder}>
+                on_save={this.onSaveNewOrder}>
             </InspectionOrderCreatingComponent>
-            :
+            : newOrder =
             <SelectionOrderCreatingComponent>
             </SelectionOrderCreatingComponent>
         let orders = <Button>HEY</Button>
@@ -132,10 +132,12 @@ class UserOrdersComponent extends Component {
                             Create inspection order
                         </Button>
                     </Col>
-                    <Col span={12}><Button type="primary"
-                        onClick={(e) => this.onCreateNewSelectionOrder(e)}>
-                        Create selection order
-                    </Button>
+                    <Col span={12}>
+                        <Button
+                            type="primary"
+                            onClick={(e) => this.onCreateNewSelectionOrder(e)}>
+                            Create selection order
+                        </Button>
                     </Col>
                 </Row>
                 <Space hidden={this.state.isNewOrderHidden} direction="vertical" size="large" style={{ display: 'flex' }}>
@@ -143,7 +145,7 @@ class UserOrdersComponent extends Component {
                     <Space direction="vertical" wrap >
                         <Space direction="vertical" wrap>
                             {newOrder}
-                            
+
                         </Space>
 
                     </Space>
