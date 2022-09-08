@@ -5,6 +5,7 @@ import { Card, Layout, Form, Input, Modal } from 'antd';
 import { updateOrder } from "../../actions/orders/userInspectionOrder"
 import { changeOrderStatus } from "../../actions/orders/userOrder"
 import { CANCEL_ORDER_STATUS } from "../../constants/const"
+import MainInfoComponent from "./orders/MainInfoComponent";
 const { Content } = Layout;
 const { TextArea } = Input;
 
@@ -88,12 +89,15 @@ class InspectionOrderComponent extends Component {
                         <Content >
                             <Layout style={{ display: 'flex', padding: 15 }} align="horizontal" >
                                 <Content >
-                                    <Card title="Main data" size="small">
+                                    {/* <Card title="Main data" size="small">
                                         <p><b>Date of order: </b>{this.state.order.creationDate.substr(0, 10)} </p>
                                         <p><b>Status of order: </b>{this.state.order.status.name}</p>
                                         <p><b>Auto-picker: </b> {this.state.order.autoPicker == null ? "does not set yet" : this.state.order.autoPicker.name}</p>
 
-                                    </Card>
+                                    </Card> */}
+                                    <MainInfoComponent creationDate={this.state.order.creationDate}
+                                        status={this.state.order.status}
+                                        autoPicker={this.state.order.autoPicker} />
                                     <Card title="Order info" size="small">
                                         <Form.Item
                                             label="Car URL"

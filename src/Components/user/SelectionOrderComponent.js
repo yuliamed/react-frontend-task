@@ -6,6 +6,7 @@ import { updateOrder } from "../../actions/orders/userSelectionOrders"
 import { changeOrderStatus } from "../../actions/orders/userOrder"
 import { CANCEL_ORDER_STATUS } from "../../constants/const"
 import { BodyTypeArr, BrandNameArr, TransmissionArr, OrderStatusArr, EngineTypeArr, DriveTypeArr, CurrencyArr, } from "../../constants/enums"
+import MainInfoComponent from "./orders/MainInfoComponent";
 const { Content } = Layout;
 const { TextArea } = Input;
 const { Option } = Select;
@@ -116,12 +117,9 @@ class SelectionOrderComponent extends Component {
                         <Content >
                             <Layout style={{ display: 'flex', padding: 15 }} align="horizontal" >
                                 <Content >
-                                    <Card title="Main data" size="small">
-                                        <p><b>Date of order: </b>{this.state.order.creationDate.substr(0, 10)} </p>
-                                        <p><b>Status of order: </b>{this.state.order.status.name}</p>
-                                        <p><b>Auto-picker: </b> {this.state.order.autoPicker == null ? "does not set yet" : this.state.order.autoPicker.name}</p>
-
-                                    </Card>
+                                    <MainInfoComponent creationDate={this.state.order.creationDate}
+                                        status={this.state.order.status}
+                                        autoPicker={this.state.order.autoPicker} />
                                     <Card title="Order info" size="small">
 
                                         <Row style={{ marginBottom: "10px" }}>
@@ -179,9 +177,7 @@ class SelectionOrderComponent extends Component {
                                             <p>from: </p>
                                             <Col span={4}>
                                                 <InputNumber
-
                                                     disabled={this.state.isDisabled}
-
                                                     style={{ margin: '0 16px' }}
                                                     value={this.state.order.rangeFrom}
                                                     onChange={(value) => {
@@ -198,7 +194,6 @@ class SelectionOrderComponent extends Component {
                                             <p>to: </p>
                                             <Col span={4}>
                                                 <InputNumber
-
                                                     disabled={this.state.isDisabled}
                                                     style={{ margin: '0 16px' }}
                                                     value={this.state.order.rangeTo}
