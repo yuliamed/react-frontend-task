@@ -1,35 +1,20 @@
-import { NavLink} from "react-router-dom";
-import { Layout, Menu} from "antd";
+import { NavLink } from "react-router-dom";
+import { Layout, Menu, Row, Col } from "antd";
 import { UserOutlined, LoginOutlined } from '@ant-design/icons';
 import { Avatar } from 'antd';
 import LogOutLink from "../LogOutLink"
+import { getItem } from "./menu-common";
+const { Header, } = Layout;
 
-function getItem(label, key, icon, children, type) {
-    return {
-        key,
-        icon,
-        children,
-        label,
-        type,
-    };
-}
+const logout = [
+    getItem(
+        <LogOutLink />,
+        "log out",
+        <LoginOutlined />
+    )
+]
+
 const items = [
-    getItem("User name",
-        'sub1',
-        <UserOutlined />,
-        [
-            getItem('Profile',
-                null,
-                null,
-                [getItem('Account',
-                    '1'),
-                getItem('My orders',
-                    '2')],
-                'group'),
-            getItem('Log out'),
-        ]),]
-
-const items2 = [
     getItem(
         <NavLink to="/profile">Profile</NavLink>,
         "profile info",
@@ -38,19 +23,34 @@ const items2 = [
         <NavLink to="/user-orders">My orders</NavLink>,
         "user orders",
     ),
-    getItem(
-        <LogOutLink/>,
-        "log out",
-        <LoginOutlined />
-    )
 ]
 
 const UserHeaderContainer = () => {
     return (
-        <Menu
-            mode="horizontal"
-            items={items2}>
-        </Menu>
+        <Header><Row>
+            <Col flex="1 1 200px">
+                <Menu
+                    theme="dark"
+                    mode="horizontal "
+                    items={items}
+                >
+                </Menu>
+            </Col>
+            <Col flex="0 1 200px">
+                <Row justify="end">
+                    <Menu
+                        style={{
+                            width: "150px"
+                        }}
+                        theme="dark"
+                        mode="horizontal"
+                        items={logout}
+                    >
+                    </Menu>
+                </Row>
+            </Col>
+        </Row>
+        </Header>
     );
 }
 
