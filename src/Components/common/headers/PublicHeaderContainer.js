@@ -1,27 +1,36 @@
 import { NavLink } from "react-router-dom";
-import { Layout, Row, Col, } from "antd";
-
+import { Layout, Menu, Col, Row } from "antd";
+import { getItem } from "./menu-common";
 const { Header, } = Layout;
+
+const items = [
+    getItem(
+        <NavLink to="/sign-up">SignUp</NavLink>,
+        "sign up",
+    ),
+    getItem(
+        <NavLink to="/sign-in">SignIn</NavLink>,
+        "sign in",
+    ),
+
+]
 const UserHeaderContainer = () => {
 
-    return (<Layout>
-        <Header>
-            <Row>
-                <Col flex="1 1 200px"><NavLink to="/sign-up">SignUp</NavLink></Col>
-                <Col flex="0 1 300px">
-                    <Row justify="end">
-                        <Col span={8}
-                        >
-                            <NavLink to="/sign-in">SignIn</NavLink>
-                        </Col>
-                        <Col
-                        >
-                            <NavLink to="/sign-up">SignUp</NavLink>
-                        </Col>
-                    </Row>
-                </Col>
-            </Row>
-        </Header></Layout>
+    return (
+        <Header><Row>
+            <Col flex="1 1 200px"><a>Main page of our company</a></Col>
+            <Col flex="0 1 300px">
+                <Row justify="end">
+                    <Menu
+                        theme="dark"
+                        mode="horizontal"
+                        items={items}
+                    >
+                    </Menu>
+                </Row>
+            </Col>
+        </Row>
+        </Header>
     )
 }
 
