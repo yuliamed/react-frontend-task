@@ -1,16 +1,20 @@
 import { NavLink } from "react-router-dom";
 import { Layout, Menu, Row, Col } from "antd";
-import { getItem,  } from "./menu-common";
-const { Header, profileMenu} = Layout;
-
-const items = [ 
-    getItem(
-        <NavLink to="/user-orders">My orders</NavLink>,
-        "user orders",
-    ),
-]
+import { getItem, profileMenu} from "./menu-common";
+const { Header,  } = Layout;
 
 const UserHeaderContainer = () => {
+    const items = [
+        getItem(
+            <NavLink to="/user-orders">My orders</NavLink>,
+            "user orders",
+        ),
+        getItem(
+            <NavLink to="/new-order">New orders</NavLink>,
+            "new order",
+        ),
+    ]
+
     return (
         <Header><Row>
             <Col flex="1 1 200px">
