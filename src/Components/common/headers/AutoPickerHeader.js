@@ -1,29 +1,42 @@
-//import { Space,Header } from "antd";
-import { NavLink, useNavigate } from "react-router-dom";
-import { Layout, Space } from "antd";
-import { useDispatch } from "react-redux";
-import { logout } from "../../../actions/auth";
-const { Header, Footer, Content } = Layout;
+import { NavLink} from "react-router-dom";
+import { Layout, Menu, Row, Col } from "antd";
+import { getItem, profileMenu } from "./menu-common";
+const { Header } = Layout;
+
+const items = [
+    getItem(
+        <NavLink to="/orders">Orders</NavLink>,
+        "Orders",
+    ),
+]
+
 const UserHeaderContainer = () => {
-    const dispatch = useDispatch();
-    console.log("UserHeaderContainer");
-    let history = useNavigate();
     return (
-        <Layout>
-            <Header align="center">
-                
-                <NavLink to="/profile">Profile</NavLink>
-                <NavLink to="/orders">Orders</NavLink>
-                <NavLink to="/logout" onClick={
-                    (event) => {
-                        dispatch(logout());
-                        event.preventDefault();
-                        //let history = useNavigate();
-                        history("/sign-in", { replace: true });
-                    }}>LogOut</NavLink>
-            </Header>
-        </Layout>);
-    //
+        <Header><Row>
+            <Col flex="1 1 200px">
+                <Menu
+                    theme="dark"
+                    mode="horizontal "
+                    items={items}
+                >
+                </Menu>
+            </Col>
+            <Col flex="0 1 200px">
+                <Row justify="end">
+                    <Menu
+                        style={{
+                            width: "150px"
+                        }}
+                        theme="dark"
+                        mode="horizontal"
+                        items={profileMenu}
+                    >
+                    </Menu>
+                </Row>
+            </Col>
+        </Row>
+        </Header>
+    );
 }
 
 export default UserHeaderContainer;

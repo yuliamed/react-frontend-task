@@ -1,25 +1,12 @@
 import { NavLink } from "react-router-dom";
 import { Layout, Menu, Row, Col } from "antd";
-import { LoginOutlined } from '@ant-design/icons';
-import LogOutLink from "../LogOutLink"
-import { getItem } from "./menu-common";
+import { getItem, profileMenu } from "./menu-common";
+
 const { Header } = Layout;
 
 const UserHeaderContainer = () => {
 
-    const logout = [
-        getItem(
-            <LogOutLink />,
-            "log out",
-            <LoginOutlined />
-        )
-    ]
-
     const items = [
-        getItem(
-            <NavLink to="/profile">Profile</NavLink>,
-            "profile info",
-        ),
         getItem(
             <NavLink to="/users">Users</NavLink>,
             "users",
@@ -43,7 +30,7 @@ const UserHeaderContainer = () => {
                         }}
                         theme="dark"
                         mode="horizontal"
-                        items={logout}
+                        items={profileMenu}
                     >
                     </Menu>
                 </Row>
