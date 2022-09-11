@@ -9,3 +9,8 @@ export const ORDER_STATUSES = {
     CLOSED: "CLOSED",
     CANCELED: "CANCELED"
 };
+export const ORDER_PAGES = {
+    ACTUAL_ORDERS: "Actual orders",
+    CANCELED: "Canceled",
+    CLOSED: "Closed"
+}
