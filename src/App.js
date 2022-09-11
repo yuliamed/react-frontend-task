@@ -8,6 +8,7 @@ import NotFound from "./components/common/NotFound";
 import Profile from "./components/user/Profile"; 
 import { Layout } from "antd";
 import UserOrdersComponent from './components/user/UserOrdersComponent';
+import NewOrderComponent from './components/user/NewOrderComponent';
 const { Footer, Content} = Layout;
 
 function App() {
@@ -27,8 +28,10 @@ function App() {
           <Route path="/" exact={true} element={<LoginComponent />} />
           <Route path="/sign-up" exact={true} element={<SignUpComponent />} />
           <Route path="/orders" exact={true} element={<OrdersComponent />} />
+          <Route path="/new-order" exact={true} element={<NewOrderComponent />} />
           <Route path="/user-orders" exact={true} element={<UserOrdersComponent />} />
           <Route path="/users" exact={true} element={<AdminComponent />} />
+
           <Route path="/*"exact={true} element={<NotFound />} />
           
         </Routes>

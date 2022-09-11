@@ -1,11 +1,8 @@
 import React, { Component } from "react";
-import { Navigate } from 'react-router-dom';
 import { connect } from "react-redux";
-import UserService from "../../services/userService";
 import jwt from 'jwt-decode'
-import { EditOutlined, MenuUnfoldOutlined, CloseOutlined, SaveOutlined } from '@ant-design/icons';
-import { LoadingOutlined, PlusOutlined, PlusSquareOutlined, DeleteOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Space, Input, Card, Layout, Modal, Form, Image, Upload, message, Row, Col } from "antd";
+import { PlusOutlined} from '@ant-design/icons';
+import { Button, Space } from "antd";
 import { BASE_USER_PICTURE } from "../../constants/const";
 import ImgCrop from 'antd-img-crop';
 import Header from "../common/headers/Header";
@@ -16,10 +13,7 @@ import SelectionOrderComponent from "./SelectionOrderComponent"
 import SelectionOrderCreatingComponent from "./SelectionOrderCreatingComponent";
 import InspectionOrderCreatingComponent from "./InspectionOrderCreatingComponent";
 
-const { Content } = Layout;
 let thisObj;
-let isEdited = false;
-var isHiddenError = true;
 const uploadButton = (
     <div>
         {<PlusOutlined />}
@@ -120,7 +114,7 @@ class UserOrdersComponent extends Component {
             <div className="site-card-border-less-wrapper"
             >
                 <Header />
-                <Row style={{
+                {/* <Row style={{
                     marginTop: "20px",
                     marginBottom: "50px"
                 }
@@ -139,7 +133,7 @@ class UserOrdersComponent extends Component {
                             Create selection order
                         </Button>
                     </Col>
-                </Row>
+                </Row> */}
                 <Space hidden={this.state.isNewOrderHidden} direction="vertical" size="large" style={{ display: 'flex' }}>
 
                     <Space direction="vertical" wrap >
