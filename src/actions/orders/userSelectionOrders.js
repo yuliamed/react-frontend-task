@@ -3,6 +3,8 @@ import {
     UPDATE_SELECTION_ORDER_SUCCESS,
     CREATE_SELECTION_ORDER_FAIL,
     UPDATE_SELECTION_ORDER_FAIL,
+    GET_SELECTION_ORDER_BY_ID_FAIL,
+    GET_SELECTION_ORDER_BY_ID_SUCCESS,
     SET_MESSAGE
 } from "../types";
 import UserSelectionOrderService from "../../services/orders/userSelectionOrderService";
@@ -73,3 +75,28 @@ export const updateOrder =
                 }
             );
         };
+        
+export const getOrderById = (userID, orderId) =>
+    (dispatch) => {
+        return UserSelectionOrderService.getOrderByID(userID, orderId)
+            .then((resp) => {
+                dispatch({ type: GET_SELECTION_ORDER_BY_ID_SUCCESS })
+                return resp;
+            }, (error) => {
+                dispatch({
+                    type: GET_SELECTION_ORDER_BY_ID_FAIL,
+                });
+                const message =
+                    (error.response &&
+                        error.response.data &&
+                        error.response.data.message) ||
+                    error.message ||
+                    error.toString();
+
+                dispatch({
+                    type: SET_MESSAGE,
+                    payload: message,
+                });
+                return Promise.reject();
+            })
+    }

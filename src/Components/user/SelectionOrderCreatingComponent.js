@@ -152,19 +152,7 @@ class SelectionOrderCreatingComponent extends Component {
                     actions={[
                         <SaveOutlined title="save order"
                             onClick={(e) => this.onSaveOrder(e)}
-                        // disabled={
-                        //     !form.isFieldsTouched(true) ||
-                        //     !!form.getFieldsError().filter(({ errors }) => errors.length).length
-                        //}
                         />
-                        // !this.state.isSavingAllowed ?
-                        //     <Popover content={content} title="Title" trigger="hover">
-                        //         <SaveOutlined title="save order"
-                        //         />
-                        //     </Popover> :
-                        //     <SaveOutlined title="save order"
-                        //         onClick={(e) => this.onSaveOrder(e)}
-                        //         disabled={true} />
                         ,
                         <CloseOutlined title="Cancel order" onClick={(e) => this.onCancelOrder(e)}
                         />,

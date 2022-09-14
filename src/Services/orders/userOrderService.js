@@ -1,7 +1,6 @@
 import commonReq from "../commom-axios";
-import jwt from 'jwt-decode';
 import {
-    POST, GET, PATCH, GET_WITH_PARAMS
+    GET, PATCH,
 } from "../requesrTypes";
 class UserOrderService {
 

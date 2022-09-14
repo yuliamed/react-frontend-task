@@ -7,8 +7,9 @@ import OrdersComponent from "./components/auto-picker/OrdersComponent";
 import NotFound from "./components/common/NotFound";
 import Profile from "./components/user/Profile"; 
 import { Layout } from "antd";
-import UserOrdersComponent from './components/user/UserOrdersComponent';
+import UserOrdersComponent from './components/user/UserOrdersPage';
 import NewOrderComponent from './components/user/NewOrderComponent';
+import SelectionOrderDescription from './components/user/SelectionOrderDescriptionPage';
 const { Footer, Content} = Layout;
 
 function App() {
@@ -16,9 +17,6 @@ function App() {
   
   return (
     <><Layout align="center">
-      {/* <Header align="center">
-
-      </Header> */}
       <Content >
         <Routes>
           
@@ -31,7 +29,7 @@ function App() {
           <Route path="/new-order" exact={true} element={<NewOrderComponent />} />
           <Route path="/user-orders" exact={true} element={<UserOrdersComponent />} />
           <Route path="/users" exact={true} element={<AdminComponent />} />
-
+          <Route path="/selection-order/*" exact={true} element={<SelectionOrderDescription />} />
           <Route path="/*"exact={true} element={<NotFound />} />
           
         </Routes>

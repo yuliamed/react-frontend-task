@@ -24,11 +24,19 @@ class UserSelectionOrderService {
     updateOrder(userId, orderId, orderUpdateReq) {
         console.log(orderUpdateReq)
         return commonReq
-            (PUT, "/users/" + `${userId}` + "/selection-orders/" + `${orderId}`, orderUpdateReq).then((response) => {
+            (PUT, "/users/" + `${userId}` + "/selection-orders/" + `${orderId}`, orderUpdateReq)
+            .then((response) => {
                 return response.data;
             });
     }
 
+    getOrderByID(userId, orderId){
+        return commonReq(
+            GET, "/users/" + `${userId}` + "/selection-orders/" + `${orderId}`)
+            .then((response) => {
+                return response.data;
+            });
+    }
 }
 
 export default new UserSelectionOrderService()

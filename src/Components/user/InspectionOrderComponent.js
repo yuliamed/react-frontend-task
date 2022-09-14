@@ -6,6 +6,7 @@ import { updateOrder } from "../../actions/orders/userInspectionOrder"
 import { changeOrderStatus } from "../../actions/orders/userOrder"
 import { CANCEL_ORDER_STATUS } from "../../constants/const"
 import MainInfoComponent from "./orders/MainInfoComponent";
+import OrderComponent from "./orders/OrderComponent";
 const { Content } = Layout;
 const { TextArea } = Input;
 
@@ -71,11 +72,38 @@ class InspectionOrderComponent extends Component {
     }
 
     render() {
+        let card = <> <MainInfoComponent creationDate={this.state.order.creationDate}
+            status={this.state.order.status}
+            autoPicker={this.state.order.autoPicker} />
+            <Card title="Order info" size="small">
+                <Form.Item
+                    label="Car URL"
+                >
+                    <Input defaultValue={this.state.order.autoUrl} disabled={this.state.isDisabled}
+                        onChange={
+                            (e) => this.setState({
+                                ...this.state, newAutoUrl: e.target.value
+                            })
+                        }
+                    />
+                </Form.Item>
+                <Form.Item
+                    label="Additional Info"
+                >
+                    <TextArea placeholder="info about order" disabled={this.state.isDisabled} defaultValue={this.state.order.additionalInfo}
+                        onChange={
+                            (e) => this.setState({
+                                ...this.state, newAdditionalInfo: e.target.value
+                            })} />
+                </Form.Item>
 
+            </Card>
+        </>
         console.log(this.state.order)
         return (
             <>
-                <Card style={{
+                <OrderComponent innerCard={card} type="inspection"></OrderComponent>
+                {/* <Card style={{
                     width: "800px"
                 }} align="start" title="Inspection order"
                     actions={[this.state.isOrderCancelled ? <></> :
@@ -89,38 +117,7 @@ class InspectionOrderComponent extends Component {
                         <Content >
                             <Layout style={{ display: 'flex', padding: 15 }} align="horizontal" >
                                 <Content >
-                                    {/* <Card title="Main data" size="small">
-                                        <p><b>Date of order: </b>{this.state.order.creationDate.substr(0, 10)} </p>
-                                        <p><b>Status of order: </b>{this.state.order.status.name}</p>
-                                        <p><b>Auto-picker: </b> {this.state.order.autoPicker == null ? "does not set yet" : this.state.order.autoPicker.name}</p>
 
-                                    </Card> */}
-                                    <MainInfoComponent creationDate={this.state.order.creationDate}
-                                        status={this.state.order.status}
-                                        autoPicker={this.state.order.autoPicker} />
-                                    <Card title="Order info" size="small">
-                                        <Form.Item
-                                            label="Car URL"
-                                        >
-                                            <Input defaultValue={this.state.order.autoUrl} disabled={this.state.isDisabled}
-                                                onChange={
-                                                    (e) => this.setState({
-                                                        ...this.state, newAutoUrl: e.target.value
-                                                    })
-                                                }
-                                            />
-                                        </Form.Item>
-                                        <Form.Item
-                                            label="Additional Info"
-                                        >
-                                            <TextArea placeholder="info about order" disabled={this.state.isDisabled} defaultValue={this.state.order.additionalInfo}
-                                                onChange={
-                                                    (e) => this.setState({
-                                                        ...this.state, newAdditionalInfo: e.target.value
-                                                    })} />
-                                        </Form.Item>
-
-                                    </Card>
 
                                 </Content>
                             </Layout>
@@ -131,7 +128,7 @@ class InspectionOrderComponent extends Component {
 
                     <h2>Do you really want to cancel this order? </h2><br></br><h4>Auto Picker will stop processing it(</h4>
 
-                </Modal>
+                </Modal> */}
             </ >
         );
     }

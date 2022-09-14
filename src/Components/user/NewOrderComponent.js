@@ -1,9 +1,53 @@
 import React, { Component } from 'react';
 import Header from "../common/headers/Header";
-import { Button, Row, Col } from "antd";
-
+import { Button, Row, Col, Space } from "antd";
+import SelectionOrderCreatingComponent from "./SelectionOrderCreatingComponent";
+import InspectionOrderCreatingComponent from "./InspectionOrderCreatingComponent";
 class NewOrderComponent extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state={
+            
+            isNewOrderHidden: true,
+            typeOfNewOrder: null,
+        }
+        this.onCreateNewSelectionOrder = this.onCreateNewSelectionOrder.bind(this);
+        this.onCreateNewInspectionOrder = this.onCreateNewInspectionOrder.bind(this);
+        this.onSaveNewOrder = this.onSaveNewOrder.bind(this);
+    }
+
+
+    onSaveNewOrder() {
+        console.log("New order created!")
+        this.setState({ isNewOrderHidden: true })
+    }
+
+    onCreateNewSelectionOrder(e) {
+        this.setState({ isNewOrderHidden: false })
+        this.setState({ typeOfNewOrder: "selection" })
+        console.log("Selection order")
+    }
+
+
+    onCreateNewInspectionOrder(e) {
+        this.setState({ isNewOrderHidden: false })
+        this.setState({ typeOfNewOrder: "inspection" })
+        console.log("Inspection order")
+    }
+
     render() {
+
+        let newOrder = null;
+        this.state.typeOfNewOrder == "inspection" ?
+            newOrder = <InspectionOrderCreatingComponent
+                user_id={this.state.userId}
+                on_cancel={this.cancelNewOrder}
+                on_save={this.onSaveNewOrder}>
+            </InspectionOrderCreatingComponent>
+            : newOrder =
+            <SelectionOrderCreatingComponent>
+            </SelectionOrderCreatingComponent>
         return (
             <div>
                 <Header />
@@ -27,6 +71,15 @@ class NewOrderComponent extends Component {
                         </Button>
                     </Col>
                 </Row>
+                <Space hidden={this.state.isNewOrderHidden} direction="vertical" size="large" style={{ display: 'flex' }}>
+
+                    <Space direction="vertical" wrap >
+                        <Space direction="vertical" wrap>
+                            {newOrder}
+                        </Space>
+                    </Space>
+                </Space>
+                
             </div>
         );
     }

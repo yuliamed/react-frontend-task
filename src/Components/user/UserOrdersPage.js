@@ -26,16 +26,9 @@ class UserOrdersComponent extends Component {
             typeOfNewOrder: null,
             visibleOrders: [],
         };
-        this.cancelNewOrder = this.cancelNewOrder.bind(this)
         this.onChangeOrderFilter = this.onChangeOrderFilter.bind(this);
         this.getOrdersComponents = this.getOrdersComponents.bind(this);
         thisObj = this;
-    }
-
-
-    cancelNewOrder() {
-        console.log("ЗАКРОЙ МЕНЯ ПОЖАЛУЙСТА И ЛОЖИСЬ СПАЦ")
-        this.setState({ isNewOrderHidden: true })
     }
 
     onChangeOrderFilter(value) {
@@ -98,7 +91,7 @@ class UserOrdersComponent extends Component {
                 if (value.status.name == ORDER_STATUSES.CREATED || value.status.name == ORDER_STATUSES.IN_PROCESS)
                     return value;
             })
-            thisObj.setState({visibleOrders: visibleOrders })
+            thisObj.setState({ visibleOrders: visibleOrders })
         }
         )
     }
@@ -108,7 +101,7 @@ class UserOrdersComponent extends Component {
             return <p>Loading...</p>;
         }
 
-        
+
         //let orders = this.getOrdersComponents();
         let orders = <Button>HEY</Button>
         if (this.state.orders.length == 0) orders = <h2>You haven`t got any orders(</h2>
@@ -159,8 +152,6 @@ function mapStateToProps(state) {
         account,
         message
     };
-
-
 }
 
 export default connect(mapStateToProps)(UserOrdersComponent);
