@@ -26,7 +26,7 @@ class MainInfoComponent extends Component {
                 <Descriptions.Item label="Date of order">{this.state.creationDate.substr(0, 10)}</Descriptions.Item>
                 <Descriptions.Item label="Status of order"><Tag color={this.getTagColor(this.state.status.name)}>{this.state.status.name}</Tag ></Descriptions.Item>
                 <Descriptions.Item label="Auto-picker">{this.state.autoPicker == null ? <Tag color="magenta">does not set yet </Tag>: 
-                <Tag >this.state.autoPicker.name</Tag>}</Descriptions.Item>
+                <Tag >{this.state.autoPicker.name}</Tag>}</Descriptions.Item>
             </Descriptions >
         );
     }
