@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { Descriptions, Collapse } from 'antd';
-import { CANCEL_ORDER_STATUS } from "../../constants/const"
-import MainInfoComponent from "./orders/MainInfoComponent";
-import OrderComponent from "./orders/OrderComponent";
+import { CANCEL_ORDER_STATUS } from "../../../../constants/const"
+import MainInfoComponent from "../MainInfoComponent";
+import OrderComponent from "../OrderComponent";
 const { Panel } = Collapse;
 let thisObj;
 

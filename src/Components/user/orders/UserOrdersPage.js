@@ -1,15 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import jwt from 'jwt-decode'
-import { PlusOutlined } from '@ant-design/icons';
 import { Button, Space, Segmented, Empty } from "antd";
-import { BASE_USER_PICTURE, ORDER_PAGES, ORDER_STATUSES } from "../../constants/const";
-import ImgCrop from 'antd-img-crop';
-import Header from "../common/headers/Header";
-import './modal.css';
-import { findUserOrders } from "../../actions/orders/userOrder";
-import InspectionOrderComponent from "./InspectionOrderComponent"
-import SelectionOrderComponent from "./SelectionOrderComponent"
+import { ORDER_PAGES, ORDER_STATUSES } from "../../../constants/const";
+import Header from "../../common/headers/Header";
+import '../modal.css';
+import { findUserOrders } from "../../../actions/orders/userOrder";
+import InspectionOrderComponent from "./inspection/InspectionOrderComponent"
+import SelectionOrderComponent from "./selection/SelectionOrderComponent"
 
 let thisObj;
 

@@ -7,10 +7,10 @@ import OrdersComponent from "./components/auto-picker/OrdersComponent";
 import NotFound from "./components/common/NotFound";
 import Profile from "./components/user/Profile";
 import { Layout } from "antd";
-import UserOrdersComponent from './components/user/UserOrdersPage';
-import NewOrderComponent from './components/user/NewOrderComponent';
-import SelectionOrderDescription from './components/user/SelectionOrderDescriptionPage';
-import InspectionOrderDescription from './components/user/InspectionOrderDescriptionPage';
+import UserOrdersComponent from './components/user/orders/UserOrdersPage';
+import NewOrderComponent from './components/user/orders/NewOrderComponent';
+import SelectionOrderDescription from './components/user/orders/selection/SelectionOrderDescriptionPage';
+import InspectionOrderDescription from './components/user/orders/inspection/InspectionOrderDescriptionPage';
 const { Footer, Content } = Layout;
 
 function App() {

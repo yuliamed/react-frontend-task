@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import { Modal, Divider, Form, Input, Select, Row, Col, Collapse, InputNumber, Button, Space, } from 'antd';
-import { getOrderById } from '../../actions/orders/userInspectionOrder';
+import { Modal, Divider, Form, Input, Select, Row, Col, Collapse, Button, } from 'antd';
 import { connect } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { EditOutlined, CloseSquareOutlined, SaveOutlined, LeftOutlined } from '@ant-design/icons';
-import { changeOrderStatus } from "../../actions/orders/userOrder"
-import Header from "../common/headers/Header";
-import MainInfoComponent from './orders/MainInfoComponent'
-import { updateOrder } from "../../actions/orders/userInspectionOrder";
+import { changeOrderStatus } from "../../../../actions/orders/userOrder"
+import Header from "../../../common/headers/Header";
+import MainInfoComponent from '../MainInfoComponent'
+import { updateOrder, getOrderById } from "../../../../actions/orders/userInspectionOrder";
 import { Content } from 'antd/lib/layout/layout';
-import { ORDER_STATUSES } from '../../constants/const';
+import { ORDER_STATUSES } from '../../../../constants/const';
 const { Panel } = Collapse;
 const { TextArea } = Input;
 const { Option } = Select;
@@ -116,8 +115,8 @@ class WithNavigate extends Component {
                 display: 'vertical',
               }}>
               <Button shape="circle" size={"large"}
-                 onClick={()=>{this.props.navigate(-1) }}
-                >
+                onClick={() => { this.props.navigate(-1) }}
+              >
                 <LeftOutlined />
               </Button>
             </Col>
