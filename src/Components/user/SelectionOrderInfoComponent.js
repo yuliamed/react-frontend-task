@@ -63,7 +63,7 @@ class SelectionOrderInfoComponent extends Component {
                 <Divider orientation="left" orientationMargin="0">
                     Car engine volume
                 </Divider>
-                <Descriptions>
+                <Descriptions contentStyle={{ "font-weight": 'bold' }}>
                     <Descriptions.Item
                         label="min"
                     >{this.state.order.minEngineVolume}</Descriptions.Item>

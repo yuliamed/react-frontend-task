@@ -10,6 +10,7 @@ import { Layout } from "antd";
 import UserOrdersComponent from './components/user/UserOrdersPage';
 import NewOrderComponent from './components/user/NewOrderComponent';
 import SelectionOrderDescription from './components/user/SelectionOrderDescriptionPage';
+import InspectionOrderDescription from './components/user/InspectionOrderDescriptionPage';
 const { Footer, Content} = Layout;
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
           <Route path="/users" exact={true} element={<AdminComponent />} />
           <Route path="/selection-order/*" exact={true} element={<SelectionOrderDescription />} />
           <Route path="/*"exact={true} element={<NotFound />} />
+          <Route path="/inspection-order/*" exact={true} element={<InspectionOrderDescription />} />
           
         </Routes>
       </Content>

@@ -3,6 +3,8 @@ import {
     UPDATE_INSPECTION_ORDER_SUCCESS,
     CREATE_INSPECTION_ORDER_FAIL,
     UPDATE_INSPECTION_ORDER_FAIL,
+    GET_INSPECTION_ORDER_BY_ID_SUCCESS,
+    GET_INSPECTION_ORDER_BY_ID_FAIL,
     SET_MESSAGE
 } from "../types";
 import UserInspectionOrderService from "../../services/orders/userInspectionOrderService";
@@ -73,3 +75,28 @@ export const updateOrder =
                 }
             );
         };
+
+export const getOrderById = (userID, orderId) =>
+    (dispatch) => {
+        return UserInspectionOrderService.getOrderByID(userID, orderId)
+            .then((resp) => {
+                dispatch({ type: GET_INSPECTION_ORDER_BY_ID_SUCCESS })
+                return resp;
+            }, (error) => {
+                dispatch({
+                    type: GET_INSPECTION_ORDER_BY_ID_FAIL,
+                });
+                const message =
+                    (error.response &&
+                        error.response.data &&
+                        error.response.data.message) ||
+                    error.message ||
+                    error.toString();
+
+                dispatch({
+                    type: SET_MESSAGE,
+                    payload: message,
+                });
+                return Promise.reject();
+            })
+    }

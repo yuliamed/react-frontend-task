@@ -31,7 +31,7 @@ class WithNavigate extends Component {
 
     onMoreInfo() {
         console.log("More info")
-        this.props.navigate("../selection-order/" + this.state.order.id, { replace: true });
+        this.props.navigate("../selection-order/" + this.state.order.id, { push: true });
     }
 
     render() {
@@ -52,7 +52,6 @@ class WithNavigate extends Component {
                 <OrderComponent props={this.props} innerCard={card}
                     type="selection"
                     orderId={this.state.order.id}
-                    cancelOrder={this.cancelOrder}
                     onMoreInfo={this.onMoreInfo}></OrderComponent>
             </ >
         );
