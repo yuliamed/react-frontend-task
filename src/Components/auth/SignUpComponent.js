@@ -4,11 +4,9 @@ import { signUp } from "../../actions/auth";
 import { connect } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import Header from '../common/headers/Header';
+import { ContactsOutlined } from '@ant-design/icons';
 
-//var isButtonDisabled = true;
-var isHiddenError = true;
-var history
-class SignUpComponent extends React.Component {
+class WithNavigate extends React.Component {
 
     constructor(props) {
         super(props);
@@ -23,17 +21,16 @@ class SignUpComponent extends React.Component {
             confirmPass: "",
             louding: false,
             message: "",
-            isAutoPicker: false
+            isAutoPicker: false,
+            isHiddenError: true,
         };
-
-        history = this.props.history;
     }
 
     isButtonDisabled = true;
 
     onChange(e) {
         //e.preventDefault();
-        isHiddenError = true;
+        //isHiddenError = true;
         this.isButtonDisabled = true;
         if (this.state.email !== undefined && this.state.pass !== undefined
             && this.state.email !== "" && this.state.pass !== "") {
@@ -41,7 +38,7 @@ class SignUpComponent extends React.Component {
         }
     }
 
-    onCheckAutoPicker(e){
+    onCheckAutoPicker(e) {
         this.setState(
             {
                 louisAutoPicker: !this.state.isAutoPicker,
@@ -50,6 +47,14 @@ class SignUpComponent extends React.Component {
 
     }
     onSignUp(e) {
+        //isHiddenError = true;
+        if (this.state.pass !== this.state.confirmPass) {
+            //isHiddenError = false;
+            this.setState({ ...this.state, message: "Confirm your pass!", isHiddenError: false, });
+            // this.setState({ ...this.state, });
+            return;
+        }
+
         this.setState(
             {
                 louding: true,
@@ -57,7 +62,6 @@ class SignUpComponent extends React.Component {
         );
 
         const { dispatch } = this.props;
-        console.log(this.state.email + " " + this.state.pass + this.state.confirmPass);
         dispatch(signUp(this.state.name,
             this.state.surname,
             this.state.email,
@@ -67,17 +71,13 @@ class SignUpComponent extends React.Component {
         ))
             .then(() => {
                 alert("Вы были зарегистрированы")
-                history.push("/sign-in");
+                this.props.navigate("../sign-in", { replace: true });
             })
             .catch(() => {
+                console.log("ERROR");
                 const { message } = this.props;
-                isHiddenError = false;
-                this.setState({ ...this.state, message: message, });
-                // this.setState({
-                //     message: message,
-                //     louding: false
-                // });
-                //console.log("!!! " + message);
+                this.setState({ ...this.state, isHiddenError: false, message: message, });
+                // this.setState({ ...this.state, message: message, });
 
             });
         e.preventDefault();
@@ -102,10 +102,10 @@ class SignUpComponent extends React.Component {
         return (
             <div><Header />
                 <Form
-                style={{
-                    width: "50%",
-                    marginLeft:"10%"
-                }}
+                    style={{
+                        width: "50%",
+                        marginLeft: "10%"
+                    }}
                     name="basic"
                     initialValues={{ remember: true }}
                     onChange={this.onChange()}
@@ -185,10 +185,15 @@ class SignUpComponent extends React.Component {
                             placeholder="confirm pass"
                             onChange={e => this.setState({ ...this.state, confirmPass: e.target.value })} />
                     </Form.Item>
+                    <Form.Item
+                        hidden={this.state.isHiddenError}
+                        style={
+                            { color: "red" }
+                        }>{this.state.message}</Form.Item>
 
                     <Form.Item
                     >
-                        <Checkbox onChange={e=> this.setState({
+                        <Checkbox onChange={e => this.setState({
                             ...this.state, isAutoPicker: true
                         })}>Sign up as auto-picker
                         </Checkbox>
@@ -211,6 +216,12 @@ class SignUpComponent extends React.Component {
     }
 
 }
+
+function SignUpComponent(props) {
+    let navigate = useNavigate();
+    return <WithNavigate {...props} navigate={navigate} />
+}
+
 function mapStateToProps(state) {
     const { isLoggedIn } = state.auth;
     const { message } = state.message;

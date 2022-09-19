@@ -173,10 +173,6 @@ class WithNavigate extends React.Component {
         return (
             <div>
                 <Header />
-
-
-
-
                 <Form
                     style={{
                         width: "50%",
