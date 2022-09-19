@@ -129,7 +129,7 @@ class WithNavigate extends Component {
               display: 'vertical',
             }}>
             <Row justify="end">
-              <Button type="primary" danger shape="round" size={"large"}
+              <Button type="primary" hidden={this.state.order.status.name==ORDER_STATUSES.CANCELED || this.state.order.status.name==ORDER_STATUSES.CLOSED} danger shape="round" size={"large"}
                 onClick={(e) => this.onCancelOrder(e)}><CloseSquareOutlined />Cancel</Button>
             </Row>
           </Col>
