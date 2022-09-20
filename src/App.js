@@ -15,7 +15,7 @@ const { Footer, Content } = Layout;
 
 function App() {
   console.log("USER : " + localStorage.getItem("user"))
-
+  let user = localStorage.getItem("user");
   return (
     <><Layout align="center">
       <Content >
@@ -24,7 +24,7 @@ function App() {
           <Route path="/profile" exact={true} element={<Profile />} />
           <Route path="/logout" exact={true} element={<LoginComponent />} />
           <Route path="/sign-in" exact={true} element={<LoginComponent />} />
-          <Route path="/" exact={true} element={<LoginComponent />} />
+          <Route path="/" exact={true} element={user ? <Profile /> : <LoginComponent />} />
           <Route path="/sign-up" exact={true} element={<SignUpComponent />} />
           <Route path="/orders" exact={true} element={<OrdersComponent />} />
           <Route path="/new-order" exact={true} element={<NewOrderComponent />} />
