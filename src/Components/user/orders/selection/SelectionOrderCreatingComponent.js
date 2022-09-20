@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { CloseOutlined, SaveOutlined } from '@ant-design/icons';
-import { Card, Layout, Form, Input, Modal, Select, Row, Col, Popover, InputNumber } from 'antd';
+import { Card, Layout, Form, Input, Modal, Select, Row, Col, InputNumber } from 'antd';
 import { createOrder } from "../../../../actions/orders/userSelectionOrder"
 import { BodyTypeArr, BrandNameArr, TransmissionArr, EngineTypeArr, DriveTypeArr, CurrencyArr, } from "../../../../constants/enums"
 import AutoPickerSelector from "../AutoPickerSelector";
 import { findAllAutoPickers } from "../../../../actions/manageUsers";
+import { createArrWithName } from "../../../common/processArrays";
 const { Content } = Layout;
 const { TextArea } = Input;
 const { Option } = Select;
@@ -28,9 +29,7 @@ class SelectionOrderCreatingComponent extends Component {
     this.cancelOrder = props.on_cancel;
     this.onSaveOrder = this.onSaveOrder.bind(this);
     this.onCancelOrder = this.onCancelOrder.bind(this);
-    this.getArrByNames = this.getArrByNames.bind(this);
     this.createOptionArr = this.createOptionArr.bind(this);
-    this.createArrWithName = this.createArrWithName.bind(this);
     this.checkAllowingSave = this.checkAllowingSave.bind(this);
     thisObj = this;
   }
@@ -70,17 +69,6 @@ class SelectionOrderCreatingComponent extends Component {
     }))
   }
 
-  createArrWithName(arr) {
-    let newArr = [];
-    for (let i = 0; i < arr.length; i++) {
-      let obj = {
-        name: arr[i]
-      }
-      newArr.push(obj)
-    }
-    return newArr;
-  }
-
   async componentDidMount() {
     const { dispatch } = this.props;
     this.setState({ userID: this.props.user_id })
@@ -88,14 +76,6 @@ class SelectionOrderCreatingComponent extends Component {
       console.log(resp)
       this.setState({ autoPickers: resp.objects })
     })
-  }
-
-  getArrByNames(inputArr) {
-    let arr = [];
-    Object.values(inputArr).forEach(function (entry) {
-      arr.push(entry.name)
-    })
-    return arr;
   }
 
   createOptionArr(arr) {
@@ -134,10 +114,11 @@ class SelectionOrderCreatingComponent extends Component {
           title="Selection order"
           actions={[
             <SaveOutlined title="save order"
-              onClick={(e) => this.onSaveOrder(e)}
-            />
+                onClick={(e) => this.onSaveNewOrder(e)}
+                disabled={true} />
             ,
-            <CloseOutlined title="Cancel order" onClick={(e) => this.onCancelOrder(e)}
+            <CloseOutlined title="Cancel order" 
+            onClick={(e) => this.onCancelOrder(e)}
             />,
           ]}
         >
@@ -247,7 +228,7 @@ class SelectionOrderCreatingComponent extends Component {
                                 ...state,
                                 order: {
                                   ...state.order,
-                                  currencyType: this.createArrWithName([value])[0]
+                                  currencyType: createArrWithName([value])[0]
                                 }
                               })
                               )
@@ -321,7 +302,7 @@ class SelectionOrderCreatingComponent extends Component {
                           ...state,
                           order: {
                             ...state.order,
-                            engines: this.createArrWithName(value)
+                            engines: createArrWithName(value)
                           }
                         }))}
                       >
@@ -345,7 +326,7 @@ class SelectionOrderCreatingComponent extends Component {
                           ...state,
                           order: {
                             ...state.order,
-                            bodies: this.createArrWithName(value)
+                            bodies: createArrWithName(value)
                           }
                         }))}
                       >
@@ -369,7 +350,7 @@ class SelectionOrderCreatingComponent extends Component {
                           ...state,
                           order: {
                             ...state.order,
-                            brands: this.createArrWithName(value)
+                            brands: createArrWithName(value)
                           }
                         }))}
                       >
@@ -394,7 +375,7 @@ class SelectionOrderCreatingComponent extends Component {
                           ...state,
                           order: {
                             ...state.order,
-                            drives: this.createArrWithName(value)
+                            drives: createArrWithName(value)
                           }
                         }))}
                       >
@@ -419,7 +400,7 @@ class SelectionOrderCreatingComponent extends Component {
                           ...state,
                           order: {
                             ...state.order,
-                            transmissions: this.createArrWithName(value)
+                            transmissions: createArrWithName(value)
                           }
                         }))}
                       >

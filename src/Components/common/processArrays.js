@@ -1,3 +1,6 @@
+import { Select } from "antd";
+const { Option } = Select;
+
 export function createOptionArr(arr) {
     const children = [];
 

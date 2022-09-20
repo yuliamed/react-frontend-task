@@ -92,7 +92,8 @@ class InspectionOrderCreatingComponent extends Component {
                 onClick={(e) => this.onSaveNewOrder(e)}
                 disabled={true} />
             ,
-            <CloseOutlined title="Cancel order" onClick={(e) => this.onCancelOrder(e)} />,
+            <CloseOutlined title="Cancel order" 
+            onClick={(e) => this.onCancelOrder(e)} />,
           ]}>
           <Layout >
             <Content >

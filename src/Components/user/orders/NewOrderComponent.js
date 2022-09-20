@@ -12,11 +12,15 @@ class NewOrderComponent extends Component {
       isNewOrderHidden: true,
       typeOfNewOrder: null,
     }
+    this.cancelNewOrder=this.cancelNewOrder.bind(this);
     this.onCreateNewSelectionOrder = this.onCreateNewSelectionOrder.bind(this);
     this.onCreateNewInspectionOrder = this.onCreateNewInspectionOrder.bind(this);
     this.onSaveNewOrder = this.onSaveNewOrder.bind(this);
   }
 
+  cancelNewOrder() {
+    this.setState({ isNewOrderHidden: true })
+  }
 
   onSaveNewOrder() {
     console.log("New order created!")
@@ -46,7 +50,10 @@ class NewOrderComponent extends Component {
         on_save={this.onSaveNewOrder}>
       </InspectionOrderCreatingComponent>
       : newOrder =
-      <SelectionOrderCreatingComponent>
+      <SelectionOrderCreatingComponent
+        user_id={this.state.userId}
+        on_cancel={this.cancelNewOrder}
+        on_save={this.onSaveNewOrder}>
       </SelectionOrderCreatingComponent>
     return (
       <div>
