@@ -17,6 +17,7 @@ class AutoPickerSelector extends Component {
 
   createOptionArrForAutoPickers(arr) {
     const children = [];
+    console.log("gbpltw");
     if (arr != null)
       for (let i = 0; i < arr.length; i++) {
         children.push(<Option key={arr[i].id}>{arr[i].name + " " + arr[i].surname}</Option>);
@@ -25,6 +26,7 @@ class AutoPickerSelector extends Component {
   }
 
   render() {
+    console.log("object");
     return (
       <Select
         allowClear
@@ -32,12 +34,9 @@ class AutoPickerSelector extends Component {
         onSelect={(value) => {
           console.log(value)
           this.onSelect(value);
-          // return this.setState(
-          //     { selected: value }
-          // )
         }}
       >
-        {this.createOptionArrForAutoPickers(this.state.array)}
+        {this.createOptionArrForAutoPickers(this.props.array)}
       </Select>
     );
   }

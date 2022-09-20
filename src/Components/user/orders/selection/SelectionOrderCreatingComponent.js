@@ -3,8 +3,6 @@ import { connect } from "react-redux";
 import { CloseOutlined, SaveOutlined } from '@ant-design/icons';
 import { Card, Layout, Form, Input, Modal, Select, Row, Col, Popover, InputNumber } from 'antd';
 import { createOrder } from "../../../../actions/orders/userSelectionOrder"
-import { changeOrderStatus } from "../../../../actions/orders/userOrder"
-import { CANCEL_ORDER_STATUS } from "../../../../constants/const"
 import { BodyTypeArr, BrandNameArr, TransmissionArr, EngineTypeArr, DriveTypeArr, CurrencyArr, } from "../../../../constants/enums"
 import AutoPickerSelector from "../AutoPickerSelector";
 import { findAllAutoPickers } from "../../../../actions/manageUsers";
@@ -23,16 +21,17 @@ class SelectionOrderCreatingComponent extends Component {
       isOrderCancelling: false,
       isOrderCancelled: false,
       isSavingAllowed: false,
+      autoPickers: [],
     };
     //this.validateMessages=this.validateMessages.bund(this);
+    this.onSave = props.on_save;
+    this.cancelOrder = props.on_cancel;
     this.onSaveOrder = this.onSaveOrder.bind(this);
     this.onCancelOrder = this.onCancelOrder.bind(this);
-    this.cancelOrder = this.cancelOrder.bind(this);
     this.getArrByNames = this.getArrByNames.bind(this);
     this.createOptionArr = this.createOptionArr.bind(this);
     this.createArrWithName = this.createArrWithName.bind(this);
     this.checkAllowingSave = this.checkAllowingSave.bind(this);
-    this.getAutoPickers = this.getAutoPickers.bind(this);
     thisObj = this;
   }
 
@@ -46,30 +45,18 @@ class SelectionOrderCreatingComponent extends Component {
     }
   }
 
-  cancelOrder() {
-    const { dispatch } = this.props;
-    dispatch(changeOrderStatus(
-      this.state.order.creator.id, this.state.order.id, CANCEL_ORDER_STATUS
-    )).then((resp) => {
-      this.setState({ isOrderCancelling: false })
-      this.setState({ order: resp });
-      this.render();
-    })
-  }
-
   onCancelOrder(e) {
     this.setState({ isOrderCancelling: true })
   }
 
   onSaveOrder(e) {
-    console.log("Save order")
     const { dispatch } = this.props;
-    //if (this.state.isSavingAllowed) {
     dispatch(createOrder(this.state.userId, this.state.order)).this((resp) => {
+      alert("Order created!");
       this.setState({ order: resp })
     })
-    console.log(this.state.newTransmissions)
-    //}
+    console.log(this.state.newTransmissions);
+    this.onSave();
     this.render();
   }
 
@@ -95,10 +82,12 @@ class SelectionOrderCreatingComponent extends Component {
   }
 
   async componentDidMount() {
-    // this.setState({ order: this.props.user_order });
-    // let isOrderCancelled = this.props.user_order.status.name == CANCEL_ORDER_STATUS ? true : false
-    // console.log(isOrderCancelled)
-    // this.setState({ isOrderCancelled: isOrderCancelled })
+    const { dispatch } = this.props;
+    this.setState({ userID: this.props.user_id })
+    dispatch(findAllAutoPickers()).then((resp) => {
+      console.log(resp)
+      this.setState({ autoPickers: resp.objects })
+    })
   }
 
   getArrByNames(inputArr) {
@@ -111,24 +100,12 @@ class SelectionOrderCreatingComponent extends Component {
 
   createOptionArr(arr) {
     const children = [];
-
     for (let i = 0; i < arr.length; i++) {
       children.push(<Option key={arr[i]}>{arr[i]}</Option>);
     }
     return children
   }
 
-  getAutoPickers() {
-    const { dispatch } = this.props;
-    let arr = null;
-    //thisObj.setState({ userID: this.props.user_id })
-    dispatch(findAllAutoPickers()).then((resp) => {
-      console.log(resp)
-      //thisObj.setState({ autoPickers: resp.objects })
-      arr = resp.objects;
-    })
-    return arr;
-  }
 
   validateMessages = {
     required: '${label} is required!',
@@ -141,7 +118,13 @@ class SelectionOrderCreatingComponent extends Component {
   };
 
   render() {
-    //const [form] = useForm();
+    // const { dispatch } = this.props;
+    // this.setState({...this.state, userID: this.props.user_id })
+    // dispatch(findAllAutoPickers()).then((resp) => {
+    //   console.log(resp)
+    //   this.setState({...this.state, autoPickers: resp.objects })
+    // })
+    console.log("object");
     return (
       <>
         <Card style={{
@@ -450,7 +433,7 @@ class SelectionOrderCreatingComponent extends Component {
                     >
                       <AutoPickerSelector
                         getSelectedAutoPicker={this.getSelectedAutoPicker}
-                        array={this.getAutoPickers()}
+                        array={this.state.autoPickers}
                       />
                     </Form.Item>
                     <Form.Item
@@ -474,7 +457,12 @@ class SelectionOrderCreatingComponent extends Component {
             </Content>
           </Layout>
         </Card>
-        <Modal title="Really??" visible={this.state.isOrderCancelling} onOk={() => this.cancelOrder()} onCancel={() => this.setState({ isOrderCancelling: false })}>
+        <Modal title="Really??" visible={this.state.isOrderCancelling}
+          onOk={() => {
+            this.cancelOrder();
+            this.setState({ isOrderCancelling: false })
+          }}
+          onCancel={() => this.setState({ isOrderCancelling: false })}>
           <h2>Do you really want to cancel this order? </h2><br></br><h4></h4>
         </Modal>
       </ >
