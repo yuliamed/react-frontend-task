@@ -3,7 +3,7 @@ import { Routes, Route, } from "react-router-dom";
 import LoginComponent from "./components/auth/LoginComponent";
 import SignUpComponent from "./components/auth/SignUpComponent";
 import AdminComponent from "./components/admin/AdminComponent";
-import OrdersComponent from "./components/auto-picker/OrdersComponent";
+import AutopickerOrdersPage from "./components/autopicker/AutopickerOrdersPage";
 import NotFound from "./components/common/NotFound";
 import Profile from "./components/user/Profile";
 import { Layout } from "antd";
@@ -27,11 +27,11 @@ function App() {
           <Route path="/sign-in" exact={true} element={<LoginComponent />} />
           <Route path="/" exact={true} element={user ? <Profile /> : <LoginComponent />} />
           <Route path="/sign-up" exact={true} element={<SignUpComponent />} />
-          <Route path="/orders" exact={true} element={<OrdersComponent />} />
           <Route path="/new-order" exact={true} element={<NewOrderComponent />} />
           <Route path="/user-orders" exact={true} element={<UserOrdersComponent />} />
           <Route path="/admin/users" exact={true} element={<AdminComponent />} />
           <Route path="/admin/orders" exact={true} element={<OrderPage />} />
+          <Route path="/auto-picker/orders" exact={true} element={<AutopickerOrdersPage />} />
           <Route path="/selection-order/*" exact={true} element={<SelectionOrderDescription />} />
           <Route path="/*" exact={true} element={<NotFound />} />
           <Route path="/inspection-order/*" exact={true} element={<InspectionOrderDescription />} />

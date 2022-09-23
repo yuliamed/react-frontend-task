@@ -5,7 +5,7 @@ const { Header } = Layout;
 
 const items = [
   getItem(
-    <NavLink to="/orders">Orders</NavLink>,
+    <NavLink to="/auto-picker/orders">Orders</NavLink>,
     "Orders",
   ),
 ]
