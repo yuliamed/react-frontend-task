@@ -4,6 +4,7 @@ import cash from "./cash";
 import message from "./message";
 import account from "./account";
 import manageUsers from "./manageUsers";
+import adminOrder from "./adminOrder";
 
 
 export default combineReducers({
@@ -11,5 +12,6 @@ export default combineReducers({
     cash,
     message,
     account,
-    manageUsers
+    manageUsers,
+    adminOrder
 });

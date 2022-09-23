@@ -35,6 +35,7 @@ class WithNavigate extends Component {
   }
 
   render() {
+    console.log("selection order " + this.state.order.id);
     let card = <>
       <MainInfoComponent creationDate={this.state.order.creationDate}
         status={this.state.order.status}

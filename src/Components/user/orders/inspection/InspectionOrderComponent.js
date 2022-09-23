@@ -59,7 +59,6 @@ class WithNavigate extends Component {
         </Panel>
       </Collapse>
     </>
-    console.log(this.state.order)
     return (
       <>
         <OrderComponent innerCard={card} type="inspection" onMoreInfo={this.onMoreInfo}></OrderComponent>

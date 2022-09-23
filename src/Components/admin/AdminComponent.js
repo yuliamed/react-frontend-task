@@ -20,7 +20,7 @@ const uploadButton = (
 class AdminComponent extends Component {
     constructor(props) {
         super(props);
-        this.findUsers = this.findUsers.bind(this);
+        
         this.state = {
             isLoading: true,
             pagination: {
@@ -37,6 +37,7 @@ class AdminComponent extends Component {
             },
             users: [],
         };
+        this.findUsers = this.findUsers.bind(this);
         thisObj = this;
     }
     async componentDidMount() {

@@ -8,8 +8,12 @@ const UserHeaderContainer = () => {
 
     const items = [
         getItem(
-            <NavLink to="/users">Users</NavLink>,
+            <NavLink to="/admin/users">Users</NavLink>,
             "users",
+        ),
+        getItem(
+            <NavLink to="/admin/orders">Orders</NavLink>,
+            "orders",
         ),
     ]
     return (

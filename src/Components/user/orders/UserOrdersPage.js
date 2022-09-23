@@ -67,13 +67,15 @@ class UserOrdersComponent extends Component {
         {
           this.state.visibleOrders.map(
             (u, index,) => {
-              if (u.autoUrl != null)
-                return <InspectionOrderComponent key={index}
-                  user_order={u}
-                >Inspection</InspectionOrderComponent>
-              else
+              if (u.autoUrl == null) {
+                console.log("Mapping " + u.id);
                 return <SelectionOrderComponent key={index}
                   user_order={u}>Selection</SelectionOrderComponent>
+              }
+              else return <InspectionOrderComponent key={index}
+                user_order={u}
+              >Inspection</InspectionOrderComponent>
+
             }
           )}
       </Space>
@@ -99,8 +101,6 @@ class UserOrdersComponent extends Component {
       return <p>Loading...</p>;
     }
 
-
-    //let orders = this.getOrdersComponents();
     let orders = <Button>HEY</Button>
     if (this.state.orders.length == 0) orders = <h2>You haven`t got any orders(</h2>
     else {

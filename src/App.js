@@ -11,6 +11,7 @@ import UserOrdersComponent from './components/user/orders/UserOrdersPage';
 import NewOrderComponent from './components/user/orders/NewOrderComponent';
 import SelectionOrderDescription from './components/user/orders/selection/SelectionOrderDescriptionPage';
 import InspectionOrderDescription from './components/user/orders/inspection/InspectionOrderDescriptionPage';
+import OrderPage from './components/admin/OrderPage';
 const { Footer, Content } = Layout;
 
 function App() {
@@ -29,7 +30,8 @@ function App() {
           <Route path="/orders" exact={true} element={<OrdersComponent />} />
           <Route path="/new-order" exact={true} element={<NewOrderComponent />} />
           <Route path="/user-orders" exact={true} element={<UserOrdersComponent />} />
-          <Route path="/users" exact={true} element={<AdminComponent />} />
+          <Route path="/admin/users" exact={true} element={<AdminComponent />} />
+          <Route path="/admin/orders" exact={true} element={<OrderPage />} />
           <Route path="/selection-order/*" exact={true} element={<SelectionOrderDescription />} />
           <Route path="/*" exact={true} element={<NotFound />} />
           <Route path="/inspection-order/*" exact={true} element={<InspectionOrderDescription />} />
