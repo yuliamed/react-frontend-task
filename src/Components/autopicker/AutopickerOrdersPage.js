@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import { Button, Typography, Table, Tag, Popconfirm } from 'antd';
 import { ORDER_STATUSES } from '../../constants/const';
 import { SELECTION_ORDER_COLOR, INSPECTION_ORDER_COLOR, getTagColor } from '../../constants/colors';
-import { findAllAutoPickers } from "../../actions/manageUsers";
 import { useNavigate } from 'react-router-dom';
 let thisObj;
 
@@ -22,8 +21,6 @@ class WithNavigate extends Component {
       selectedAutopickerId: '',
     };
     this.onEditOrder = this.onEditOrder.bind(this);
-    this.getSelectedAutoPicker = this.getSelectedAutoPicker.bind(this);
-    this.onCancelEdittingOrder = this.onCancelEdittingOrder.bind(this);
     this.isEditing = this.isEditing.bind(this);
     thisObj = this;
   }
@@ -36,25 +33,18 @@ class WithNavigate extends Component {
     )
   }
 
-  getSelectedAutoPicker = (id) => {
-    this.setState({ selectedAutopickerId: id })
-  }
-
-  onCancelEdittingOrder() {
-    this.setState({ editingOrder: null })
-  }
-
-
   onEditOrder(order) {
     console.log("On edit info " + order.autoUrl);
     this.setState({ editingOrder: order })
     if (order.autoUrl == null)
-      this.props.navigate("../selection-order/" + order.id, { push: true });
-    else this.props.navigate("../inspection-order/" + order.id, { push: true });
+      this.props.navigate("/auto-picker/" + order.autoPicker.id + "/selection-order/" + order.id, { push: true });
+    else this.props.navigate("/auto-picker/" + order.autoPicker.id + "/inspection-order/" + order.id, { push: true });
   }
+
   isEditing = (record) => {
     return record === this.state.editingOrder;
   }
+
   render() {
 
     const columns = [

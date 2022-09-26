@@ -1,4 +1,4 @@
-import { UserOutlined, LoginOutlined,EditOutlined, } from '@ant-design/icons';
+import { UserOutlined, LoginOutlined, EditOutlined, } from '@ant-design/icons';
 import LogOutLink from "../LogOutLink"
 import { NavLink } from "react-router-dom";
 
@@ -18,7 +18,7 @@ export const profileMenu = [
         "profile",
         <UserOutlined />, [
         getItem(
-            <NavLink to="/profile">Profile</NavLink>,
+            <NavLink to={"/users/" + localStorage.getItem("userId")}>Profile</NavLink>,
             "profile info",
             <EditOutlined />
         ),

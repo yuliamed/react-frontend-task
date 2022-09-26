@@ -21,6 +21,7 @@ class WithNavigate extends Component {
       autoPickers: [],
       editingOrder: '',
       selectedAutopickerId: '',
+      userId: "",
     };
     this.onEditOrder = this.onEditOrder.bind(this);
     this.getSelectedAutoPicker = this.getSelectedAutoPicker.bind(this);
@@ -31,9 +32,15 @@ class WithNavigate extends Component {
   }
 
   async componentDidMount() {
+
     const { dispatch } = this.props;
-    dispatch(findAll(localStorage.getItem("userId"))).then((data) => {
-      thisObj.setState({ orders: data.objects, isLoading: false })
+    let userId = localStorage.getItem("userId");
+    dispatch(findAll(userId)).then((data) => {
+      thisObj.setState({
+        orders: data.objects,
+        isLoading: false,
+        userId: userId
+      })
 
     }
     )
@@ -70,8 +77,8 @@ class WithNavigate extends Component {
     console.log("On edit info " + order.autoUrl);
     this.setState({ editingOrder: order })
     if (order.autoUrl == null)
-      this.props.navigate("../selection-order/" + order.id, { push: true });
-    else this.props.navigate("../inspection-order/" + order.id, { push: true });
+      this.props.navigate("../users/"+this.state.userId+"/selection-order/" + order.id, { push: true });
+    else this.props.navigate("../users/"+this.state.userId+"/inspection-order/" + order.id, { push: true });
   }
   isEditing = (record) => {
     return record === this.state.editingOrder;

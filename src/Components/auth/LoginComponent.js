@@ -1,16 +1,11 @@
 import React from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
-
-import { Form, Input, Button, Space, Alert, Anchor } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import { Form, Input, Button } from 'antd';
 import UserService from "../../services/userService";
-import FormItemLabel from "antd/lib/form/FormItemLabel";
 import { connect } from "react-redux";
 import { signIn } from "../../actions/auth";
 import Header from '../common/headers/Header';
 import { changePass } from "../../actions/account";
-import { toHaveDisplayValue } from '@testing-library/jest-dom/dist/matchers';
-const { Link } = Anchor;
-//import 'antd/dist/antd.css';
 var isButtonDisabled = true;
 var isHiddenError = true;
 class WithNavigate extends React.Component {
@@ -51,7 +46,7 @@ class WithNavigate extends React.Component {
         dispatch(signIn(this.state.email, this.state.pass))
             .then(() => {
                 e.preventDefault();
-                this.props.navigate("../profile", { replace: true });
+                this.props.navigate("../", { replace: true });
             })
             .catch(() => {
                 isHiddenError = false;
@@ -176,9 +171,9 @@ class WithNavigate extends React.Component {
                 <Form
                     style={{
                         width: "50%",
-                        marginLeft:"10%"
+                        marginLeft: "10%"
                     }}
-                    
+
                     name="basic"
                     onChange={this.onChange()}
                     initialValues={{ remember: true }}

@@ -11,6 +11,8 @@ import UserOrdersComponent from './components/user/orders/UserOrdersPage';
 import NewOrderComponent from './components/user/orders/NewOrderComponent';
 import SelectionOrderDescription from './components/user/orders/selection/SelectionOrderDescriptionPage';
 import InspectionOrderDescription from './components/user/orders/inspection/InspectionOrderDescriptionPage';
+import AutopickerInspectionOrderPage from './components/autopicker/orders/AutopickerInspectionOrderPage';
+import AutopickerSelectionOrderPage from './components/autopicker/orders/AutopickerSelectionOrderPage';
 import OrderPage from './components/admin/OrderPage';
 const { Footer, Content } = Layout;
 
@@ -21,21 +23,29 @@ function App() {
     <><Layout align="center">
       <Content >
         <Routes>
-
-          <Route path="/profile" exact={true} element={<Profile />} />
+          <Route path="/users/:id" exact={true} element={<Profile />} />
           <Route path="/logout" exact={true} element={<LoginComponent />} />
           <Route path="/sign-in" exact={true} element={<LoginComponent />} />
           <Route path="/" exact={true} element={user ? <Profile /> : <LoginComponent />} />
           <Route path="/sign-up" exact={true} element={<SignUpComponent />} />
-          <Route path="/new-order" exact={true} element={<NewOrderComponent />} />
-          <Route path="/user-orders" exact={true} element={<UserOrdersComponent />} />
+
+          <Route path="/users/:id/new-order" exact={true} element={<NewOrderComponent />} />
+          <Route path="/users/:id/orders" exact={true} element={<UserOrdersComponent />} />
+          <Route path="/users/:userId/selection-order/:orderId" exact={true} element={<SelectionOrderDescription />} />
+          <Route path="/users/:userId/inspection-order/:orderId" exact={true} element={<InspectionOrderDescription />} />
+
           <Route path="/admin/users" exact={true} element={<AdminComponent />} />
           <Route path="/admin/orders" exact={true} element={<OrderPage />} />
-          <Route path="/auto-picker/orders" exact={true} element={<AutopickerOrdersPage />} />
-          <Route path="/selection-order/*" exact={true} element={<SelectionOrderDescription />} />
-          <Route path="/*" exact={true} element={<NotFound />} />
-          <Route path="/inspection-order/*" exact={true} element={<InspectionOrderDescription />} />
 
+          <Route path="/auto-picker/:autoPickerId/orders" exact={true} element={<AutopickerOrdersPage />} />
+          <Route path="/auto-picker/:autoPickerId/orders/:orderId" exact={true} element={<AutopickerOrdersPage />} />
+          <Route path="/auto-picker/:autoPickerId/inspection-order/:orderId"
+            exact={true}
+            element={<AutopickerInspectionOrderPage />} />
+          <Route path="/auto-picker/:autoPickerId/selection-order/:orderId"
+            exact={true}
+            element={<AutopickerSelectionOrderPage />} />
+          <Route path="/*" exact={true} element={<NotFound />} />
         </Routes>
       </Content>
     </Layout></>

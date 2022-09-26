@@ -28,7 +28,7 @@ class WithNavigate extends Component {
 
   onMoreInfo() {
     console.log("More info")
-    this.props.navigate("../inspection-order/" + this.state.order.id, { push: true });
+    this.props.navigate("../users/" + this.state.order.creator.id + "/inspection-order/" + this.state.order.id, { push: true });
   }
 
   render() {

@@ -17,7 +17,6 @@ class Header extends Component {
 
   render() {
     let user = localStorage.getItem("user");
-    //localStorage.setItem("user", localStorage.getItem("token"));
     let decodedToken;
     let roles;
     clearMessage();
