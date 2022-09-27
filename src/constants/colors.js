@@ -16,3 +16,5 @@ export function getTagColor(statusName) {
         case ORDER_STATUSES.IN_PROCESS: return ORDER_IN_PROCESS_COLOR;
     }
 }
+
+export const START_REPORT_PROCESS = "#02B40E";

@@ -7,10 +7,12 @@ import { EditOutlined, CloseSquareOutlined, SaveOutlined, LeftOutlined } from '@
 import { changeOrderStatus } from "../../../actions/orders/userOrder"
 import Header from "../../common/headers/Header";
 import MainInfoComponent from '../../user/orders/MainInfoComponent'
-import { updateOrder,getOrderById } from "../../../actions/orders/userSelectionOrder";
+import { updateOrder, getOrderById } from "../../../actions/orders/userSelectionOrder";
 import { Content } from 'antd/lib/layout/layout';
 import { ORDER_STATUSES } from '../../../constants/const';
 import SelectionReportComponent from '../../report/SelectionReportComponent';
+import { START_REPORT_PROCESS } from '../../../constants/colors';
+import SelectionOrderDescription from '../../order/SelectionOrderDescription';
 const { Panel } = Collapse;
 const { TextArea } = Input;
 const { Option } = Select;
@@ -130,8 +132,9 @@ class WithNavigate extends Component {
               display: 'vertical',
             }}>
             <Row justify="end">
-              <Button type="primary" hidden={this.state.order.status.name==ORDER_STATUSES.CANCELED || this.state.order.status.name==ORDER_STATUSES.CLOSED} danger shape="round" size={"large"}
-                onClick={(e) => this.onCancelOrder(e)}><CloseSquareOutlined />Cancel</Button>
+              <Button type="primary" hidden={this.state.order.status.name == ORDER_STATUSES.CANCELED || this.state.order.status.name == ORDER_STATUSES.CLOSED}
+                shape="round" size={"large"} style={{ background: START_REPORT_PROCESS, borderColor: START_REPORT_PROCESS }}
+                onClick={(e) => this.onCancelOrder(e)}>Start process</Button>
             </Row>
           </Col>
         </Row>
@@ -142,351 +145,15 @@ class WithNavigate extends Component {
               marginRight: "60px",
               display: 'vertical',
             }}>
-            <Panel header="Order information" key="1" >
-              <Divider orientation="left">Main information</Divider>
-              <MainInfoComponent creationDate={this.state.order.creationDate}
-                status={this.state.order.status}
-                autoPicker={this.state.order.autoPicker} />
-              <Divider orientation="left">Characteristic</Divider>
+            <Panel header="Order information" key="1" ><SelectionOrderDescription order={this.state.order} /></Panel>
 
-              <Row align='end'>
-                <Col >
-                  {this.state.isDisabled ?
-                    <Button type="primary" shape="round"
-                      onClick={() => { this.onEditInfo() }} >
-                      <EditOutlined size={"large"} />
-                      Edit
-                    </Button>
-                    : <Button type="primary" shape="round"
-                      onClick={() => { this.onSaveEditedInfo() }} >
-                      <SaveOutlined size={"large"} />
-                      Save
-                    </Button>}
-                </Col>
-              </Row>
-              <Row style={{ marginBottom: "10px" }}>
-                <Col >
-                  <p>Min year:</p>
-                </Col>
-                <Col span={10}>
-                  <InputNumber
-                    disabled={this.state.isDisabled}
-                    min={1900}
-                    max={2022}
-                    style={{ margin: '0 16px' }}
-                    value={this.state.order.minYear}
-
-                    onChange={(value) => {
-                      this.setState((state) => ({
-                        ...state,
-                        order: {
-                          ...state.order,
-                          minYear: value
-                        }
-                      }))
-                    }}
-                  />
-                </Col>
-                <p>Mileage: </p>
-                <Col span={4}>
-                  <InputNumber
-                    min={100}
-                    disabled={this.state.isDisabled}
-                    style={{ margin: '0 16px' }}
-                    value={this.state.order.mileage}
-                    onChange={(value) => {
-                      this.setState((state) => ({
-                        ...state,
-                        order: {
-                          ...state.order,
-                          mileage: value
-                        }
-                      }))
-                    }}
-                  />
-                </Col>
-                <Col span={4}>
-                  <p>km</p>
-                </Col>
-
-              </Row>
-              <Row >
-                <Col>
-                  <p>Car price:</p>
-                </Col>
-              </Row>
-              <Row style={{ marginBottom: "20px" }}>
-                <p>from: </p>
-                <Col span={4}>
-                  <InputNumber
-                    disabled={this.state.isDisabled}
-                    style={{ margin: '0 16px' }}
-                    value={this.state.order.rangeFrom}
-                    onChange={(value) => {
-                      this.setState((state) => ({
-                        ...state,
-                        order: {
-                          ...state.order,
-                          rangeFrom: value
-                        }
-                      }))
-                    }}
-                  />
-                </Col>
-                <p>to: </p>
-                <Col span={4}>
-                  <InputNumber
-                    disabled={this.state.isDisabled}
-                    style={{ margin: '0 16px' }}
-                    value={this.state.order.rangeTo}
-                  />
-                </Col>
-                <Col span={4}>
-
-                  <Select
-                    disabled={this.state.isDisabled}
-
-                    style={{ margin: '0 16px' }}
-                    placeholder="Please select"
-                    defaultValue={this.state.order.currencyType.name}
-                    onChange={(value) => this.setState((state) => ({
-                      ...state,
-                      order: {
-                        ...state.order,
-                        currencyType: this.createArrWithName([value])[0]
-                      }
-                    }))}
-                  >
-                    {this.createOptionArr(CurrencyArr)}
-                  </Select>
-                </Col>
-              </Row>
-
-              <Row >
-                <Col>
-                  <p>Car engine volume:</p>
-                </Col>
-              </Row>
-              <Row style={{ marginBottom: "20px" }}>
-                <p>min: </p>
-                <Col span={4}>
-                  <InputNumber
-                    min={0.5}
-                    max={20}
-                    disabled={this.state.isDisabled}
-                    style={{ margin: '0 16px' }}
-                    value={this.state.order.minEngineVolume}
-                    onChange={(value) => {
-                      this.setState((state) => ({
-                        ...state,
-                        order: {
-                          ...state.order,
-                          minEngineVolume: value
-                        }
-                      }))
-                    }}
-                  />
-                </Col>
-                <p>max: </p>
-                <Col span={4}>
-                  <InputNumber
-                    min={1}
-                    disabled={this.state.isDisabled}
-                    max={20}
-                    style={{ margin: '0 16px' }}
-                    value={this.state.order.maxEngineVolume}
-                    onChange={(value) => {
-                      this.setState((state) => ({
-                        ...state,
-                        order: {
-                          ...state.order,
-                          maxEngineVolume: value
-                        }
-                      }))
-                    }}
-                  />
-                </Col>
-                <Col span={4}>
-                  <p>L</p>
-                </Col>
-
-              </Row>
-              <Row >
-
-              </Row>
-
-              <Form.Item
-                label="Engine types"
-              >
-                <Select
-                  disabled={this.state.isDisabled}
-                  mode="multiple"
-                  allowClear
-                  style={{
-                    width: '100%',
-                  }}
-                  placeholder="Please select"
-                  defaultValue={() => {
-                    let arr = this.getArrByNames(this.state.order.engines);
-                    this.setState({ newTransmissions: arr });
-                    return arr;
-                  }}
-                  onChange={(value) => this.setState((state) => ({
-                    ...state,
-                    order: {
-                      ...state.order,
-                      engines: this.createArrWithName(value)
-                    }
-                  }))}
-                >
-                  {this.createOptionArr(EngineTypeArr)}
-                </Select>
-
-              </Form.Item>
-              <Form.Item
-                label="Additional Info"
-              >
-                <TextArea placeholder="info about order" disabled={this.state.isDisabled} defaultValue={this.state.order.additionalInfo}
-                  onChange={(value) => {
-                    console.log("value")
-                    this.setState((state) => ({
-                      ...state,
-                      order: {
-                        ...state.order,
-                        additionalInfo: value.target.value
-                      }
-                    }))
-                  }} />
-              </Form.Item>
-              <Form.Item
-                label="Body typies"
-              >
-                <Select
-                  disabled={this.state.isDisabled}
-                  mode="multiple"
-                  allowClear
-                  style={{
-                    width: '100%',
-                  }}
-                  placeholder="Please select"
-                  defaultValue={
-                    () => {
-                      let arr = this.getArrByNames(this.state.order.bodies);
-                      this.setState({ newTransmissions: arr });
-                      return arr;
-                    }
-
-                  }
-                  onChange={(value) => this.setState((state) => ({
-                    ...state,
-                    order: {
-                      ...state.order,
-                      bodies: this.createArrWithName(value)
-                    }
-                  }))}
-                >
-                  {this.createOptionArr(BodyTypeArr)}
-                </Select>
-
-              </Form.Item>
-
-              <Form.Item
-                label="Brands"
-              >
-                <Select
-                  disabled={this.state.isDisabled}
-                  mode="multiple"
-                  allowClear
-                  style={{
-                    width: '100%',
-                  }}
-                  placeholder="Please select"
-                  defaultValue={() => {
-                    let arr = this.getArrByNames(this.state.order.brands);
-                    this.setState({ newBrands: arr });
-                    return arr;
-                  }}
-                  onChange={(value) => this.setState((state) => ({
-                    ...state,
-                    order: {
-                      ...state.order,
-                      brands: this.createArrWithName(value)
-                    }
-                  }))}
-                >
-                  {this.createOptionArr(BrandNameArr)}
-                </Select>
-
-              </Form.Item>
-
-              <Form.Item
-                label="Drives"
-              >
-                <Select
-                  disabled={this.state.isDisabled}
-                  mode="multiple"
-                  allowClear
-                  style={{
-                    width: '100%',
-                  }}
-                  placeholder="Please select"
-                  defaultValue={
-                    () => {
-                      let arr = this.getArrByNames(this.state.order.drives);
-                      this.setState({ newDrives: arr });
-                      return arr;
-                    }
-                  }
-                  onChange={(value) => this.setState((state) => ({
-                    ...state,
-                    order: {
-                      ...state.order,
-                      drives: this.createArrWithName(value)
-                    }
-                  }))}
-                >
-                  {this.createOptionArr(DriveTypeArr)}
-                </Select>
-
-              </Form.Item>
-
-              <Form.Item
-                label="Transmissions"
-              >
-                <Select
-                  disabled={this.state.isDisabled}
-                  mode="multiple"
-                  allowClear
-                  style={{
-                    width: '100%',
-                  }}
-                  placeholder="Please select"
-                  defaultValue={() => {
-                    let arr = this.getArrByNames(this.state.order.transmissions);
-                    this.setState({ newTransmissions: arr });
-                    return arr;
-                  }}
-                  onChange={(value) => this.setState((state) => ({
-                    ...state,
-                    order: {
-                      ...state.order,
-                      transmissions: this.createArrWithName(value)
-                    }
-                  }))}
-                >
-                  {this.createOptionArr(TransmissionArr)}
-                </Select>
-              </Form.Item>
-
-            </Panel>
-            <Panel header="Auto-picker information" key="3">
-              <p>Auto-picker info</p>
-            </Panel>
             <Panel header="Responce information" key="4">
-              
-               <SelectionReportComponent ></SelectionReportComponent>
+
+              <SelectionReportComponent orderId={this.state.order.id}
+                reports={this.state.order.report}></SelectionReportComponent>
             </Panel>
           </Collapse>
+
         </Content>
         <Modal title="Really??" visible={this.state.isOrderCancelling} onOk={() => {
           this.cancelOrder()
