@@ -197,8 +197,6 @@ class Profile extends Component {
     if (this.state.isPassChanging) {
       modal =
         <Form>
-
-
           <Form.Item
             label="Token:"
             name="Token"
@@ -256,6 +254,7 @@ class Profile extends Component {
             }>Error of changing pass - {this.state.message}</label>
         </Form>
     }
+
     return (
 
       <div className="site-card-border-less-wrapper"
@@ -276,7 +275,6 @@ class Profile extends Component {
           }>
             <Image
               style={{
-                width: '95%',
                 padding: "2%"
               }}
               src={BASE_USER_PICTURE}
