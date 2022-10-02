@@ -5,6 +5,9 @@ import { EditOutlined, SaveOutlined, PlusCircleOutlined } from '@ant-design/icon
 import SelectionReportForm from './SelectionReportForm';
 import { START_REPORT_PROCESS } from '../../constants/colors';
 import { createSelectionReport, editSelectionReport, getSelectionReport, saveEditedSelectionReport, saveNewSelectionReport } from '../../actions/orders/autopicker/manageOrders';
+import { changeOrderStatus } from '../../actions/orders/userOrder';
+import { ORDER_STATUSES } from '../../constants/const';
+import SelectionReportDescription from './SelectionReportDescription';
 let thisObj;
 let int = 0;
 class SelectionReportComponent extends Component {
@@ -42,7 +45,7 @@ class SelectionReportComponent extends Component {
       dispatch(saveNewSelectionReport(localStorage.getItem("userId"),
         this.state.orderId, report))
         .then(() => {
-          this.setState({ isDisabled: true,  isReportCreating: false})
+          this.setState({ isDisabled: true, isReportCreating: false })
         })
     else
       dispatch(saveEditedSelectionReport(localStorage.getItem("userId"),
@@ -78,6 +81,7 @@ class SelectionReportComponent extends Component {
       ]
     }
     const { dispatch } = this.props;
+    dispatch(changeOrderStatus(localStorage.getItem("userId"), this.state.orderId, ORDER_STATUSES.IN_PROCESS));
     dispatch(createSelectionReport(newReport));
   }
 
@@ -89,11 +93,19 @@ class SelectionReportComponent extends Component {
     if (report != null && report.selectedCarSet.length != 0)
       for (let i = 0; i < report.selectedCarSet.length; i++) {
         arr.push(
+          this.props.isEdittingAllowed != "false" ?
+          
           <SelectionReportForm reportPart={report.selectedCarSet[i]}
             isDisabled={this.state.isDisabled}
             key={i}
             index={i}
-          ></SelectionReportForm>)
+          ></SelectionReportForm> 
+          :
+           <SelectionReportDescription reportPart={report.selectedCarSet[i]}
+            isDisabled={this.state.isDisabled}
+            key={i}
+            index={i} />
+        )
       }
 
     let visibleButton =
@@ -126,8 +138,8 @@ class SelectionReportComponent extends Component {
       <>
         <Row align='end'>
           <Col >
-            {
-              visibleButton
+            {this.props.isEdittingAllowed != "false" ?
+              visibleButton : <></>
             }
           </Col>
         </Row>

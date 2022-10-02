@@ -7,7 +7,7 @@ import { EditOutlined, CloseSquareOutlined, SaveOutlined, LeftOutlined } from '@
 import { changeOrderStatus } from "../../../../actions/orders/userOrder"
 import Header from "../../../common/headers/Header";
 import MainInfoComponent from '../MainInfoComponent'
-import { updateOrder,getOrderById } from "../../../../actions/orders/userSelectionOrder";
+import { updateOrder, getOrderById } from "../../../../actions/orders/userSelectionOrder";
 import { Content } from 'antd/lib/layout/layout';
 import { ORDER_STATUSES } from '../../../../constants/const';
 import SelectionReportComponent from '../../../report/SelectionReportComponent';
@@ -130,7 +130,7 @@ class WithNavigate extends Component {
               display: 'vertical',
             }}>
             <Row justify="end">
-              <Button type="primary" hidden={this.state.order.status.name==ORDER_STATUSES.CANCELED || this.state.order.status.name==ORDER_STATUSES.CLOSED} danger shape="round" size={"large"}
+              <Button type="primary" hidden={this.state.order.status.name == ORDER_STATUSES.CANCELED || this.state.order.status.name == ORDER_STATUSES.CLOSED} danger shape="round" size={"large"}
                 onClick={(e) => this.onCancelOrder(e)}><CloseSquareOutlined />Cancel</Button>
             </Row>
           </Col>
@@ -483,8 +483,8 @@ class WithNavigate extends Component {
               <p>Auto-picker info</p>
             </Panel>
             <Panel header="Responce information" key="4">
-              
-               <SelectionReportComponent ></SelectionReportComponent>
+
+              <SelectionReportComponent isEdittingAllowed="false"></SelectionReportComponent>
             </Panel>
           </Collapse>
         </Content>

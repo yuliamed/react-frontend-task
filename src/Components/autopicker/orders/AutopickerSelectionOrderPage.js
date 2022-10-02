@@ -30,8 +30,7 @@ class WithNavigate extends Component {
     this.onSaveEditedInfo = this.onSaveEditedInfo.bind(this);
     this.createOptionArr = this.createOptionArr.bind(this);
     this.getArrByNames = this.getArrByNames.bind(this);
-    this.onCancelOrder = this.onCancelOrder.bind(this);
-    this.cancelOrder = this.cancelOrder.bind(this);
+    this.onProccessOrder = this.onProccessOrder.bind(this);
     this.createArrWithName = this.createArrWithName.bind(this);
     thisObj = this;
   }
@@ -55,9 +54,6 @@ class WithNavigate extends Component {
     return newArr;
   }
 
-  onCancelOrder(e) {
-    this.setState({ isOrderCancelling: true })
-  }
 
   getArrByNames(inputArr) {
     let arr = [];
@@ -67,7 +63,7 @@ class WithNavigate extends Component {
     return arr;
   }
 
-  cancelOrder() {
+  onProccessOrder() {
     console.log("Order changed")
     const { dispatch } = this.props;
     dispatch(changeOrderStatus(
@@ -124,7 +120,7 @@ class WithNavigate extends Component {
               <LeftOutlined />
             </Button>
           </Col>
-          <Col flex="3 6 "
+          {/* <Col flex="3 6 "
             style={{
               marginLeft: "60px",
               marginRight: "60px",
@@ -133,9 +129,9 @@ class WithNavigate extends Component {
             <Row justify="end">
               <Button type="primary" hidden={this.state.order.status.name == ORDER_STATUSES.CANCELED || this.state.order.status.name == ORDER_STATUSES.CLOSED}
                 shape="round" size={"large"} style={{ background: START_REPORT_PROCESS, borderColor: START_REPORT_PROCESS }}
-                onClick={(e) => this.onCancelOrder(e)}>Start process</Button>
+                onClick={(e) => this.onProccessOrder(e)}>Start process</Button>
             </Row>
-          </Col>
+          </Col> */}
         </Row>
           <Collapse defaultActiveKey={["1"]}
             style={{
@@ -149,7 +145,7 @@ class WithNavigate extends Component {
             <Panel header="Responce information" key="4">
 
               <SelectionReportComponent orderId={this.state.order.id}
-                report={this.state.order.report}></SelectionReportComponent>
+                report={this.state.order.report} isEdittingAllowed="true"></SelectionReportComponent>
             </Panel>
           </Collapse>
 
