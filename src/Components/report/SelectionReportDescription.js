@@ -1,10 +1,6 @@
 import React, { Component } from 'react'
-import { Modal, Descriptions, Form, Input, Select, Row, Col, Collapse, Button, InputNumber, } from 'antd';
-import { editSelectionReport } from '../../actions/orders/autopicker/manageOrders';
+import { Descriptions, Form, } from 'antd';
 import { connect } from "react-redux";
-const { Panel } = Collapse;
-const { TextArea } = Input;
-const { Option } = Select;
 let thisObj;
 class SelectionReportDescription extends Component {
   constructor(props) {
@@ -33,7 +29,6 @@ class SelectionReportDescription extends Component {
 
 
   render() {
-    const { report } = this.props;
     return (<>
 
       <Form

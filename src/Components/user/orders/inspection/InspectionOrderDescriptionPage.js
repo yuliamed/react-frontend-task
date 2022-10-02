@@ -9,6 +9,7 @@ import MainInfoComponent from '../MainInfoComponent'
 import { updateOrder, getOrderById } from "../../../../actions/orders/userInspectionOrder";
 import { Content } from 'antd/lib/layout/layout';
 import { ORDER_STATUSES } from '../../../../constants/const';
+import UserCard from '../../UserCard';
 const { Panel } = Collapse;
 const { TextArea } = Input;
 const { Option } = Select;
@@ -207,7 +208,7 @@ class WithNavigate extends Component {
               </Form>
             </Panel>
             <Panel header="Auto-picker information" key="3">
-              <p>Auto-picker info</p>
+            <UserCard/>
             </Panel>
             <Panel header="Responce information" key="4">
               <p>info info info</p>
