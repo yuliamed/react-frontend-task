@@ -8,6 +8,7 @@ import { SELECTION_ORDER_COLOR, INSPECTION_ORDER_COLOR, getTagColor } from '../.
 import AutoPickerSelector from '../user/orders/AutoPickerSelector'
 import { findAllAutoPickers } from "../../actions/manageUsers";
 import { useNavigate } from 'react-router-dom';
+import { getSelectionReport } from '../../actions/orders/autopicker/manageOrders';
 let thisObj;
 
 
@@ -76,9 +77,11 @@ class WithNavigate extends Component {
   onEditOrder(order) {
     console.log("On edit info " + order.autoUrl);
     this.setState({ editingOrder: order })
+    const { dispatch } = this.props;
+    dispatch(getSelectionReport(order.report))
     if (order.autoUrl == null)
-      this.props.navigate("../users/"+this.state.userId+"/selection-order/" + order.id, { push: true });
-    else this.props.navigate("../users/"+this.state.userId+"/inspection-order/" + order.id, { push: true });
+      this.props.navigate("../users/" + this.state.userId + "/selection-order/" + order.id, { push: true });
+    else this.props.navigate("../users/" + this.state.userId + "/inspection-order/" + order.id, { push: true });
   }
   isEditing = (record) => {
     return record === this.state.editingOrder;
@@ -209,10 +212,9 @@ class WithNavigate extends Component {
       console.log('params', pagination, filters, sorter, extra);
     };
 
-
+    
     return (<>
       <Header />
-
       <Table
         style={{
           marginLeft: "60px",
@@ -230,9 +232,10 @@ class WithNavigate extends Component {
 function mapStateToProps(state) {
   const { isLoggedIn } = state.auth;
   const { message } = state.message;
+  const { report } = state.autopicker;
   return {
     isLoggedIn,
-    message
+    message, report
   };
 }
 

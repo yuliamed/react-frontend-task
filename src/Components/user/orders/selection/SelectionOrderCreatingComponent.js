@@ -145,6 +145,7 @@ class SelectionOrderCreatingComponent extends Component {
                             style={{ margin: '0 16px' }}
 
                             onChange={(value) => {
+                              console.log(value);
                               this.setState((state) => ({
                                 ...state,
                                 order: {

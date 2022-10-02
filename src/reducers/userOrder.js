@@ -11,9 +11,10 @@ import {
     UPDATE_SELECTION_ORDER_FAIL,
     CHANGE_ORDER_STATUS_FAIL,
     GET_USERS_ORDERS,
+    GET_SELECTION_ORDER_BY_ID_SUCCESS
 } from "../actions/types";
 
-const initialState = { userOrders: [] }
+const initialState = { userOrders: [], order: null }
     ;
 
 export default function (state = initialState, action) {
@@ -24,6 +25,11 @@ export default function (state = initialState, action) {
             console.log("GET_USERS_ORDERS");
             return {
                 ...state, userOrders: payload,
+            };
+        case GET_SELECTION_ORDER_BY_ID_SUCCESS:
+            console.log("GET_SELECTION_ORDER_BY_ID_SUCCESS");
+            return {
+                ...state, order: payload,
             };
 
         default: return state;

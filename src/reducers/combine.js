@@ -5,7 +5,8 @@ import message from "./message";
 import account from "./account";
 import manageUsers from "./manageUsers";
 import adminOrder from "./adminOrder";
-
+import autoPicker from "./autoPicker";
+import userOrder from "./userOrder";
 
 export default combineReducers({
     auth,
@@ -13,5 +14,5 @@ export default combineReducers({
     message,
     account,
     manageUsers,
-    adminOrder
+    adminOrder, autoPicker, userOrder
 });

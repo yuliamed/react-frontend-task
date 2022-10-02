@@ -1,22 +1,21 @@
 import React, { Component } from 'react';
-import { BodyTypeArr, BrandNameArr, TransmissionArr, EngineTypeArr, DriveTypeArr, CurrencyArr, } from "../../../constants/enums"
-import { Modal, Divider, Form, Input, Select, Row, Col, Collapse, InputNumber, Button, Space, } from 'antd';
+import { Modal, Select, Row, Col, Collapse, Button, } from 'antd';
 import { connect } from "react-redux";
 import { useNavigate } from 'react-router-dom';
-import { EditOutlined, CloseSquareOutlined, SaveOutlined, LeftOutlined } from '@ant-design/icons';
+import { LeftOutlined } from '@ant-design/icons';
 import { changeOrderStatus } from "../../../actions/orders/userOrder"
 import Header from "../../common/headers/Header";
-import MainInfoComponent from '../../user/orders/MainInfoComponent'
 import { updateOrder, getOrderById } from "../../../actions/orders/userSelectionOrder";
 import { Content } from 'antd/lib/layout/layout';
 import { ORDER_STATUSES } from '../../../constants/const';
 import SelectionReportComponent from '../../report/SelectionReportComponent';
 import { START_REPORT_PROCESS } from '../../../constants/colors';
 import SelectionOrderDescription from '../../order/SelectionOrderDescription';
+
 const { Panel } = Collapse;
-const { TextArea } = Input;
 const { Option } = Select;
 let thisObj;
+
 class WithNavigate extends Component {
 
   constructor(props) {
@@ -150,7 +149,7 @@ class WithNavigate extends Component {
             <Panel header="Responce information" key="4">
 
               <SelectionReportComponent orderId={this.state.order.id}
-                reports={this.state.order.report}></SelectionReportComponent>
+                report={this.state.order.report}></SelectionReportComponent>
             </Panel>
           </Collapse>
 

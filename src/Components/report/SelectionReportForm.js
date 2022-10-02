@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { Modal, Divider, Form, Input, Select, Row, Col, Collapse, Button, } from 'antd';
-
-import { EditOutlined, CloseSquareOutlined, SaveOutlined, LeftOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { Modal, Divider, Form, Input, Select, Row, Col, Collapse, Button, InputNumber, } from 'antd';
+import { editSelectionReport } from '../../actions/orders/autopicker/manageOrders';
+import { connect } from "react-redux";
 const { Panel } = Collapse;
 const { TextArea } = Input;
 const { Option } = Select;
@@ -10,22 +10,43 @@ class SelectionReportForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      report: null,
+      reportPart: {
+        carUrl: "",
+        comment: ""
+      },
       isDisabled: true,
+      index: this.props.index,
+      carUrl: ""
     }
+    this.onChangeReport = this.onChangeReport.bind(this);
     thisObj = this;
   }
 
   async componentDidMount() {
     const { dispatch } = this.props;
-    thisObj.setState({ report: this.props.report, isDisabled: this.props.isDisabled })
+    console.log(this.props.index);
+    thisObj.setState({
+      reportPart: this.props.reportPart,
+      isDisabled: this.props.isDisabled,
+      key: this.props.index
+    })
+  }
 
+  onChangeReport() {
+    const { report } = this.props;
+    let newReport = report;
+    console.log(this.props.index);
+    newReport.selectedCarSet[this.props.index] = this.state.reportPart;
+    const { dispatch } = this.props;
+    dispatch(editSelectionReport(newReport));
   }
 
   render() {
+    const { report } = this.props;
     return (<>
 
-      <Form>
+      <Form
+      >
         <br />
         <Form.Item
           label="Car URL"
@@ -37,16 +58,17 @@ class SelectionReportForm extends Component {
 
         >
           <Input
-            disabled={this.state.isDisabled}
-            // onChange={(value) => {
-            //   this.setState((state) => ({
-            //     ...state,
-            //     order: {
-            //       ...state.order,
-            //       autoUrl: value
-            //     }
-            //   }))
-            // }}
+            disabled={this.props.isDisabled}
+            defaultValue={this.props.reportPart.carUrl}
+            onChange={(value) => {
+              let newReportPart = report.selectedCarSet[this.props.index]
+              newReportPart.carUrl = value.target.value;
+              let newReport = report;
+              newReport.selectedCarSet[this.props.index] = newReportPart;
+              const { dispatch } = this.props;
+              dispatch(editSelectionReport(newReport));
+            }
+            }
           />
         </Form.Item>
         <Form.Item
@@ -57,19 +79,18 @@ class SelectionReportForm extends Component {
           ]}
         >
           <TextArea
+            disabled={this.props.isDisabled}
+            defaultValue={this.props.reportPart.comment}
             allowClear
-            disabled={this.state.isDisabled}
-            placeholder="info about order"
-            // onChange={(value) => {
-            //   console.log("value")
-            //   this.setState((state) => ({
-            //     ...state,
-            //     order: {
-            //       ...state.order,
-            //       additionalInfo: value.target.value
-            //     }
-            //   }))
-            // }}
+            placeholder="info about selected car"
+            onChange={(value) => {
+              let newReportPart = report.selectedCarSet[this.props.index]
+              newReportPart.comment = value.target.value;
+              let newReport = report;
+              newReport.selectedCarSet[this.props.index] = newReportPart;
+              const { dispatch } = this.props;
+              dispatch(editSelectionReport(newReport));
+            }}
           />
         </Form.Item>
       </Form></>
@@ -77,4 +98,12 @@ class SelectionReportForm extends Component {
   }
 }
 
-export default (SelectionReportForm); 
+function mapStateToProps(state) {
+  const { report } = state.autoPicker;
+  const { order } = state.userOrder;
+  return {
+    report, order
+  };
+}
+
+export default connect(mapStateToProps)(SelectionReportForm);

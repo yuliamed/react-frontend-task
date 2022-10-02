@@ -1,10 +1,6 @@
 import React, { Component } from 'react'
-import { BodyTypeArr, BrandNameArr, TransmissionArr, EngineTypeArr, DriveTypeArr, CurrencyArr, } from "../../constants/enums"
 import MainInfoComponent from './MainInfoComponent'
-import { Modal, Divider, Form, Input, Select, Row, Col, Collapse, InputNumber, Button, Space, Tag, } from 'antd';
-const { Panel } = Collapse;
-const { TextArea } = Input;
-const { Option } = Select;
+import { Divider, Form, Row, Col, Tag, } from 'antd';
 
 export default class SelectionOrderDescription extends Component {
   constructor(props) {

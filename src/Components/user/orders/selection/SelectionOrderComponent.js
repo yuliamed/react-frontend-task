@@ -1,13 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { useNavigate } from 'react-router-dom';
-import { Card, Form, Input, Select, Row, Col, Collapse, InputNumber, } from 'antd';
+import { Card,Input, Collapse,} from 'antd';
 import { CANCEL_ORDER_STATUS } from "../../../../constants/const"
-import { BodyTypeArr, BrandNameArr, TransmissionArr, EngineTypeArr, DriveTypeArr, CurrencyArr, } from "../../../../constants/enums"
 import MainInfoComponent from "../MainInfoComponent";
 import OrderComponent from "../OrderComponent";
 import SelectionOrderInfoComponent from "./SelectionOrderInfoComponent";
-const { TextArea } = Input;
 const { Panel } = Collapse;
 let thisObj;
 

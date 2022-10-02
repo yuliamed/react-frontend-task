@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { findAll } from '../../actions/orders/autopicker/manageOrders';
+import { findAll, getSelectionReport } from '../../actions/orders/autopicker/manageOrders';
 import Header from '../common/headers/Header'
 import { connect } from "react-redux";
 import { Button, Typography, Table, Tag, Popconfirm } from 'antd';
 import { ORDER_STATUSES } from '../../constants/const';
 import { SELECTION_ORDER_COLOR, INSPECTION_ORDER_COLOR, getTagColor } from '../../constants/colors';
 import { useNavigate } from 'react-router-dom';
+import { getOrderById } from '../../actions/orders/userSelectionOrder';
 let thisObj;
 
 
@@ -34,10 +35,14 @@ class WithNavigate extends Component {
   }
 
   onEditOrder(order) {
+    const { dispatch } = this.props;
     console.log("On edit info " + order.autoUrl);
     this.setState({ editingOrder: order })
-    if (order.autoUrl == null)
+    if (order.autoUrl == null) {
+      // dispatch(getOrderById(localStorage.getItem("userId"), order.id));
+      dispatch(getSelectionReport(order.report));
       this.props.navigate("/auto-picker/" + order.autoPicker.id + "/selection-order/" + order.id, { push: true });
+    }
     else this.props.navigate("/auto-picker/" + order.autoPicker.id + "/inspection-order/" + order.id, { push: true });
   }
 

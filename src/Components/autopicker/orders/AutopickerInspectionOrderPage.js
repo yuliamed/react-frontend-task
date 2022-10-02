@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
-import { Modal, Divider, Form, Input, Select, Row, Col, Collapse, Button, } from 'antd';
+import { Modal, Divider, Form, Descriptions, Select, Row, Col, Collapse, Button, } from 'antd';
 import { connect } from "react-redux";
 import { useNavigate } from 'react-router-dom';
-import { EditOutlined, CloseSquareOutlined, SaveOutlined, LeftOutlined } from '@ant-design/icons';
+import { EditOutlined, CloseSquareOutlined, SaveOutlined, LeftOutlined, } from '@ant-design/icons';
 import { changeOrderStatus } from "../../../actions/orders/userOrder"
 import Header from "../../common/headers/Header";
 import MainInfoComponent from '../../user/orders/MainInfoComponent'
 import { updateOrder, getOrderById } from "../../../actions/orders/userInspectionOrder";
 import { Content } from 'antd/lib/layout/layout';
 import { ORDER_STATUSES } from '../../../constants/const';
+import InspectionReportComponent from '../../report/InspectionReportComponent';
 const { Panel } = Collapse;
-const { TextArea } = Input;
 const { Option } = Select;
 let thisObj;
 class WithNavigate extends Component {
@@ -147,70 +147,23 @@ class WithNavigate extends Component {
                 status={this.state.order.status}
                 autoPicker={this.state.order.autoPicker} />
               <Divider orientation="left">Characteristic</Divider>
-              <Row align='end'>
-                <Col >
-                  {this.state.isDisabled ?
-                    <Button type="primary" shape="round" onClick={() => { this.onEditInfo() }} ><EditOutlined size={"large"} /> Edit</Button>
-                    : <Button type="primary" shape="round" onClick={() => { this.onSaveEditedInfo() }} ><SaveOutlined size={"large"} /> Save</Button>}
 
-                </Col>
-              </Row>
-              <br />
-              <Form>
-                <Form.Item
+              <Descriptions contentStyle={{ "font-weight": 'bold' }}>
+                <Descriptions.Item
                   label="Car URL"
-                  name="url"
-                  rules={[{ required: true },
-                  { type: 'url', warningOnly: true },
-                  { type: 'string', min: 6 }
-                  ]}
+                ><a>{this.state.order.autoUrl}</a></Descriptions.Item>
 
-                >
-                  <Input
-                    disabled={this.state.isDisabled}
-                    defaultValue={this.state.order.autoUrl}
-                    onChange={(value) => {
-                      this.setState((state) => ({
-                        ...state,
-                        order: {
-                          ...state.order,
-                          autoUrl: value
-                        }
-                      }))
-                    }}
-                  />
-                </Form.Item>
-                <Form.Item
-                  name="additional info"
+              </Descriptions>
+              <Descriptions contentStyle={{ "font-weight": 'bold' }}>
+                <Descriptions.Item
                   label="Additional Info"
-                  rules={[
-                    { type: 'string', max: 512 }
-                  ]}
-                >
-                  <TextArea
-                    allowClear
-                    disabled={this.state.isDisabled}
-                    value={this.state.order.additionalInfo}
-                    placeholder="info about order"
-                    onChange={(value) => {
-                      console.log("value")
-                      this.setState((state) => ({
-                        ...state,
-                        order: {
-                          ...state.order,
-                          additionalInfo: value.target.value
-                        }
-                      }))
-                    }}
-                  />
-                </Form.Item>
-              </Form>
-            </Panel>
-            <Panel header="Auto-picker information" key="3">
-              <p>Auto-picker info</p>
+                >{this.state.order.additionalInfo}</Descriptions.Item>
+
+              </Descriptions>
+            
             </Panel>
             <Panel header="Responce information" key="4">
-              <p>info info info</p>
+              <InspectionReportComponent />
             </Panel>
           </Collapse>
         </Content>

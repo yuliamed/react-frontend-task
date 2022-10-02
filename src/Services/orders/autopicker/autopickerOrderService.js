@@ -11,6 +11,20 @@ class AutopickerOrderService {
       });
   }
 
+  createSelectionReport(autoPickerId, orderID, report) {
+    return commonReq
+      (POST, "/auto-picker/" + `${autoPickerId}` + "/selection-orders/" + `${orderID}` + "/report", report).then((response) => {
+        return response.data;
+      });
+  }
+
+  editSelectionReport(autoPickerId, orderID, report) {
+    return commonReq
+      (PUT, "/auto-picker/" + `${autoPickerId}` + "/selection-orders/" + `${orderID}` + "/report", report).then((response) => {
+        return response.data;
+      });
+  }
+
 }
 
 export default new AutopickerOrderService()

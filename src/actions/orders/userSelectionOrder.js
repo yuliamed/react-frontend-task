@@ -8,6 +8,7 @@ import {
     SET_MESSAGE
 } from "../types";
 import UserSelectionOrderService from "../../services/orders/userSelectionOrderService";
+import { GET_SELECTION_REPORT } from "./autopicker/types";
 
 
 export const createOrder =
@@ -75,12 +76,15 @@ export const updateOrder =
                 }
             );
         };
-        
+
 export const getOrderById = (userID, orderId) =>
     (dispatch) => {
         return UserSelectionOrderService.getOrderByID(userID, orderId)
             .then((resp) => {
-                dispatch({ type: GET_SELECTION_ORDER_BY_ID_SUCCESS })
+                dispatch({ type: GET_SELECTION_ORDER_BY_ID_SUCCESS, payload: resp }
+                );
+                dispatch({ type: GET_SELECTION_REPORT, payload: resp.report}
+                );
                 return resp;
             }, (error) => {
                 dispatch({
