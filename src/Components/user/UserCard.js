@@ -1,5 +1,4 @@
-import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
-import { Avatar, Card, Descriptions, Col, Row } from 'antd';
+import { Card, Descriptions, Col, Row } from 'antd';
 import React, { Component } from 'react';
 import { BASE_USER_PICTURE } from '../../constants/const';
 const { Meta } = Card;
@@ -10,7 +9,6 @@ export default class UserCard extends Component {
       <>
         <Card
           style={{
-            // width: 300,
             marginLeft: 25,
             marginRight: 25,
             marginTop: 16,

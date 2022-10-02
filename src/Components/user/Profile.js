@@ -292,7 +292,6 @@ class Profile extends Component {
 
                     name="avatar"
                     listType="picture-card"
-                    //className="avatar-uploader"
                     action={"https://www.mocky.io/v2/5cc8019d300000980a055e76"}
                     showUploadList={false}
                     beforeUpload={this.beforeUpload}

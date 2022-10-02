@@ -11,6 +11,7 @@ import { ORDER_STATUSES } from '../../../constants/const';
 import SelectionReportComponent from '../../report/SelectionReportComponent';
 import { START_REPORT_PROCESS } from '../../../constants/colors';
 import SelectionOrderDescription from '../../order/SelectionOrderDescription';
+import { cleanSelectionReport } from '../../../actions/orders/autopicker/manageOrders';
 
 const { Panel } = Collapse;
 const { Option } = Select;
@@ -115,7 +116,11 @@ class WithNavigate extends Component {
               display: 'vertical',
             }}>
             <Button shape="circle" size={"large"}
-              onClick={() => { this.props.navigate(-1) }}
+              onClick={() => {
+                const { dispatch } = this.props;
+                dispatch(cleanSelectionReport());
+                this.props.navigate(-1)
+              }}
             >
               <LeftOutlined />
             </Button>

@@ -10,6 +10,7 @@ import { updateOrder, getOrderById } from "../../../actions/orders/userInspectio
 import { Content } from 'antd/lib/layout/layout';
 import { ORDER_STATUSES } from '../../../constants/const';
 import InspectionReportComponent from '../../report/InspectionReportComponent';
+import { cleanSelectionReport } from '../../../actions/orders/autopicker/manageOrders';
 const { Panel } = Collapse;
 const { Option } = Select;
 let thisObj;
@@ -115,12 +116,14 @@ class WithNavigate extends Component {
                 display: 'vertical',
               }}>
               <Button shape="circle" size={"large"}
-                onClick={() => { this.props.navigate(-1) }}
+                onClick={() => { const { dispatch } = this.props;
+                dispatch(cleanSelectionReport());
+                this.props.navigate(-1) }}
               >
                 <LeftOutlined />
               </Button>
             </Col>
-            <Col flex="3 6 "
+            {/* <Col flex="3 6 "
               style={{
                 marginLeft: "60px",
                 marginRight: "60px",
@@ -130,7 +133,7 @@ class WithNavigate extends Component {
                 <Button type="primary" danger shape="round" size={"large"}
                   onClick={(e) => this.onCancelOrder(e)}><CloseSquareOutlined />Cancel</Button>
               </Row>
-            </Col>
+            </Col> */}
           </Row>
 
           <Collapse defaultActiveKey={["1"]}

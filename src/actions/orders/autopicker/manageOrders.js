@@ -4,7 +4,8 @@ import {
   SAVE_EDITED_SELECTION_REPORT_SUCCESS,
   GET_SELECTION_REPORT,
   EDIT_SELECTION_REPORT,
-  CREATE_SELECTION_REPORT
+  CREATE_SELECTION_REPORT,
+  CLEAN_REPORT
 } from "./types";
 import { SET_MESSAGE } from "../../types";
 import AutopickerOrderService from "../../../services/orders/autopicker/autopickerOrderService";
@@ -131,4 +132,13 @@ export const createSelectionReport =
       });
       return report;
     };
+
+    export const cleanSelectionReport =
+    () =>
+      (dispatch) => {
+        dispatch({
+          type: CLEAN_REPORT
+        });
+        return null;
+      };
 
