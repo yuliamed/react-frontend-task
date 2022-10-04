@@ -481,7 +481,7 @@ class WithNavigate extends Component {
 
             </Panel>
             <Panel header="Auto-picker information" key="3">
-             <UserCard/>
+             <UserCard user={this.state.order.autoPicker}/>
             </Panel>
             <Panel header="Responce information" key="4">
 

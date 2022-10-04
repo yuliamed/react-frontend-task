@@ -1,10 +1,31 @@
-import { Card, Descriptions, Col, Row } from 'antd';
+import { Card, Descriptions, Col, Row, Image } from 'antd';
 import React, { Component } from 'react';
 import { BASE_USER_PICTURE } from '../../constants/const';
+import { getPhoto, } from "../../actions/account";
+import { connect } from "react-redux";
 const { Meta } = Card;
 
-export default class UserCard extends Component {
+class UserCard extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      userId: this.props.userId,
+      user: this.props.user,
+      imageData: null
+    };
+  }
+
+  async componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(getPhoto(this.props.user.id)).then(
+      (responce) => {
+        this.setState({ imageData: responce })
+      })
+  }
+
   render() {
+    console.log(this.state.imageData==null);
     return (
       <>
         <Card
@@ -15,19 +36,24 @@ export default class UserCard extends Component {
           }}
         ><Row align="middle">
             <Col span={6} >
-              <img style={{
-             width: 100,
-          }} src={BASE_USER_PICTURE} />
+              <Image
+                style={{
+                  padding: "2%"
+                }}
+                src={this.state.imageData == null ? BASE_USER_PICTURE : `data:image/jpeg;base64,${this.state.imageData}`}
+                preview={false}
+              />
             </Col>
             <Col span={18} >
-               <Meta
-              title="User names"/>
-              <Descriptions contentStyle={{ "font-weight": 'bold' }}>
+              <Meta
+                title={this.state.user.name +" "+ this.state.user.surname} />
+                
+              <Descriptions style={{ "font-weight": 'bold', margin:10 }}>
                 <Descriptions.Item
-                  label="Last visit:"
+                  label="Last visit"
                   style={{ margin: '0 16px' }}
                 >
-                  12.08.2022
+                  {this.state.user.lastVisitDate}
                 </Descriptions.Item>
               </Descriptions>
             </Col>
@@ -37,3 +63,14 @@ export default class UserCard extends Component {
     )
   }
 }
+
+function mapStateToProps(state) {
+  const { message } = state.message;
+  return {
+    message
+  };
+
+}
+
+export default connect(mapStateToProps)(UserCard);
+
