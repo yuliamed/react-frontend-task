@@ -9,7 +9,7 @@ import { BASE_USER_PICTURE } from "../../constants/const";
 import ImgCrop from 'antd-img-crop';
 import Header from "../common/headers/Header";
 import './modal.css';
-import { changePass } from "../../actions/account";
+import { changePass, deletePhoto, getPhoto, savePhoto } from "../../actions/account";
 
 let thisObj;
 let isEdited = false;
@@ -44,15 +44,12 @@ class Profile extends Component {
       newPass: "",
       confirmNewPass: "",
       message: props.message,
-
+      imageData: null
     };
-    //const [isModalVisible, setIsModalVisible] = useState(false);
-    this.getPictureUrl = this.getPictureUrl.bind(this);
     this.onChangeProfile = this.onChangeProfile.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.onDeleteImage = this.onDeleteImage.bind(this);
-    this.addPicture = this.addPicture.bind(this);
-    this.getBase64 = this.getBase64.bind(this);
+    this.onSaveImage = this.onSaveImage.bind(this);
     this.beforeUpload = this.beforeUpload.bind(this);
     this.onChangePass = this.onChangePass.bind(this);
     this.onCancelNewPass = this.onCancelNewPass.bind(this);
@@ -71,12 +68,14 @@ class Profile extends Component {
         thisObj.setState({ user: data, louding: true })
       }
     );
+
+    const { dispatch } = this.props;
+    dispatch(getPhoto(localStorage.getItem("userId"))).then(
+      (responce) => {
+        this.setState({ imageData: responce })
+      })
   }
 
-  onCancelNewPass(e) {
-    this.setState({ isPassChanging: false });
-    this.render();
-  }
 
   onChangeProfile() {
     if (isEdited) {
@@ -92,11 +91,8 @@ class Profile extends Component {
   }
 
   onChangePass(e) {
-
-
     UserService.recoverPass(this.state.user.email).then(
       () => {
-
         alert("Check your email and input reset token to change password!");
         this.setState({ isPassChanging: true });
         this.render();
@@ -106,14 +102,17 @@ class Profile extends Component {
       this.setState({ isPassChanging: false });
       this.render();
     });
-
   };
+
+  onCancelNewPass(e) {
+    this.setState({ isPassChanging: false });
+    this.render();
+  }
 
   onSaveNewPass(e) {
 
     const { dispatch } = this.props;
     if (this.state.newPass == this.state.confirmNewPass) {
-
       dispatch(changePass(this.state.newPass, this.state.token))
         .then(
           (responce) => {
@@ -133,29 +132,28 @@ class Profile extends Component {
     }
   }
 
-  addPicture = info => {
-    let image = null;
-    console.log("info " + info);
-    this.getBase64(info.file.originFileObj, imageUrl =>
-      image = imageUrl, () => {
-        console.log("info 2 " + info);
-        //this.props.handleImageUrlChange(this.state.imageUrl);
-      });
+  onSaveImage(image) {
+    const { dispatch } = this.props;
+    dispatch(savePhoto(localStorage.getItem("userId"), image)).then(
+      (responce) => {
+        console.log(responce)
+        this.setState({ user: responce, imageData: image })
+      },
+      getPhoto(localStorage.getItem("userId"))).then(
+        (responce) => {
+          this.setState({ imageData: responce })
+        }
+      )
   }
 
   onDeleteImage() {
     console.log("delete")
-    UserService.deletePicture(this.state.id);
-  }
-
-  getPictureUrl() {
-    const { user } = this.state;
-    // console.log("picture: " + this.state.user.imageUrl)
-    if (user.imageUrl == null || this.state.user.imageUrl == "") {
-      return BASE_USER_PICTURE;
-    } else {
-      return atob(this.state.user.imageUrl);
-    }
+    const { dispatch } = this.props;
+    dispatch(deletePhoto(localStorage.getItem("userId"))).then(
+      (resp) => {
+        this.setState({ user: resp });
+        this.setState({ imageData: null });
+      })
   }
 
   handleChange(event) {
@@ -181,18 +179,26 @@ class Profile extends Component {
     return isJpgOrPng && isLt2M;
   }
 
-  getBase64(img, callback) {
-    const reader = new FileReader()
-    reader.addEventListener('load', () => callback(reader.result))
-    reader.readAsDataURL(img)
-  }
+  onPreview = async (file) => {
+    let src = file.url;
 
+    if (!src) {
+      src = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file.originFileObj);
 
+        reader.onload = () => resolve(reader.result);
+      });
+    }
+
+    const image = new Image();
+    image.src = src;
+    const imgWindow = window.open(src);
+    imgWindow?.document.write(image.outerHTML);
+  };
 
   render() {
     const { user, louding } = this.state;
-
-    //console.log("user name " + this.state.user.imageUrl + ":" + this.state.louding);
     let modal = null;
     if (this.state.isPassChanging) {
       modal =
@@ -277,7 +283,7 @@ class Profile extends Component {
               style={{
                 padding: "2%"
               }}
-              src={BASE_USER_PICTURE}
+              src={this.state.imageData == null ? BASE_USER_PICTURE : `data:image/jpeg;base64,${this.state.imageData}`}
               preview={false}
             />
             <Row >
@@ -292,15 +298,18 @@ class Profile extends Component {
 
                     name="avatar"
                     listType="picture-card"
-                    action={"https://www.mocky.io/v2/5cc8019d300000980a055e76"}
                     showUploadList={false}
+                    action={(image) => this.onSaveImage(image)}
                     beforeUpload={this.beforeUpload}
-                    onChange={this.addPicture}
+                    onChange={(image) => this.onSaveImage(image)}
+                    onPreview={this.onPreview}
                   >
                     <Button icon={<PlusSquareOutlined />} ></Button>
                   </Upload>
                 </ImgCrop>
               </Col>
+
+
               <Col> <Button label="Delete photo" style={{
 
               }} onClick={e => { this.onDeleteImage(e) }}><DeleteOutlined />
@@ -367,3 +376,55 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(Profile);
+
+
+// import React from 'react'
+// import { useState } from 'react';
+// import { Upload } from 'antd';
+// import ImgCrop from 'antd-img-crop';
+// export default function Profile() {
+//   const [fileList, setFileList] = useState([
+//     {
+//       uid: '-1',
+//       name: 'image.png',
+//       status: 'done',
+//       url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+//     },
+//   ]);
+
+//   const onChange = ({ fileList: newFileList }) => {
+//     setFileList(newFileList);
+//   };
+
+//   const onPreview = async (file) => {
+//     let src = file.url;
+
+//     if (!src) {
+//       src = await new Promise((resolve) => {
+//         const reader = new FileReader();
+//         reader.readAsDataURL(file.originFileObj);
+
+//         reader.onload = () => resolve(reader.result);
+//       });
+//     }
+
+//     const image = new Image();
+//     image.src = src;
+//     const imgWindow = window.open(src);
+//     imgWindow?.document.write(image.outerHTML);
+//   };
+
+//   return (
+//     <ImgCrop rotate>
+//       <Upload
+//         action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+//         listType="picture-card"
+//         fileList={fileList}
+//         onChange={onChange}
+//         onPreview={onPreview}
+//       >
+//         {fileList.length < 5 && '+ Upload'}
+//       </Upload>
+//     </ImgCrop>
+//   );
+// };

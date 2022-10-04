@@ -98,6 +98,24 @@ class UserService {
         return response.data;
       });
   }
+
+  getPhoto(id) {
+    return commonReq(GET, "/users/" + `${id}` + "/image").then((response) => {
+      return response.data;
+    });
+  }
+
+  savePhoto(id, data) {
+    return commonReq(PATCH, "/users/" + `${id}` + "/image", data).then((response) => {
+      return response.data;
+    });
+  }
+
+  deletePhoto(id) {
+    return commonReq(DELETE, "/users/" + `${id}` + "/image").then((response) => {
+      return response.data;
+    });
+  }
 }
 
 export default new UserService()
