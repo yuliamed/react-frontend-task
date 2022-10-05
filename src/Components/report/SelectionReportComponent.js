@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
-import { Row, Col, Button, } from 'antd';
+import { Row, Col, Button, Modal } from 'antd';
 import { connect } from "react-redux";
-import { EditOutlined, SaveOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { EditOutlined, SaveOutlined, PlusCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import SelectionReportForm from './SelectionReportForm';
 import { START_REPORT_PROCESS } from '../../constants/colors';
-import { createSelectionReport, editSelectionReport, getSelectionReport, saveEditedSelectionReport, saveNewSelectionReport } from '../../actions/orders/autopicker/manageOrders';
+import { createSelectionReport, getSelectionReport, saveEditedSelectionReport, saveNewSelectionReport } from '../../actions/orders/autopicker/manageOrders';
 import { changeOrderStatus } from '../../actions/orders/userOrder';
 import { ORDER_STATUSES } from '../../constants/const';
 import SelectionReportDescription from './SelectionReportDescription';
 let thisObj;
-let int = 0;
+
 class SelectionReportComponent extends Component {
   constructor(props) {
     super(props);
@@ -18,19 +18,20 @@ class SelectionReportComponent extends Component {
       isDisabled: true,
       isReportCreating: false,
       int: 0,
+      isModalCancelingOrderOpen: false,
     }
     thisObj = this;
     this.onAddNewReportForm = this.onAddNewReportForm.bind(this);
     this.onEditInfo = this.onEditInfo.bind(this);
     this.onSaveEditedInfo = this.onSaveEditedInfo.bind(this);
     this.onCreatNewReport = this.onCreatNewReport.bind(this);
+    this.onChangeOrderStatus = this.onChangeOrderStatus.bind(this);
   }
 
   async componentDidMount() {
     const { dispatch } = this.props;
     thisObj.setState({ orderId: this.props.orderId })
-    const { autoPicker, order } = this.props;
-    console.log(autoPicker);
+    const { order } = this.props;
     dispatch(getSelectionReport(order.report))
   }
 
@@ -81,30 +82,49 @@ class SelectionReportComponent extends Component {
       ]
     }
     const { dispatch } = this.props;
-    dispatch(changeOrderStatus(localStorage.getItem("userId"), this.state.orderId, ORDER_STATUSES.IN_PROCESS));
+    this.onChangeOrderStatus(ORDER_STATUSES.IN_PROCESS)
+    //dispatch(changeOrderStatus(localStorage.getItem("userId"), this.state.orderId, ORDER_STATUSES.IN_PROCESS));
     dispatch(createSelectionReport(newReport));
   }
 
+  onChangeOrderStatus(status) {
+    const { dispatch } = this.props;
+    dispatch(changeOrderStatus(localStorage.getItem("userId"), this.state.orderId, status));
+    this.render();
+  }
+
+  // handleOk() {
+  //   this.setState({ isModalCancelingOrderOpen: false });
+  //   this.onChangeOrderStatus(ORDER_STATUSES.CLOSED);
+  // };
+
+  // handleCancel() {
+  //   this.setState({ isModalCancelingOrderOpen: false });
+  // };
+
   render() {
     const { report, order } = this.props;
-    console.log(report);
+    let modalClosingOrder =
+      <Modal title="Confirm closing order" onOk={() => this.handleOk()} onCancel={() => this.handleCancel()}>
+        <h2>Are you sure that report finished?</h2>
+      </Modal>;
 
     let arr = [];
     if (report != null && report.selectedCarSet.length != 0)
       for (let i = 0; i < report.selectedCarSet.length; i++) {
         arr.push(
           this.props.isEdittingAllowed != "false" ?
-          
-          <SelectionReportForm reportPart={report.selectedCarSet[i]}
-            isDisabled={this.state.isDisabled}
-            key={i}
-            index={i}
-          ></SelectionReportForm> 
-          :
-           <SelectionReportDescription reportPart={report.selectedCarSet[i]}
-            isDisabled={this.state.isDisabled}
-            key={i}
-            index={i} />
+
+            <SelectionReportForm reportPart={report.selectedCarSet[i]}
+              isDisabled={this.state.isDisabled}
+              key={i}
+              index={i}
+            ></SelectionReportForm>
+            :
+            <SelectionReportDescription reportPart={report.selectedCarSet[i]}
+              isDisabled={this.state.isDisabled}
+              key={i}
+              index={i} />
         )
       }
 
@@ -114,33 +134,43 @@ class SelectionReportComponent extends Component {
           type="primary"
           style={{ background: START_REPORT_PROCESS, borderColor: START_REPORT_PROCESS }}
           onClick={() =>
-
             this.onCreatNewReport()
           }>
           Create report
         </Button> :
-        this.state.isDisabled ?
-          <Button type="primary"
-            shape="round"
-            onClick={() => { this.onEditInfo() }} >
-            <EditOutlined size={"large"} />
-            Edit
-          </Button>
-          : <Button type="primary"
-            shape="round"
-            onClick={() => { this.onSaveEditedInfo() }} >
-            <SaveOutlined size={"large"} />
-            Save
-          </Button>
+        order.status.name == ORDER_STATUSES.CLOSED
+          || order.status.name == ORDER_STATUSES.CANCELED ? <></> :
+          this.state.isDisabled ?
+            <Button type="primary"
+              shape="round"
+              onClick={() => { this.onEditInfo() }} >
+              <EditOutlined size={"large"} />
+              Edit
+            </Button>
+            : <Button type="primary"
+              shape="round"
+              onClick={() => { this.onSaveEditedInfo() }} >
+              <SaveOutlined size={"large"} />
+              Save
+            </Button>
 
 
     return (
       <>
         <Row align='end'>
-          <Col >
-            {this.props.isEdittingAllowed != "false" ?
+          <Col span={4}>
+            {this.props.isEdittingAllowed?
               visibleButton : <></>
             }
+          </Col>
+          <Col >
+            <div hidden={order.status.name == ORDER_STATUSES.CLOSED || order.status.name == ORDER_STATUSES.CANCELED}>
+              <Button
+                style={{ background: START_REPORT_PROCESS, borderColor: START_REPORT_PROCESS }}
+                shape="circle"
+                type="primary" onClick={() => this.props.onCloseProccess()}>
+                <CheckCircleOutlined />
+              </Button></div>
           </Col>
         </Row>
         <br />
@@ -152,6 +182,7 @@ class SelectionReportComponent extends Component {
           </Button>
         </Row>
         {arr}
+
       </>
     )
   }

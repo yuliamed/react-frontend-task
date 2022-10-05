@@ -25,7 +25,8 @@ class WithNavigate extends Component {
       order: null,
       isLoading: true,
       isDisabled: true,
-      isOrderCancelling: false,
+      isModalCancelingOrderOpen: false,
+      isEdittingAllowed: true,
     }
     this.onEditInfo = this.onEditInfo.bind(this);
     this.onSaveEditedInfo = this.onSaveEditedInfo.bind(this);
@@ -33,6 +34,10 @@ class WithNavigate extends Component {
     this.getArrByNames = this.getArrByNames.bind(this);
     this.onProccessOrder = this.onProccessOrder.bind(this);
     this.createArrWithName = this.createArrWithName.bind(this);
+    this.onChangeOrderStatus = this.onChangeOrderStatus.bind(this);
+    this.handleOk = this.handleOk.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
+    this.onClosingOrderProccess = this.onClosingOrderProccess.bind(this);
     thisObj = this;
   }
 
@@ -54,7 +59,6 @@ class WithNavigate extends Component {
     }
     return newArr;
   }
-
 
   getArrByNames(inputArr) {
     let arr = [];
@@ -100,6 +104,27 @@ class WithNavigate extends Component {
       })
     console.log(this.state.newTransmissions)
     this.render();
+  }
+
+  onChangeOrderStatus(status) {
+    const { dispatch } = this.props;
+    dispatch(changeOrderStatus(localStorage.getItem("userId"), this.state.order.id, status));
+    this.render();
+  }
+
+  handleOk() {
+    this.setState({ isModalCancelingOrderOpen: false, isEdittingAllowed:false });
+    this.onChangeOrderStatus(ORDER_STATUSES.CLOSED);
+  };
+
+  handleCancel() {
+    this.setState({ isModalCancelingOrderOpen: false });
+  };
+
+  onClosingOrderProccess() {
+    console.log("closing");
+    this.setState({ isModalCancelingOrderOpen: true });
+    console.log(this.state.isModalCancelingOrderOpen);
   }
 
   render() {
@@ -149,18 +174,20 @@ class WithNavigate extends Component {
 
             <Panel header="Responce information" key="4">
 
-              <SelectionReportComponent orderId={this.state.order.id}
-                report={this.state.order.report} isEdittingAllowed="true"></SelectionReportComponent>
+              <SelectionReportComponent onCloseProccess={() => this.onClosingOrderProccess()}
+                orderId={this.state.order.id}
+                report={this.state.order.report}
+                isEdittingAllowed={this.state.isEdittingAllowed} />
             </Panel>
           </Collapse>
 
         </Content>
-        <Modal title="Really??" visible={this.state.isOrderCancelling} onOk={() => {
-          this.cancelOrder()
-        }}
-          onCancel={() => this.setState({ isOrderCancelling: false })}>
-          <h2>Do you really want to cancel this order? </h2><br></br>
-          <h4>Auto Picker will stop processing it(</h4>
+        <Modal title="Confirm closing order" 
+        //visible={this.state.isModalCancelingOrderOpen} 
+        visible={this.state.isModalCancelingOrderOpen}
+          onOk={() => this.handleOk()}
+          onCancel={() => this.handleCancel()}>
+          <h2>Are you sure that report is finished?</h2>
         </Modal>
       </>
     );

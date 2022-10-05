@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Modal, Divider, Form, Descriptions, Select, Row, Col, Collapse, Button, } from 'antd';
+import { Modal, Divider, Descriptions, Select, Row, Col, Collapse, Button, } from 'antd';
 import { connect } from "react-redux";
 import { useNavigate } from 'react-router-dom';
-import { EditOutlined, CloseSquareOutlined, SaveOutlined, LeftOutlined, } from '@ant-design/icons';
+import {  LeftOutlined, } from '@ant-design/icons';
 import { changeOrderStatus } from "../../../actions/orders/userOrder"
 import Header from "../../common/headers/Header";
 import MainInfoComponent from '../../user/orders/MainInfoComponent'
@@ -104,6 +104,12 @@ class WithNavigate extends Component {
     if (this.state.isLoading) {
       return <p>Loading...</p>;
     }
+
+    let modalClosingOrder =
+    <Modal title="Confirm closing order" onOk={() => this.handleOk()} onCancel={() => this.handleCancel()}>
+      <h2>Are you sure that report finished?</h2>
+    </Modal>;
+
     return (
       <><Header />
         <Content>
@@ -177,6 +183,7 @@ class WithNavigate extends Component {
           <h2>Do you really want to cancel this order? </h2><br></br>
           <h4>Auto Picker will stop processing it(</h4>
         </Modal>
+        
       </>
     );
   }
