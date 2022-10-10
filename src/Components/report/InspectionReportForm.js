@@ -2,10 +2,9 @@ import React, { Component } from 'react'
 import { Form, Input } from 'antd';
 import { editSelectionReport } from '../../actions/orders/autopicker/manageOrders';
 import { connect } from "react-redux";
-import CarPartDescriptionReportForm from './CarPartDescriptionReportForm';
 const { TextArea } = Input;
 let thisObj;
-class SelectionReportForm extends Component {
+class InspectionReportForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -92,7 +91,6 @@ class SelectionReportForm extends Component {
             }}
           />
         </Form.Item>
-        
       </Form></>
     )
   }
@@ -106,4 +104,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(SelectionReportForm);
+export default connect(mapStateToProps)(InspectionReportForm);

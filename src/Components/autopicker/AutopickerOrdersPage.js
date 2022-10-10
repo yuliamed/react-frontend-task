@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { findAll, getSelectionReport } from '../../actions/orders/autopicker/manageOrders';
+import { findAll, getInspectionOrder, getSelectionReport, } from '../../actions/orders/autopicker/manageOrders';
+import { getInspectionReport } from '../../actions/orders/autopicker/manageInspectionReport'
 import Header from '../common/headers/Header'
 import { connect } from "react-redux";
 import { Button, Typography, Table, Tag, Popconfirm } from 'antd';
@@ -43,7 +44,11 @@ class WithNavigate extends Component {
       dispatch(getSelectionReport(order.report));
       this.props.navigate("/auto-picker/" + order.autoPicker.id + "/selection-order/" + order.id, { push: true });
     }
-    else this.props.navigate("/auto-picker/" + order.autoPicker.id + "/inspection-order/" + order.id, { push: true });
+    else {
+      dispatch(getInspectionOrder(order));
+      dispatch(getInspectionReport(order.report));
+      this.props.navigate("/auto-picker/" + order.autoPicker.id + "/inspection-order/" + order.id, { push: true })
+    };
   }
 
   isEditing = (record) => {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Modal, Divider, Descriptions, Select, Row, Col, Collapse, Button, } from 'antd';
 import { connect } from "react-redux";
 import { useNavigate } from 'react-router-dom';
-import {  LeftOutlined, } from '@ant-design/icons';
+import { LeftOutlined, } from '@ant-design/icons';
 import { changeOrderStatus } from "../../../actions/orders/userOrder"
 import Header from "../../common/headers/Header";
 import MainInfoComponent from '../../user/orders/MainInfoComponent'
@@ -10,7 +10,8 @@ import { updateOrder, getOrderById } from "../../../actions/orders/userInspectio
 import { Content } from 'antd/lib/layout/layout';
 import { ORDER_STATUSES } from '../../../constants/const';
 import InspectionReportComponent from '../../report/InspectionReportComponent';
-import { cleanSelectionReport } from '../../../actions/orders/autopicker/manageOrders';
+import { cleanSelectionReport, getInspectionOrder } from '../../../actions/orders/autopicker/manageOrders';
+import { getInspectionReport } from '../../../actions/orders/autopicker/manageInspectionReport';
 const { Panel } = Collapse;
 const { Option } = Select;
 let thisObj;
@@ -38,6 +39,8 @@ class WithNavigate extends Component {
     const { dispatch } = this.props;
     dispatch(getOrderById(localStorage.getItem("userId"), window.location.href.split("/").pop())).then((data) => {
       thisObj.setState({ order: data, isLoading: false })
+      dispatch(getInspectionOrder(data))
+      dispatch(getInspectionReport(data.report))
     }
     )
   }
@@ -106,13 +109,13 @@ class WithNavigate extends Component {
     }
 
     let modalClosingOrder =
-    <Modal title="Confirm closing order" onOk={() => this.handleOk()} onCancel={() => this.handleCancel()}>
-      <h2>Are you sure that report finished?</h2>
-    </Modal>;
+      <Modal title="Confirm closing order" onOk={() => this.handleOk()} onCancel={() => this.handleCancel()}>
+        <h2>Are you sure that report finished?</h2>
+      </Modal>;
 
     return (
       <><Header />
-        <Content>
+        <Content >
 
           <Row>
             <Col flex="0 1"
@@ -122,9 +125,11 @@ class WithNavigate extends Component {
                 display: 'vertical',
               }}>
               <Button shape="circle" size={"large"}
-                onClick={() => { const { dispatch } = this.props;
-                dispatch(cleanSelectionReport());
-                this.props.navigate(-1) }}
+                onClick={() => {
+                  const { dispatch } = this.props;
+                  dispatch(cleanSelectionReport());
+                  this.props.navigate(-1)
+                }}
               >
                 <LeftOutlined />
               </Button>
@@ -142,19 +147,23 @@ class WithNavigate extends Component {
             </Col> */}
           </Row>
 
-          <Collapse defaultActiveKey={["1"]}
+          <Collapse bordered={false} defaultActiveKey={["1"]}
             style={{
+
               margin: "15px",
-              marginLeft: "60px",
-              marginRight: "60px",
+              marginLeft: "10%",
+              marginRight: "10%",
               display: 'vertical',
             }}>
-            <Panel header="Order information" key="1" >
+            <Panel header="Order information" key="1"
+            >
 
               <Divider orientation="left">Main information</Divider>
               <MainInfoComponent creationDate={this.state.order.creationDate}
                 status={this.state.order.status}
                 autoPicker={this.state.order.autoPicker} />
+                
+
               <Divider orientation="left">Characteristic</Divider>
 
               <Descriptions contentStyle={{ "font-weight": 'bold' }}>
@@ -169,7 +178,7 @@ class WithNavigate extends Component {
                 >{this.state.order.additionalInfo}</Descriptions.Item>
 
               </Descriptions>
-            
+
             </Panel>
             <Panel header="Responce information" key="4">
               <InspectionReportComponent />
@@ -183,7 +192,7 @@ class WithNavigate extends Component {
           <h2>Do you really want to cancel this order? </h2><br></br>
           <h4>Auto Picker will stop processing it(</h4>
         </Modal>
-        
+
       </>
     );
   }

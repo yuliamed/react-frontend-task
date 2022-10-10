@@ -1,13 +1,17 @@
 import React, { Component } from 'react'
-import { Row, Col, Button, } from 'antd';
+import { Row, Col, Button, Divider, Collapse, } from 'antd';
 import { connect } from "react-redux";
 import { EditOutlined, SaveOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import SelectionReportForm from './SelectionReportForm';
 import { START_REPORT_PROCESS } from '../../constants/colors';
-import { createSelectionReport, editSelectionReport, getSelectionReport, saveEditedSelectionReport, saveNewSelectionReport } from '../../actions/orders/autopicker/manageOrders';
+import { createSelectionReport, saveEditedSelectionReport, saveNewSelectionReport } from '../../actions/orders/autopicker/manageOrders';
 import { changeOrderStatus } from '../../actions/orders/userOrder';
 import { ORDER_STATUSES } from '../../constants/const';
-import SelectionReportDescription from './SelectionReportDescription';
+import MainCarCharacteristic from './MainCarCharacteristic'
+//import CarPartReportForm from './CarPartReportForm';
+import { editBodyReport, editBodyPartDescription } from '../../actions/orders/autopicker/manageInspectionReport';
+
+import CarPartReportForm from './parts/CarPartReportForm';
+const { Panel } = Collapse;
 let thisObj;
 class InspectionReportComponent extends Component {
   constructor(props) {
@@ -23,14 +27,16 @@ class InspectionReportComponent extends Component {
     this.onEditInfo = this.onEditInfo.bind(this);
     this.onSaveEditedInfo = this.onSaveEditedInfo.bind(this);
     this.onCreatNewReport = this.onCreatNewReport.bind(this);
+    this.changeBodyReport = this.changeBodyReport.bind(this);
+    this.onEditBodyDescription = this.onEditBodyDescription.bind(this);
   }
 
   async componentDidMount() {
-    const { dispatch } = this.props;
-    thisObj.setState({ orderId: this.props.orderId })
-    const { autoPicker, order } = this.props;
-    console.log(autoPicker);
-    dispatch(getSelectionReport(order.report))
+    // const { dispatch } = this.props;
+    // thisObj.setState({ orderId: this.props.orderId })
+    // const { autoPicker, order } = this.props;
+    // console.log(autoPicker);
+    // dispatch(getSelectionReport(order.report))
   }
 
   onEditInfo() {
@@ -55,7 +61,7 @@ class InspectionReportComponent extends Component {
   }
 
   onAddNewReportForm() {
-    const { report } = this.props;
+    const { report, order } = this.props;
     const { dispatch } = this.props;
     let newReport = report;
     let newReportPart = {
@@ -84,29 +90,20 @@ class InspectionReportComponent extends Component {
     dispatch(createSelectionReport(newReport));
   }
 
+  changeBodyReport(bodyReport) {
+    const { dispatch } = this.props;
+    dispatch(editBodyReport(bodyReport))
+    this.setState({ isDisabled: !this.state.isDisabled })
+  }
+
+  onEditBodyDescription(description, id) {
+    const { dispatch } = this.props;
+    dispatch(editBodyPartDescription(description, id))
+  }
+
   render() {
-    const { report, order } = this.props;
+    const { report, } = this.props;
     console.log(report);
-
-    let arr = [];
-    if (report != null && report.selectedCarSet.length != 0)
-      for (let i = 0; i < report.selectedCarSet.length; i++) {
-        arr.push(
-          this.props.isEdittingAllowed != "false" ?
-          
-          <SelectionReportForm reportPart={report.selectedCarSet[i]}
-            isDisabled={this.state.isDisabled}
-            key={i}
-            index={i}
-          ></SelectionReportForm> 
-          :
-           <SelectionReportDescription reportPart={report.selectedCarSet[i]}
-            isDisabled={this.state.isDisabled}
-            key={i}
-            index={i} />
-        )
-      }
-
     let visibleButton =
       report == null ?
         <Button shape="round"
@@ -131,11 +128,9 @@ class InspectionReportComponent extends Component {
             <SaveOutlined size={"large"} />
             Save
           </Button>
-
-
     return (
-      <>
-        <Row align='end'>
+      <div style={{ marginLeft: "4%", marginRight: "4%" }}>
+        <Row align='end' style={{ marginLeft: "50px" }}>
           <Col >
             {this.props.isEdittingAllowed != "false" ?
               visibleButton : <></>
@@ -150,15 +145,49 @@ class InspectionReportComponent extends Component {
             <PlusCircleOutlined />
           </Button>
         </Row>
-        {arr}
-      </>
+        <Divider orientation="left">Main car information</Divider>
+        <MainCarCharacteristic />
+        <Collapse defaultActiveKey={["1"]}>
+          <Panel header="Body report" key="1" >
+            <CarPartReportForm reportPart={report.bodyReport}
+              onEditBodyDescription={this.onEditBodyDescription}
+              onChangeBodyReport={(rep) => this.changeBodyReport(rep)} />
+          </Panel>
+          <Panel header="Salon report" key="2">
+            <CarPartReportForm reportPart={report.salonReport}
+              onEditBodyDescription={this.onEditBodyDescription}
+              onChangeBodyReport={(rep) => this.changeBodyReport(rep)}/>
+          </Panel>
+          <Panel header="Electrical equipment report" key="3">
+            <CarPartReportForm 
+            reportPart={report.electricalEquipmentReport
+            }
+            onEditBodyDescription={this.onEditBodyDescription}
+            onChangeBodyReport={(rep) => this.changeBodyReport(rep)}/>
+          </Panel>
+          <Panel header="Pendant report" key="4">
+            <CarPartReportForm  reportPart={report.pendantReport
+            }
+            onEditBodyDescription={this.onEditBodyDescription}
+            onChangeBodyReport={(rep) => this.changeBodyReport(rep)}/>
+          </Panel>
+          <Panel header="Transmission report" key="5">
+            <CarPartReportForm />
+          </Panel>
+          <Panel header="Engine report" key="6">
+            <CarPartReportForm />
+          </Panel>
+        </Collapse >
+        {/* <Divider orientation="left">Body report</Divider> */}
+
+      </div>
     )
   }
 }
 
 function mapStateToProps(state) {
   const { report } = state.autoPicker;
-  const { order } = state.userOrder;
+  const { order } = state.autoPicker;
   return {
     report, order
   };

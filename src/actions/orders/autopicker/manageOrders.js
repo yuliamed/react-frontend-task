@@ -5,7 +5,8 @@ import {
   GET_SELECTION_REPORT,
   EDIT_SELECTION_REPORT,
   CREATE_SELECTION_REPORT,
-  CLEAN_REPORT
+  CLEAN_REPORT,
+  GET_INSPECTION_ORDER,
 } from "./types";
 import { SET_MESSAGE } from "../../types";
 import AutopickerOrderService from "../../../services/orders/autopicker/autopickerOrderService";
@@ -133,12 +134,24 @@ export const createSelectionReport =
       return report;
     };
 
-    export const cleanSelectionReport =
-    () =>
-      (dispatch) => {
-        dispatch({
-          type: CLEAN_REPORT
-        });
-        return null;
-      };
+export const cleanSelectionReport =
+  () =>
+    (dispatch) => {
+      dispatch({
+        type: CLEAN_REPORT
+      });
+      return null;
+    };
+
+export const getInspectionOrder =
+  (order) =>
+    (dispatch) => {
+      console.log(order);
+      dispatch({
+        type: GET_INSPECTION_ORDER,
+        payload: order
+      });
+      return order;
+    };
+
 

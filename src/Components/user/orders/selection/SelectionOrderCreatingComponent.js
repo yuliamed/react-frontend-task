@@ -9,6 +9,7 @@ import { findAllAutoPickers } from "../../../../actions/manageUsers";
 import { createArrWithName } from "../../../common/processArrays";
 const { Content } = Layout;
 const { TextArea } = Input;
+
 const { Option } = Select;
 
 let thisObj;
@@ -24,7 +25,6 @@ class SelectionOrderCreatingComponent extends Component {
       isSavingAllowed: false,
       autoPickers: [],
     };
-    //this.validateMessages=this.validateMessages.bund(this);
     this.onSave = props.on_save;
     this.cancelOrder = props.on_cancel;
     this.onSaveOrder = this.onSaveOrder.bind(this);
