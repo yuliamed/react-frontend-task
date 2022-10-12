@@ -68,7 +68,7 @@ export const editBodyReport =
 export const editBodyPartDescription =
   (description, id) =>
     (dispatch) => {
-      let value={
+      let value = {
         description: description, id: id
       }
       dispatch({
@@ -77,7 +77,6 @@ export const editBodyPartDescription =
       });
       return description;
     };
-
 
 export const editElectricalEquipmentReport =
   (report) =>

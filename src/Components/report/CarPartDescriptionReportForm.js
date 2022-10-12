@@ -46,10 +46,8 @@ class CarPartDescriptionReportForm extends Component {
               defaultValue={description.describingPart}
               onChange={
                 (value)=>{
-                  const { dispatch } = this.props;
                   description.describingPart = value.target.value;
-                 // dispatch(editBodyPartDescription(description, this.props.id))
-                 this.props.onEdit(description);
+                  this.props.onEdit(description);
               }}
               >
               </Input>

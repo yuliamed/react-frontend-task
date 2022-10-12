@@ -7,10 +7,11 @@ import { createSelectionReport, saveEditedSelectionReport, saveNewSelectionRepor
 import { changeOrderStatus } from '../../actions/orders/userOrder';
 import { ORDER_STATUSES } from '../../constants/const';
 import MainCarCharacteristic from './MainCarCharacteristic'
-//import CarPartReportForm from './CarPartReportForm';
-import { editBodyReport, editBodyPartDescription } from '../../actions/orders/autopicker/manageInspectionReport';
+import { editBodyReport, editBodyPartDescription, editTransmissionReport } from '../../actions/orders/autopicker/manageInspectionReport';
 
 import CarPartReportForm from './parts/CarPartReportForm';
+import TransmissionReportComponent from './parts/TransmissionReportComponent';
+import EngineReport from './parts/EngineReport';
 const { Panel } = Collapse;
 let thisObj;
 class InspectionReportComponent extends Component {
@@ -29,6 +30,8 @@ class InspectionReportComponent extends Component {
     this.onCreatNewReport = this.onCreatNewReport.bind(this);
     this.changeBodyReport = this.changeBodyReport.bind(this);
     this.onEditBodyDescription = this.onEditBodyDescription.bind(this);
+    this.onEditNoteOnWork = this.onEditNoteOnWork.bind(this);
+    this.onAddNewNoteToTransmission = this.onAddNewNoteToTransmission.bind(this);
   }
 
   async componentDidMount() {
@@ -101,6 +104,22 @@ class InspectionReportComponent extends Component {
     dispatch(editBodyPartDescription(description, id))
   }
 
+  onEditNoteOnWork(noteOnWork, id) {
+    const { dispatch, report } = this.props;
+    let transmissionReport = report.transmissionReport;
+    transmissionReport.noteOnWorkSet[id] = noteOnWork;
+    report.transmissionReport = transmissionReport;
+    dispatch(editTransmissionReport(report));
+  }
+
+  onAddNewNoteToTransmission(newSet) {
+    const { dispatch, report } = this.props;
+    let transmissionReport = report.transmissionReport;
+    transmissionReport.noteOnWorkSet = newSet;
+    report.transmissionReport = transmissionReport;
+    dispatch(editTransmissionReport(report));
+  }
+
   render() {
     const { report, } = this.props;
     console.log(report);
@@ -156,26 +175,29 @@ class InspectionReportComponent extends Component {
           <Panel header="Salon report" key="2">
             <CarPartReportForm reportPart={report.salonReport}
               onEditBodyDescription={this.onEditBodyDescription}
-              onChangeBodyReport={(rep) => this.changeBodyReport(rep)}/>
+              onChangeBodyReport={(rep) => this.changeBodyReport(rep)} />
           </Panel>
           <Panel header="Electrical equipment report" key="3">
-            <CarPartReportForm 
-            reportPart={report.electricalEquipmentReport
-            }
-            onEditBodyDescription={this.onEditBodyDescription}
-            onChangeBodyReport={(rep) => this.changeBodyReport(rep)}/>
+            <CarPartReportForm
+              reportPart={report.electricalEquipmentReport
+              }
+              onEditBodyDescription={this.onEditBodyDescription}
+              onChangeBodyReport={(rep) => this.changeBodyReport(rep)} />
           </Panel>
           <Panel header="Pendant report" key="4">
-            <CarPartReportForm  reportPart={report.pendantReport
+            <CarPartReportForm reportPart={report.pendantReport
             }
-            onEditBodyDescription={this.onEditBodyDescription}
-            onChangeBodyReport={(rep) => this.changeBodyReport(rep)}/>
+              onEditBodyDescription={this.onEditBodyDescription}
+              onChangeBodyReport={(rep) => this.changeBodyReport(rep)} />
           </Panel>
           <Panel header="Transmission report" key="5">
-            <CarPartReportForm />
+            <TransmissionReportComponent report={report.transmissionReport.noteOnWorkSet}
+              onEditNoteOnWork={this.onEditNoteOnWork}
+              onAddNewNoteToTransmission={this.onAddNewNoteToTransmission}
+            />
           </Panel>
           <Panel header="Engine report" key="6">
-            <CarPartReportForm />
+            <EngineReport report={report.engineReport} />
           </Panel>
         </Collapse >
         {/* <Divider orientation="left">Body report</Divider> */}
