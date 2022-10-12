@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Input, } from 'antd';
+import { Form, Input, Card} from 'antd';
 
 const { TextArea } = Input;
 let thisObj = null;
@@ -25,7 +25,7 @@ export default class NoteOnWorkForm extends Component {
   render() {
     let noteOnWork = this.props.noteOnWork;
     return (
-      <><Form>
+      <Card><Form>
         <Form.Item
           label="Part name"
           name="Name"
@@ -57,7 +57,7 @@ export default class NoteOnWorkForm extends Component {
               this.props.onEdit(noteOnWork, this.props.index);
             }} />
         </Form.Item>
-      </Form></>
+      </Form></Card>
     )
   }
 }

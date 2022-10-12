@@ -7,7 +7,7 @@ import { createSelectionReport, saveEditedSelectionReport, saveNewSelectionRepor
 import { changeOrderStatus } from '../../actions/orders/userOrder';
 import { ORDER_STATUSES } from '../../constants/const';
 import MainCarCharacteristic from './MainCarCharacteristic'
-import { editBodyReport, editBodyPartDescription, editTransmissionReport } from '../../actions/orders/autopicker/manageInspectionReport';
+import { editBodyReport, editBodyPartDescription, editTransmissionReport, editEngineReport } from '../../actions/orders/autopicker/manageInspectionReport';
 
 import CarPartReportForm from './parts/CarPartReportForm';
 import TransmissionReportComponent from './parts/TransmissionReportComponent';
@@ -30,7 +30,9 @@ class InspectionReportComponent extends Component {
     this.onCreatNewReport = this.onCreatNewReport.bind(this);
     this.changeBodyReport = this.changeBodyReport.bind(this);
     this.onEditBodyDescription = this.onEditBodyDescription.bind(this);
-    this.onEditNoteOnWork = this.onEditNoteOnWork.bind(this);
+    this.onEditEngineReport = this.onEditEngineReport.bind(this);
+    this.onEditEngineNoteOnWork = this.onEditEngineNoteOnWork.bind(this);
+    this.onEditTransNoteOnWork = this.onEditTransNoteOnWork.bind(this);
     this.onAddNewNoteToTransmission = this.onAddNewNoteToTransmission.bind(this);
   }
 
@@ -104,7 +106,7 @@ class InspectionReportComponent extends Component {
     dispatch(editBodyPartDescription(description, id))
   }
 
-  onEditNoteOnWork(noteOnWork, id) {
+  onEditTransNoteOnWork(noteOnWork, id) {
     const { dispatch, report } = this.props;
     let transmissionReport = report.transmissionReport;
     transmissionReport.noteOnWorkSet[id] = noteOnWork;
@@ -118,6 +120,21 @@ class InspectionReportComponent extends Component {
     transmissionReport.noteOnWorkSet = newSet;
     report.transmissionReport = transmissionReport;
     dispatch(editTransmissionReport(report));
+  }
+
+  onEditEngineNoteOnWork(noteOnWork, id) {
+    const { dispatch, report } = this.props;
+    let engineReport = report.engineReport;
+    engineReport.noteOnWorkSet[id] = noteOnWork;
+    report.transmissionReport = engineReport;
+    dispatch(editEngineReport(report));
+  }
+
+  onEditEngineReport(newEngineReport){
+    const { dispatch, report } = this.props;
+    let newReport = report;
+    newReport.engineReport = newEngineReport;
+    dispatch(editEngineReport(newReport));
   }
 
   render() {
@@ -192,12 +209,15 @@ class InspectionReportComponent extends Component {
           </Panel>
           <Panel header="Transmission report" key="5">
             <TransmissionReportComponent report={report.transmissionReport.noteOnWorkSet}
-              onEditNoteOnWork={this.onEditNoteOnWork}
+              onEditNoteOnWork={this.onEditTransNoteOnWork}
               onAddNewNoteToTransmission={this.onAddNewNoteToTransmission}
             />
           </Panel>
           <Panel header="Engine report" key="6">
-            <EngineReport report={report.engineReport} />
+            <EngineReport report={report.engineReport} 
+            onChangeReport={this.onEditEngineReport}
+            onEditNoteOnWork={this.onEditEngineNoteOnWork}
+            />
           </Panel>
         </Collapse >
         {/* <Divider orientation="left">Body report</Divider> */}
