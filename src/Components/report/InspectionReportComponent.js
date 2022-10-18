@@ -7,8 +7,7 @@ import { createSelectionReport, saveEditedSelectionReport, saveNewSelectionRepor
 import { changeOrderStatus } from '../../actions/orders/userOrder';
 import { ORDER_STATUSES } from '../../constants/const';
 import MainCarCharacteristic from './MainCarCharacteristic'
-import { editBodyReport, editBodyPartDescription, editTransmissionReport, editEngineReport } from '../../actions/orders/autopicker/manageInspectionReport';
-
+import { editBodyReport, editBodyPartDescription, editTransmissionReport, editEngineReport, saveEditedMainDataReport, saveEditedBodyReport, saveEditedSalonReport, saveEditedElectroReport, saveEditedPendantReport, saveEditedTransmissionReport, saveEditedEngineReport } from '../../actions/orders/autopicker/manageInspectionReport';
 import CarPartReportForm from './parts/CarPartReportForm';
 import TransmissionReportComponent from './parts/TransmissionReportComponent';
 import EngineReport from './parts/EngineReport';
@@ -34,11 +33,13 @@ class InspectionReportComponent extends Component {
     this.onEditEngineNoteOnWork = this.onEditEngineNoteOnWork.bind(this);
     this.onEditTransNoteOnWork = this.onEditTransNoteOnWork.bind(this);
     this.onAddNewNoteToTransmission = this.onAddNewNoteToTransmission.bind(this);
+
+    this.saveEditedMainInfo = this.saveEditedMainInfo.bind(this);
   }
 
   async componentDidMount() {
-    // const { dispatch } = this.props;
-    // thisObj.setState({ orderId: this.props.orderId })
+    const { order } = this.props;
+    thisObj.setState({ orderId: order.id })
     // const { autoPicker, order } = this.props;
     // console.log(autoPicker);
     // dispatch(getSelectionReport(order.report))
@@ -130,11 +131,46 @@ class InspectionReportComponent extends Component {
     dispatch(editEngineReport(report));
   }
 
-  onEditEngineReport(newEngineReport){
+  onEditEngineReport(newEngineReport) {
     const { dispatch, report } = this.props;
     let newReport = report;
     newReport.engineReport = newEngineReport;
     dispatch(editEngineReport(newReport));
+  }
+
+  saveEditedMainInfo(mainInfo) {
+    const { dispatch } = this.props;
+    dispatch(saveEditedMainDataReport(localStorage.getItem("userId"), this.state.orderId, mainInfo));
+  }
+
+  onSaveSalonReport(report){
+    const { dispatch } = this.props;
+    dispatch(saveEditedSalonReport(localStorage.getItem("userId"), this.state.orderId, report));
+  }
+
+  onSaveBodyReport(report){
+    const { dispatch } = this.props;
+    dispatch(saveEditedBodyReport(localStorage.getItem("userId"), this.state.orderId, report));
+  }
+
+  onSaveElectricReport(report){
+    const { dispatch } = this.props;
+    dispatch(saveEditedElectroReport(localStorage.getItem("userId"), this.state.orderId, report));
+  }
+
+  onSavePendantReport(report){
+    const { dispatch } = this.props;
+    dispatch(saveEditedPendantReport(localStorage.getItem("userId"), this.state.orderId, report));
+  }
+
+  onSaveTransmissionReport(report){
+    const { dispatch } = this.props;
+    dispatch(saveEditedTransmissionReport(localStorage.getItem("userId"), this.state.orderId, report));
+  }
+
+  onSaveEngineReport(report){
+    const { dispatch } = this.props;
+    dispatch(saveEditedEngineReport(localStorage.getItem("userId"), this.state.orderId, report));
   }
 
   render() {
@@ -168,55 +204,54 @@ class InspectionReportComponent extends Component {
       <div style={{ marginLeft: "4%", marginRight: "4%" }}>
         <Row align='end' style={{ marginLeft: "50px" }}>
           <Col >
-            {this.props.isEdittingAllowed != "false" ?
+            {/* {this.props.isEdittingAllowed != "false" ?
               visibleButton : <></>
-            }
+            } */}
           </Col>
         </Row>
         <br />
-        <Row align="end" >
-          <Button hidden={this.state.isDisabled} shape="circle" onClick={() => {
-            this.onAddNewReportForm();
-          }}>
-            <PlusCircleOutlined />
-          </Button>
-        </Row>
         <Divider orientation="left">Main car information</Divider>
-        <MainCarCharacteristic />
+        <MainCarCharacteristic report={report} saveEditedInfo={(info) => this.saveEditedMainInfo(info)} />
         <Collapse defaultActiveKey={["1"]}>
           <Panel header="Body report" key="1" >
             <CarPartReportForm reportPart={report.bodyReport}
               onEditBodyDescription={this.onEditBodyDescription}
-              onChangeBodyReport={(rep) => this.changeBodyReport(rep)} />
+              onChangeBodyReport={(rep) => this.changeBodyReport(rep)}
+              onSaveReport={(rep)=>this.onSaveBodyReport(rep)} />
           </Panel>
           <Panel header="Salon report" key="2">
             <CarPartReportForm reportPart={report.salonReport}
               onEditBodyDescription={this.onEditBodyDescription}
-              onChangeBodyReport={(rep) => this.changeBodyReport(rep)} />
+              onChangeBodyReport={(rep) => this.changeBodyReport(rep)}
+              onSaveReport={(rep)=>this.onSavePendantReport(rep)}  />
           </Panel>
           <Panel header="Electrical equipment report" key="3">
             <CarPartReportForm
               reportPart={report.electricalEquipmentReport
               }
               onEditBodyDescription={this.onEditBodyDescription}
-              onChangeBodyReport={(rep) => this.changeBodyReport(rep)} />
+              onChangeBodyReport={(rep) => this.changeBodyReport(rep)}
+              onSaveReport={(rep)=>this.onSaveElectricReport(rep)}  />
           </Panel>
           <Panel header="Pendant report" key="4">
             <CarPartReportForm reportPart={report.pendantReport
             }
               onEditBodyDescription={this.onEditBodyDescription}
-              onChangeBodyReport={(rep) => this.changeBodyReport(rep)} />
+              onChangeBodyReport={(rep) => this.changeBodyReport(rep)} 
+              onSaveReport={(rep)=>this.onSavePendantReport(rep)} />
           </Panel>
           <Panel header="Transmission report" key="5">
             <TransmissionReportComponent report={report.transmissionReport.noteOnWorkSet}
               onEditNoteOnWork={this.onEditTransNoteOnWork}
               onAddNewNoteToTransmission={this.onAddNewNoteToTransmission}
+              onSaveReport={(rep)=>this.onSaveTransmissionReport(rep)}
             />
           </Panel>
           <Panel header="Engine report" key="6">
-            <EngineReport report={report.engineReport} 
-            onChangeReport={this.onEditEngineReport}
-            onEditNoteOnWork={this.onEditEngineNoteOnWork}
+            <EngineReport report={report.engineReport}
+              onChangeReport={this.onEditEngineReport}
+              onEditNoteOnWork={this.onEditEngineNoteOnWork}
+              onSaveReport={(rep)=>this.onSaveEngineReport(rep)}
             />
           </Panel>
         </Collapse >

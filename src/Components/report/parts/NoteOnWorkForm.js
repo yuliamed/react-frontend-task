@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Input, Card} from 'antd';
+import { Form, Input, Card } from 'antd';
 
 const { TextArea } = Input;
 let thisObj = null;
@@ -33,11 +33,12 @@ export default class NoteOnWorkForm extends Component {
           ]}
         >
           <Input
+            disabled={this.props.isDisabled}
             style={{ margin: '0 16px' }}
             value={noteOnWork.name}
             defaultValue={noteOnWork.name}
             onChange={(v) => {
-              noteOnWork.name=v.target.value;
+              noteOnWork.name = v.target.value;
               this.props.onEdit(noteOnWork, this.props.index);
             }}
           />
@@ -52,8 +53,9 @@ export default class NoteOnWorkForm extends Component {
               this.state.noteOnWork.description
 
             }
+            disabled={this.props.isDisabled}
             onChange={(v) => {
-              noteOnWork.description=v.target.value;
+              noteOnWork.description = v.target.value;
               this.props.onEdit(noteOnWork, this.props.index);
             }} />
         </Form.Item>

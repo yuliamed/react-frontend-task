@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
 import { Form, InputNumber, Input, Space, Button, Col, Row, Slider } from 'antd';
+import { EditOutlined, SaveOutlined } from '@ant-design/icons';
 import CarPartDescriptionReportForm from '../CarPartDescriptionReportForm';
 import { PlusCircleOutlined } from '@ant-design/icons';
 import { START_REPORT_PROCESS } from '../../../constants/colors';
 import { connect } from "react-redux";
+
 const { TextArea } = Input;
 let thisObj = null;
+
 class CarPartReportForm extends Component {
 
   constructor(props) {
@@ -18,7 +21,7 @@ class CarPartReportForm extends Component {
         descriptions: [],
       },
       markValue: props.report.mark,
-      isDisabled: false,
+      isDisabled: true,
     };
     this.onChange = this.onChange.bind(this);
     thisObj = this;
@@ -31,6 +34,15 @@ class CarPartReportForm extends Component {
       markValue: this.props.report.bodyReport.mark,
       reportPart: this.props.reportPart
     })
+  }
+
+  onEditInfo() {
+    this.setState({ isDisabled: false })
+  }
+
+  onSaveEditedInfo() {
+    this.props.onSaveReport(this.state.reportPart)
+    this.setState({ isDisabled: true })
   }
 
   onAddNewDescription() {
@@ -57,6 +69,7 @@ class CarPartReportForm extends Component {
       for (let i = 0; i < bodyReport.descriptions.length; i++) {
         descriptions.push(
           <CarPartDescriptionReportForm id={i}
+            isDisabled={this.state.isDisabled}
             description={bodyReport.descriptions[i]}
             onEdit={this.props.onEditBodyDescription} />
         );
@@ -64,6 +77,20 @@ class CarPartReportForm extends Component {
 
     return (
       <><Form>
+        <Row style={{ margin: '10px' }} align="end">
+          {this.state.isDisabled ?
+            <Button type="primary"
+              shape="round"
+              onClick={() => { this.onEditInfo() }} >
+              <EditOutlined size={"large"} />
+              Edit
+            </Button>
+            : <Button type="primary"
+              shape="round"
+              onClick={() => { this.onSaveEditedInfo() }} >
+              <SaveOutlined size={"large"} />
+              Save
+            </Button>}</Row>
         <Form.Item
           label="Mark"
           name="Mark"
@@ -73,6 +100,7 @@ class CarPartReportForm extends Component {
           <Row style={{ margin: '10px' }}>
             <Col span={12}>
               <Slider
+                disabled={this.state.isDisabled}
                 min={1}
                 max={10}
                 defaultValue={bodyReport.mark}
@@ -81,6 +109,7 @@ class CarPartReportForm extends Component {
             </Col>
             <Col span={4}>
               <InputNumber
+                disabled={this.state.isDisabled}
                 min={1}
                 max={10}
                 style={{ margin: '0 16px' }}
@@ -100,6 +129,7 @@ class CarPartReportForm extends Component {
             defaultValue={
               this.props.reportPart.generalComment
             }
+            disabled={this.state.isDisabled}
             onChange={(value) => {
               let newReport = this.state.reportPart;
               newReport.generalComment = value.target.value;
@@ -115,6 +145,7 @@ class CarPartReportForm extends Component {
             defaultValue={
               this.props.reportPart.generalRecommendation
             }
+            disabled={this.state.isDisabled}
             onChange={(value) => {
               let newReport = this.state.reportPart;
               newReport.generalRecommendation = value.target.value;
@@ -123,7 +154,7 @@ class CarPartReportForm extends Component {
             }} />
         </Form.Item>
         <Row align="end" >
-          <Button type="primary" style={{
+          <Button hidden={this.state.isDisabled} type="primary" style={{
             background: START_REPORT_PROCESS,
             borderColor: START_REPORT_PROCESS, marginBottom: 10
           }}

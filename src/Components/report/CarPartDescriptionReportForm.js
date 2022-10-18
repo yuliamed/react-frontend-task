@@ -1,22 +1,25 @@
 import React, { Component } from 'react'
-import { Upload, Input, Button, Form, Card, Row } from 'antd'
+import { Upload, Input, Button, Form, Card } from 'antd'
 import { PlusSquareOutlined, CloseOutlined } from '@ant-design/icons';
 import ImgCrop from 'antd-img-crop';
-
-import { editBodyPartDescription, editBodyReport, saveEditedBodyReport } from '../../actions/orders/autopicker/manageInspectionReport';
+import { editBodyPartDescription, editBodyReport } from '../../actions/orders/autopicker/manageInspectionReport';
 import { connect } from "react-redux";
+
 const { TextArea } = Input;
 let thisObj = null;
+
 class CarPartDescriptionReportForm extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      
-      isDisabled: false,
+      isDisabled: this.props.isDisabled,
     };
-    //this.onChange = props.onChange();
     thisObj = this;
+  }
+
+  async componentDidMount() {
+    thisObj.setState({ isDisabled: this.props.isDisabled });
   }
 
   changeBodyReport(bodyReport) {
@@ -27,30 +30,24 @@ class CarPartDescriptionReportForm extends Component {
 
   render() {
     let description = this.props.description;
-    //console.log("report");
     return (
       <><Card style={{ width: 450 }}>
-        <Row align="end" >
-          <Button type="primary" danger shape="circle" onClick={() => {
-            console.log("Add form");
-          }}>
-            <CloseOutlined />
-          </Button>
-        </Row>
+       
         <br />
         <Form>
           <Form.Item
             label="Name of car part"
           >
             <Input
+            disabled={this.props.isDisabled}
               defaultValue={description.describingPart}
               onChange={
-                (value)=>{
+                (value) => {
                   description.describingPart = value.target.value;
                   this.props.onEdit(description);
-              }}
-              >
-              </Input>
+                }}
+            >
+            </Input>
           </Form.Item>
 
           <Form.Item
@@ -58,25 +55,27 @@ class CarPartDescriptionReportForm extends Component {
           >
 
             <TextArea placeholder="info about car part"
+            disabled={this.props.isDisabled}
               defaultValue={description.comment}
               onChange={
-                (value)=>{
+                (value) => {
                   const { dispatch } = this.props;
                   description.comment = value.target.value;
                   dispatch(editBodyPartDescription(description, this.props.id))
-              }}/>
+                }} />
           </Form.Item>
           <Form.Item
             label="Recommendation"
           >
             <TextArea placeholder="Recommendation about car part"
+            disabled={this.props.isDisabled}
               defaultValue={description.recommendation}
               onChange={
-                (value)=>{
+                (value) => {
                   const { dispatch } = this.props;
                   description.recommendation = value.target.value;
                   dispatch(editBodyPartDescription(description, this.props.id))
-              }} />
+                }} />
           </Form.Item>
           <Form.Item
             label="Photo"
@@ -85,6 +84,7 @@ class CarPartDescriptionReportForm extends Component {
               height: "30px"
             }}>
               <Upload
+              disabled={this.props.isDisabled}
                 name="avatar"
                 listType="picture-card"
                 showUploadList={false}
@@ -93,7 +93,7 @@ class CarPartDescriptionReportForm extends Component {
                 onChange={(image) => this.onSaveImage(image)}
                 onPreview={this.onPreview}
               >
-                <Button icon={<PlusSquareOutlined />} ></Button>
+                <Button disabled={this.props.isDisabled} icon={<PlusSquareOutlined />} ></Button>
               </Upload>
             </ImgCrop>
           </Form.Item>

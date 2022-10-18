@@ -20,7 +20,7 @@ class AutopickerReportService {
 
   editMainReportData(autoPickerId, orderID, mainDataReport) {
     return commonReq
-      (PUT, "/auto-picker/" + `${autoPickerId}` + "/selection-orders/" + `${orderID}` + "/report", mainDataReport)
+      (PUT, "/auto-picker/" + `${autoPickerId}` + "/inspection-orders/" + `${orderID}` + "/report", mainDataReport)
       .then((response) => {
         return response.data;
       });
@@ -28,7 +28,7 @@ class AutopickerReportService {
 
   editSalonReport(autoPickerId, orderID, salonReport) {
     return commonReq
-      (PATCH, "/auto-picker/" + `${autoPickerId}` + "/selection-orders/" + `${orderID}` + "/report/salon", salonReport)
+      (PATCH, "/auto-picker/" + `${autoPickerId}` + "/inspection-orders/" + `${orderID}` + "/report/salon", salonReport)
       .then((response) => {
         return response.data;
       });
@@ -36,7 +36,7 @@ class AutopickerReportService {
 
   editBodyReport(autoPickerId, orderID, bodyReport) {
     return commonReq
-      (PATCH, "/auto-picker/" + `${autoPickerId}` + "/selection-orders/" + `${orderID}` + "/report/body", bodyReport)
+      (PATCH, "/auto-picker/" + `${autoPickerId}` + "/inspection-orders/" + `${orderID}` + "/report/body", bodyReport)
       .then((response) => {
         return response.data;
       });
@@ -44,7 +44,7 @@ class AutopickerReportService {
 
   editElectroReport(autoPickerId, orderID, electroReport) {
     return commonReq
-      (PATCH, "/auto-picker/" + `${autoPickerId}` + "/selection-orders/" + `${orderID}` + "/report/electrical-equipment", electroReport)
+      (PATCH, "/auto-picker/" + `${autoPickerId}` + "/inspection-orders/" + `${orderID}` + "/report/electrical-equipment", electroReport)
       .then((response) => {
         return response.data;
       });
@@ -52,7 +52,7 @@ class AutopickerReportService {
 
   editPendantReport(autoPickerId, orderID, pendantReport) {
     return commonReq
-      (PATCH, "/auto-picker/" + `${autoPickerId}` + "/selection-orders/" + `${orderID}` + "/report/pendant", pendantReport)
+      (PATCH, "/auto-picker/" + `${autoPickerId}` + "/inspection-orders/" + `${orderID}` + "/report/pendant", pendantReport)
       .then((response) => {
         return response.data;
       });
@@ -60,7 +60,7 @@ class AutopickerReportService {
 
   editEngineReport(autoPickerId, orderID, engineReport) {
     return commonReq
-      (PATCH, "/auto-picker/" + `${autoPickerId}` + "/selection-orders/" + `${orderID}` + "/report/engine", engineReport)
+      (PATCH, "/auto-picker/" + `${autoPickerId}` + "/inspection-orders/" + `${orderID}` + "/report/engine", engineReport)
       .then((response) => {
         return response.data;
       });
@@ -68,7 +68,7 @@ class AutopickerReportService {
 
   editTransmissionReport(autoPickerId, orderID, transmissionReport) {
     return commonReq
-      (PATCH, "/auto-picker/" + `${autoPickerId}` + "/selection-orders/" + `${orderID}` + "/report/transmission", transmissionReport)
+      (PATCH, "/auto-picker/" + `${autoPickerId}` + "/inspection-orders/" + `${orderID}` + "/report/transmission", transmissionReport)
       .then((response) => {
         return response.data;
       });

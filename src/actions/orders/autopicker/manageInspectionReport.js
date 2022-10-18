@@ -280,7 +280,7 @@ export const saveEditedPendantReport =
 export const saveEditedTransmissionReport =
   (autoPickerId, orderID, TransmissionReport) =>
     (dispatch) => {
-      return AutopickerReportService.editTransmissionData(
+      return AutopickerReportService.editTransmissionReport(
         autoPickerId, orderID, TransmissionReport
       ).then(
         (response) => {
@@ -311,7 +311,7 @@ export const saveEditedTransmissionReport =
 export const saveEditedEngineReport =
   (autoPickerId, orderID, EngineReport) =>
     (dispatch) => {
-      return AutopickerReportService.editEngineData(
+      return AutopickerReportService.editEngineReport(
         autoPickerId, orderID, EngineReport
       ).then(
         (response) => {

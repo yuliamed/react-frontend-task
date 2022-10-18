@@ -1,10 +1,11 @@
 import { Card, Form, Input, Row, Button } from 'antd'
 import React, { Component } from 'react'
-import { PlusCircleOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined, EditOutlined, SaveOutlined } from '@ant-design/icons';
 import { START_REPORT_PROCESS } from '../../../constants/colors';
 import NoteOnWorkForm from './NoteOnWorkForm';
-const { TextArea } = Input;
+
 let thisObj = null;
+
 export default class EngineReport extends Component {
 
   constructor(props) {
@@ -14,7 +15,7 @@ export default class EngineReport extends Component {
         noteOnWorkSet: [],
         oilPure: ""
       },
-
+      isDisabled: true,
     };
     thisObj = this;
   }
@@ -37,6 +38,15 @@ export default class EngineReport extends Component {
 
   }
 
+  onEditInfo() {
+    this.setState({ isDisabled: false })
+  }
+
+  onSaveEditedInfo() {
+    this.props.onSaveReport(this.state.report)
+    this.setState({ isDisabled: true })
+  }
+
   render() {
     let report = this.props.report;
     let descriptions = [];
@@ -44,6 +54,7 @@ export default class EngineReport extends Component {
       for (let i = 0; i < report.noteOnWorkSet.length; i++) {
         descriptions.push(
           <NoteOnWorkForm id={i}
+            isDisabled={this.state.isDisabled}
             index={i}
             noteOnWork={report.noteOnWorkSet[i]}
             onEdit={this.props.onEditNoteOnWork} />
@@ -51,12 +62,28 @@ export default class EngineReport extends Component {
       }
     return (
       <Card>
+        <Row align="end" style={{ marginBottom: '10px' }} >
+          {this.state.isDisabled ?
+            <Button type="primary"
+              shape="round"
+              onClick={() => { this.onEditInfo() }} >
+              <EditOutlined size={"large"} />
+              Edit
+            </Button>
+            : <Button type="primary"
+              shape="round"
+              onClick={() => { this.onSaveEditedInfo() }} >
+              <SaveOutlined size={"large"} />
+              Save
+            </Button>}
+        </Row>
         <Form.Item
           style={{ width: '80%' }}
 
           label="Pure Oil"
         >
           <Input placeholder="Pure oil"
+            disabled={this.state.isDisabled}
             defaultValue={
               this.props.report.oilPure
             }
@@ -72,6 +99,7 @@ export default class EngineReport extends Component {
             background: START_REPORT_PROCESS,
             borderColor: START_REPORT_PROCESS, marginBottom: 10
           }}
+            hidden={this.state.isDisabled}
             shape="round"
             onClick={() => {
               this.onAddNewNote();
