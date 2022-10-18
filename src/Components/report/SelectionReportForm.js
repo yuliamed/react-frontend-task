@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 import { Form, Input } from 'antd';
 import { editSelectionReport } from '../../actions/orders/autopicker/manageOrders';
 import { connect } from "react-redux";
-import CarPartDescriptionReportForm from './CarPartDescriptionReportForm';
+
 const { TextArea } = Input;
 let thisObj;
+
 class SelectionReportForm extends Component {
   constructor(props) {
     super(props);
@@ -22,7 +23,6 @@ class SelectionReportForm extends Component {
   }
 
   async componentDidMount() {
-    const { dispatch } = this.props;
     console.log(this.props.index);
     thisObj.setState({
       reportPart: this.props.reportPart,
@@ -92,7 +92,7 @@ class SelectionReportForm extends Component {
             }}
           />
         </Form.Item>
-        
+
       </Form></>
     )
   }

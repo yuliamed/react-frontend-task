@@ -32,7 +32,7 @@ class InspectionReportComponent extends Component {
     this.onEditEngineReport = this.onEditEngineReport.bind(this);
     this.onEditEngineNoteOnWork = this.onEditEngineNoteOnWork.bind(this);
     this.onEditTransNoteOnWork = this.onEditTransNoteOnWork.bind(this);
-    this.onAddNewNoteToTransmission = this.onAddNewNoteToTransmission.bind(this);
+    this.onEditNoteToTransmission = this.onEditNoteToTransmission.bind(this);
 
     this.saveEditedMainInfo = this.saveEditedMainInfo.bind(this);
   }
@@ -115,7 +115,7 @@ class InspectionReportComponent extends Component {
     dispatch(editTransmissionReport(report));
   }
 
-  onAddNewNoteToTransmission(newSet) {
+  onEditNoteToTransmission(newSet) {
     const { dispatch, report } = this.props;
     let transmissionReport = report.transmissionReport;
     transmissionReport.noteOnWorkSet = newSet;
@@ -234,8 +234,7 @@ class InspectionReportComponent extends Component {
               onSaveReport={(rep)=>this.onSaveElectricReport(rep)}  />
           </Panel>
           <Panel header="Pendant report" key="4">
-            <CarPartReportForm reportPart={report.pendantReport
-            }
+            <CarPartReportForm reportPart={report.pendantReport}
               onEditBodyDescription={this.onEditBodyDescription}
               onChangeBodyReport={(rep) => this.changeBodyReport(rep)} 
               onSaveReport={(rep)=>this.onSavePendantReport(rep)} />
@@ -243,7 +242,7 @@ class InspectionReportComponent extends Component {
           <Panel header="Transmission report" key="5">
             <TransmissionReportComponent report={report.transmissionReport.noteOnWorkSet}
               onEditNoteOnWork={this.onEditTransNoteOnWork}
-              onAddNewNoteToTransmission={this.onAddNewNoteToTransmission}
+              onEditNoteSet={this.onEditNoteToTransmission}
               onSaveReport={(rep)=>this.onSaveTransmissionReport(rep)}
             />
           </Panel>

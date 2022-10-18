@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-import { Form, Input, Card } from 'antd';
+import { Form, Input, Card, Row } from 'antd';
+import CancelButton from '../../common/buttons/CancelButton';
 
 const { TextArea } = Input;
 let thisObj = null;
+
 
 export default class NoteOnWorkForm extends Component {
   constructor(props) {
@@ -22,44 +24,55 @@ export default class NoteOnWorkForm extends Component {
     })
   }
 
+  onClickRemoveNote() {
+    console.log("object");
+    this.props.onRemove(this.props.index);
+  }
+
   render() {
     let noteOnWork = this.props.noteOnWork;
+    console.log(noteOnWork.name);
     return (
-      <Card><Form>
-        <Form.Item
-          label="Part name"
-          name="Name"
-          rules={[{ required: true },
-          ]}
-        >
-          <Input
-            disabled={this.props.isDisabled}
-            style={{ margin: '0 16px' }}
-            value={noteOnWork.name}
-            defaultValue={noteOnWork.name}
-            onChange={(v) => {
-              noteOnWork.name = v.target.value;
-              this.props.onEdit(noteOnWork, this.props.index);
-            }}
-          />
-        </Form.Item>
-        <Form.Item
-          style={{ width: '80%' }}
-          label="Description"
-          name="Description"
-        >
-          <TextArea placeholder="Description about work"
-            defaultValue={
-              this.state.noteOnWork.description
+      <Card>
+        <Row justify="end" style={{ marginBottom: "15px" }}>
+          <CancelButton onClick={() => this.onClickRemoveNote()}
+           hidden={this.props.isDisabled} />
+        </Row>
+        <Form>
+          <Form.Item
+            label="Part name"
+            name="Name"
+            rules={[{ required: true },
+            ]}
+          >
+            <Input
+              disabled={this.props.isDisabled}
+              style={{ margin: '0 16px' }}
+              value={noteOnWork.name}
+              defaultValue={noteOnWork.name}
+              onChange={(v) => {
+                noteOnWork.name = v.target.value;
+                this.props.onEdit(noteOnWork, this.props.index);
+              }}
+            />
+          </Form.Item>
+          <Form.Item
+            style={{ width: '80%' }}
+            label="Description"
+            name="Description"
+          >
+            <TextArea placeholder="Description about work"
+              defaultValue={
+                this.state.noteOnWork.description
 
-            }
-            disabled={this.props.isDisabled}
-            onChange={(v) => {
-              noteOnWork.description = v.target.value;
-              this.props.onEdit(noteOnWork, this.props.index);
-            }} />
-        </Form.Item>
-      </Form></Card>
+              }
+              disabled={this.props.isDisabled}
+              onChange={(v) => {
+                noteOnWork.description = v.target.value;
+                this.props.onEdit(noteOnWork, this.props.index);
+              }} />
+          </Form.Item>
+        </Form></Card>
     )
   }
 }

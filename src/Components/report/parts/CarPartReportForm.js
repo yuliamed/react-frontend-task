@@ -5,9 +5,11 @@ import CarPartDescriptionReportForm from '../CarPartDescriptionReportForm';
 import { PlusCircleOutlined } from '@ant-design/icons';
 import { START_REPORT_PROCESS } from '../../../constants/colors';
 import { connect } from "react-redux";
+import { getKeyThenIncreaseKey } from 'antd/lib/message';
 
 const { TextArea } = Input;
 let thisObj = null;
+let counting = 0;
 
 class CarPartReportForm extends Component {
 
@@ -24,11 +26,12 @@ class CarPartReportForm extends Component {
       isDisabled: true,
     };
     this.onChange = this.onChange.bind(this);
+    this.onDeleteDescription = this.onDeleteDescription.bind(this);
     thisObj = this;
   }
 
   async componentDidMount() {
-    const { report, order } = this.props;
+    const { report } = this.props;
     console.log(report);
     thisObj.setState({
       markValue: this.props.report.bodyReport.mark,
@@ -48,7 +51,7 @@ class CarPartReportForm extends Component {
   onAddNewDescription() {
     let newReport = this.state.reportPart;
     let newDescription =
-      { comment: '', photoUrl: "", recommendation: "", describingPart: "" }
+      { comment: '', photoUrl: "", recommendation: "", describingPart: "", id: ++counting }
     newReport.descriptions.push(newDescription);
     this.props.onChangeBodyReport(newReport);
     this.setState({ reportPart: newReport })
@@ -61,6 +64,13 @@ class CarPartReportForm extends Component {
     this.setState({ reportPart: newReport })
   };
 
+  onDeleteDescription(index) {
+    let newReport = this.state.reportPart;
+    newReport.descriptions.splice(index, 1);
+    this.props.onChangeBodyReport(newReport);
+    this.setState({ report: newReport });
+  }
+
   render() {
 
     let bodyReport = this.props.reportPart;
@@ -68,10 +78,12 @@ class CarPartReportForm extends Component {
     if (bodyReport != null && bodyReport.descriptions.length != 0)
       for (let i = 0; i < bodyReport.descriptions.length; i++) {
         descriptions.push(
-          <CarPartDescriptionReportForm id={i}
-            isDisabled={this.state.isDisabled}
-            description={bodyReport.descriptions[i]}
-            onEdit={this.props.onEditBodyDescription} />
+          <div key={bodyReport.descriptions[i].id}>
+            <CarPartDescriptionReportForm id={i}
+              onRemove={this.onDeleteDescription}
+              isDisabled={this.state.isDisabled}
+              description={bodyReport.descriptions[i]}
+              onEdit={this.props.onEditBodyDescription} /></div>
         );
       }
 

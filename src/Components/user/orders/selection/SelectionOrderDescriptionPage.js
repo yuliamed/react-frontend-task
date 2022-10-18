@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BodyTypeArr, BrandNameArr, TransmissionArr, EngineTypeArr, DriveTypeArr, CurrencyArr, } from "../../../../constants/enums"
-import { Modal, Divider, Form, Input, Select, Row, Col, Collapse, InputNumber, Button, Space, } from 'antd';
+import { Modal, Divider, Form, Input, Select, Row, Col, Collapse, InputNumber, Button, } from 'antd';
 import { connect } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { EditOutlined, CloseSquareOutlined, SaveOutlined, LeftOutlined } from '@ant-design/icons';
@@ -12,10 +12,12 @@ import { Content } from 'antd/lib/layout/layout';
 import { ORDER_STATUSES } from '../../../../constants/const';
 import SelectionReportComponent from '../../../report/SelectionReportComponent';
 import UserCard from '../../UserCard';
+
 const { Panel } = Collapse;
 const { TextArea } = Input;
 const { Option } = Select;
 let thisObj;
+
 class WithNavigate extends Component {
 
   constructor(props) {

@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Upload, Input, Button, Form, Card } from 'antd'
+import { Upload, Input, Button, Form, Card, Row } from 'antd'
 import { PlusSquareOutlined, CloseOutlined } from '@ant-design/icons';
 import ImgCrop from 'antd-img-crop';
+import CancelButton from "../common/buttons/CancelButton"
 import { editBodyPartDescription, editBodyReport } from '../../actions/orders/autopicker/manageInspectionReport';
 import { connect } from "react-redux";
 
@@ -28,12 +29,18 @@ class CarPartDescriptionReportForm extends Component {
     this.setState({ isDisabled: !this.state.isDisabled })
   }
 
+  onClickRemoveDescription(){
+    this.props.onRemove(this.props.index)
+  }
+
   render() {
     let description = this.props.description;
     return (
       <><Card style={{ width: 450 }}>
-       
-        <br />
+       <Row justify="end" style={{ marginBottom: "15px" }}>
+          <CancelButton onClick={() => this.onClickRemoveDescription()}
+           hidden={this.props.isDisabled} />
+        </Row>
         <Form>
           <Form.Item
             label="Name of car part"

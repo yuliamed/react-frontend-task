@@ -5,6 +5,7 @@ import { START_REPORT_PROCESS } from '../../../constants/colors';
 import NoteOnWorkForm from './NoteOnWorkForm';
 
 let thisObj = null;
+let counting = 0;
 
 export default class EngineReport extends Component {
 
@@ -18,6 +19,7 @@ export default class EngineReport extends Component {
       isDisabled: true,
     };
     thisObj = this;
+    this.onDeleteNote = this.onDeleteNote.bind(this);
   }
 
   async componentDidMount() {
@@ -25,17 +27,27 @@ export default class EngineReport extends Component {
       report: this.props.report
     })
   }
+
   onAddNewNote() {
     let newSet = this.state.report.noteOnWorkSet;
     newSet.push({
       name: "",
       description: "",
+      id: ++counting,
     })
     let newREport = this.state.report;
     newREport.noteOnWorkSet = newSet;
     this.props.onChangeReport(newREport)
     this.setState({ report: newREport })
+  }
 
+  onDeleteNote(index) {
+    let newSet = this.state.report.noteOnWorkSet;
+    newSet.splice(index, 1);
+    let newReport = this.state.report;
+    newReport.noteOnWorkSet = newSet;
+    this.props.onChangeReport(newSet)
+    this.setState({ report: newReport })
   }
 
   onEditInfo() {
@@ -53,11 +65,13 @@ export default class EngineReport extends Component {
     if (report != null && report.noteOnWorkSet.length != 0)
       for (let i = 0; i < report.noteOnWorkSet.length; i++) {
         descriptions.push(
-          <NoteOnWorkForm id={i}
-            isDisabled={this.state.isDisabled}
-            index={i}
-            noteOnWork={report.noteOnWorkSet[i]}
-            onEdit={this.props.onEditNoteOnWork} />
+          <div key={report.noteOnWorkSet[i].id}>
+            <NoteOnWorkForm id={i}
+              isDisabled={this.state.isDisabled}
+              onRemove={this.onDeleteNote}
+              index={i}
+              noteOnWork={report.noteOnWorkSet[i]}
+              onEdit={this.props.onEditNoteOnWork} /></div>
         );
       }
     return (

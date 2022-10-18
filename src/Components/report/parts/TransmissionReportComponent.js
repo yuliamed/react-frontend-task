@@ -5,6 +5,7 @@ import { START_REPORT_PROCESS } from '../../../constants/colors';
 import NoteOnWorkForm from './NoteOnWorkForm';
 
 let thisObj = null;
+let counting=0;
 
 export default class TransmissionReportComponent extends Component {
 
@@ -15,6 +16,7 @@ export default class TransmissionReportComponent extends Component {
       isDisabled: true
     };
     thisObj = this;
+    this.onDeleteNoteToTransmission = this.onDeleteNoteToTransmission.bind(this);
   }
 
   async componentDidMount() {
@@ -22,24 +24,32 @@ export default class TransmissionReportComponent extends Component {
       noteOnWorkSet: this.props.report,
     })
   }
+
   onAddNewNoteToTransmission() {
     let newSet = this.state.noteOnWorkSet;
     newSet.push({
       name: "",
       description: "",
+      id: ++counting,
     })
-    this.props.onAddNewNoteToTransmission(newSet)
+    this.props.onEditNoteSet(newSet)
     this.setState({ noteOnWorkSet: newSet })
-
   }
 
-  onEditInfo(){
-    this.setState({isDisabled:false})
+  onDeleteNoteToTransmission(index) {
+    let newSet = this.state.noteOnWorkSet;
+    newSet.splice(index, 1);
+    this.props.onEditNoteSet(newSet)
+    this.setState({ noteOnWorkSet: newSet })
   }
 
-  onSaveEditedInfo(){
-    this.props.onSaveReport({noteOnWorkSet:this.state.noteOnWorkSet})
-    this.setState({isDisabled:true})
+  onEditInfo() {
+    this.setState({ isDisabled: false })
+  }
+
+  onSaveEditedInfo() {
+    this.props.onSaveReport({ noteOnWorkSet: this.state.noteOnWorkSet })
+    this.setState({ isDisabled: true })
   }
 
   render() {
@@ -48,16 +58,19 @@ export default class TransmissionReportComponent extends Component {
     if (report != null && report.length != 0)
       for (let i = 0; i < report.length; i++) {
         descriptions.push(
-          <NoteOnWorkForm id={i}
-          isDisabled={this.state.isDisabled}
-            index={i}
-            noteOnWork={report[i]}
-            onEdit={this.props.onEditNoteOnWork} />
+          <div key={report[i].id}>
+            <NoteOnWorkForm id={i}
+              isDisabled={this.state.isDisabled}
+              index={i}
+              noteOnWork={report[i]}
+              onEdit={this.props.onEditNoteOnWork}
+              onRemove={this.onDeleteNoteToTransmission} />
+          </div>
         );
       }
     return (
       <Card>
-        
+
         <Row align="end" style={{ marginBottom: '10px' }}>
           {this.state.isDisabled ?
             <Button type="primary"
@@ -73,7 +86,7 @@ export default class TransmissionReportComponent extends Component {
               Save
             </Button>}
         </Row>
-        
+
         <Row align="end" >
           <Button type="primary" hidden={this.state.isDisabled} style={{
             background: START_REPORT_PROCESS,
@@ -84,7 +97,9 @@ export default class TransmissionReportComponent extends Component {
               this.onAddNewNoteToTransmission();
             }}>
             <PlusCircleOutlined />Add Report
-          </Button></Row>{descriptions}</Card>
+          </Button></Row>
+        {descriptions}
+      </Card>
     )
   }
 }
