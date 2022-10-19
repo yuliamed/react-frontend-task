@@ -98,12 +98,6 @@ class SelectionOrderCreatingComponent extends Component {
   };
 
   render() {
-    // const { dispatch } = this.props;
-    // this.setState({...this.state, userID: this.props.user_id })
-    // dispatch(findAllAutoPickers()).then((resp) => {
-    //   console.log(resp)
-    //   this.setState({...this.state, autoPickers: resp.objects })
-    // })
     console.log("object");
     return (
       <>
@@ -114,7 +108,7 @@ class SelectionOrderCreatingComponent extends Component {
           title="Selection order"
           actions={[
             <SaveOutlined title="save order"
-                onClick={(e) => this.onSaveNewOrder(e)}
+                onClick={(e) => this.onSaveOrder(e)}
                 disabled={true} />
             ,
             <CloseOutlined title="Cancel order" 

@@ -29,7 +29,7 @@ class CarPartDescriptionReportForm extends Component {
     this.setState({ isDisabled: !this.state.isDisabled })
   }
 
-  onClickRemoveDescription(){
+  onClickRemoveDescription() {
     this.props.onRemove(this.props.index)
   }
 
@@ -37,16 +37,16 @@ class CarPartDescriptionReportForm extends Component {
     let description = this.props.description;
     return (
       <><Card style={{ width: 450 }}>
-       <Row justify="end" style={{ marginBottom: "15px" }}>
+        <Row justify="end" style={{ marginBottom: "15px" }}>
           <CancelButton onClick={() => this.onClickRemoveDescription()}
-           hidden={this.props.isDisabled} />
+            hidden={this.props.isDisabled} />
         </Row>
         <Form>
           <Form.Item
             label="Name of car part"
           >
             <Input
-            disabled={this.props.isDisabled}
+              disabled={this.props.isDisabled}
               defaultValue={description.describingPart}
               onChange={
                 (value) => {
@@ -62,7 +62,7 @@ class CarPartDescriptionReportForm extends Component {
           >
 
             <TextArea placeholder="info about car part"
-            disabled={this.props.isDisabled}
+              disabled={this.props.isDisabled}
               defaultValue={description.comment}
               onChange={
                 (value) => {
@@ -75,7 +75,7 @@ class CarPartDescriptionReportForm extends Component {
             label="Recommendation"
           >
             <TextArea placeholder="Recommendation about car part"
-            disabled={this.props.isDisabled}
+              disabled={this.props.isDisabled}
               defaultValue={description.recommendation}
               onChange={
                 (value) => {
@@ -91,7 +91,7 @@ class CarPartDescriptionReportForm extends Component {
               height: "30px"
             }}>
               <Upload
-              disabled={this.props.isDisabled}
+                disabled={this.props.isDisabled}
                 name="avatar"
                 listType="picture-card"
                 showUploadList={false}

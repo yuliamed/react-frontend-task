@@ -3,8 +3,8 @@ import { Navigate } from 'react-router-dom';
 import { connect } from "react-redux";
 import UserService from "../../services/userService";
 import jwt from 'jwt-decode'
-import { LoadingOutlined, PlusOutlined, PlusSquareOutlined, DeleteOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Input, Card, Col, Row, Form, Image, Upload, message } from "antd";
+import { PlusSquareOutlined, DeleteOutlined, } from '@ant-design/icons';
+import { Button, Input, Card, Col, Row, Form, Avatar, Upload, message } from "antd";
 import { BASE_USER_PICTURE } from "../../constants/const";
 import ImgCrop from 'antd-img-crop';
 import Header from "../common/headers/Header";
@@ -14,12 +14,6 @@ import { changePass, deletePhoto, getPhoto, savePhoto } from "../../actions/acco
 let thisObj;
 let isEdited = false;
 var isHiddenError = true;
-const uploadButton = (
-  <div>
-    {<PlusOutlined />}
-    <div style={{ marginTop: 8 }}>Upload</div>
-  </div>
-);
 
 class Profile extends Component {
   constructor(props) {
@@ -132,22 +126,35 @@ class Profile extends Component {
     }
   }
 
+  onChangePicture(info) {
+    if (info.file.status !== 'uploading') {
+      console.log(info.file, info.fileList);
+    }
+    if (info.file.status === 'done') {
+      message.success(`${info.file.name} file uploaded successfully`);
+    } else if (info.file.status === 'error') {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+
+  }
+
   onSaveImage(image) {
     const { dispatch } = this.props;
     dispatch(savePhoto(localStorage.getItem("userId"), image)).then(
       (responce) => {
         console.log(responce)
-        this.setState({ user: responce, imageData: image })
-      },
-      getPhoto(localStorage.getItem("userId"))).then(
-        (responce) => {
-          this.setState({ imageData: responce })
-        }
-      )
+        //this.setState({ user: responce, imageData: image })
+      })
+    console.log("it`s too difficalt");
+    dispatch(getPhoto(localStorage.getItem("userId"))).then(
+      (responce) => {
+        console.log("i want to cry + " + responce);
+        this.setState({ imageData: responce })
+        this.render();
+      })
   }
 
   onDeleteImage() {
-    console.log("delete")
     const { dispatch } = this.props;
     dispatch(deletePhoto(localStorage.getItem("userId"))).then(
       (resp) => {
@@ -178,24 +185,6 @@ class Profile extends Component {
     }
     return isJpgOrPng && isLt2M;
   }
-
-  onPreview = async (file) => {
-    let src = file.url;
-
-    if (!src) {
-      src = await new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file.originFileObj);
-
-        reader.onload = () => resolve(reader.result);
-      });
-    }
-
-    const image = new Image();
-    image.src = src;
-    const imgWindow = window.open(src);
-    imgWindow?.document.write(image.outerHTML);
-  };
 
   render() {
     const { user, louding } = this.state;
@@ -279,30 +268,28 @@ class Profile extends Component {
               isEdited = true;
             }
           }>
-            <Image
-              style={{
-                padding: "2%"
-              }}
+            <Avatar
+              size={{ xs: 240, sm: 320, md: 400, lg: 640, xl: 800, xxl: 1000 }}
+              style={{ maxHeight: 400, maxWidth: 400 }}
+              shape="square"
               src={this.state.imageData == null ? BASE_USER_PICTURE : `data:image/jpeg;base64,${this.state.imageData}`}
               preview={false}
             />
-            <Row >
+            <Row align='end'>
               <Col>
                 <ImgCrop
                   style={{
                     height: "30px"
                   }}
-                //rotate
                 >
                   <Upload
 
                     name="avatar"
-                    listType="picture-card"
+                    listType="picture"
                     showUploadList={false}
                     action={(image) => this.onSaveImage(image)}
-                    beforeUpload={this.beforeUpload}
-                    onChange={(image) => this.onSaveImage(image)}
-                    onPreview={this.onPreview}
+                    //beforeUpload={this.beforeUpload}
+                    onChange={this.onChangePicture}
                   >
                     <Button icon={<PlusSquareOutlined />} ></Button>
                   </Upload>
@@ -317,10 +304,6 @@ class Profile extends Component {
 
               </Col>
             </Row>
-
-
-
-
             <Form.Item
               label="Email">
               <Input label="Email" placeholder="Email"
