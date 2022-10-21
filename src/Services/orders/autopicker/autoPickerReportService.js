@@ -1,6 +1,6 @@
 import commonReq from "../../commom-axios";
 import {
-  POST, GET, PUT, PATCH
+  POST, GET, PUT, PATCH, OPTIONS
 } from "../../requesrTypes";
 class AutopickerReportService {
 
@@ -74,6 +74,21 @@ class AutopickerReportService {
       });
   }
 
+  savePhoto(autoPickerId, orderId, file) {
+    return commonReq(POST, "/auto-picker/" + `${autoPickerId}`
+      + "/inspection-orders/" + `${orderId}` + "/report/image", file)
+      .then((response) => {
+        return response.data;
+      });
+  }
+
+  getPhoto(autoPickerId, orderId, path) {
+
+    return commonReq(GET, "/auto-picker/" + `${autoPickerId}`
+      + "/inspection-orders/" + `${orderId}` + "/report/image?file=" + `${path}`).then((response) => {
+        return response.data;
+      });
+  }
 
 }
 

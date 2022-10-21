@@ -1,7 +1,7 @@
 import axios from "axios";
 //import { REACT_APP_API_URL } from '../constants/const';
 import {
-    POST, GET, PUT, PATCH, DELETE, GET_WITH_PARAMS,
+    POST, GET, PUT, PATCH, DELETE, GET_WITH_PARAMS, OPTIONS,
 } from "./requesrTypes";
 //const user = JSON.parse(localStorage.getItem('user'));
 //localStorage.clear();
@@ -23,6 +23,9 @@ function commonReq(type, url, body) {
     });
 
     switch (type) {
+        case OPTIONS: {
+            return axiosReq.options(url, body)
+        }
         case GET: {
             return axiosReq.get(url, body)
         }

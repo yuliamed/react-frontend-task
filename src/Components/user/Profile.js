@@ -283,7 +283,6 @@ class Profile extends Component {
                   }}
                 >
                   <Upload
-
                     name="avatar"
                     listType="picture"
                     showUploadList={false}

@@ -72,7 +72,8 @@ class CarPartReportForm extends Component {
   }
 
   render() {
-
+    const { order, } = this.props;
+    //const { order } = this.props.userOrder;
     let bodyReport = this.props.reportPart;
     let descriptions = [];
     if (bodyReport != null && bodyReport.descriptions.length != 0)
@@ -80,6 +81,7 @@ class CarPartReportForm extends Component {
         descriptions.push(
           <div key={bodyReport.descriptions[i].id}>
             <CarPartDescriptionReportForm id={i}
+              orderId={order.id}
               onRemove={this.onDeleteDescription}
               isDisabled={this.state.isDisabled}
               description={bodyReport.descriptions[i]}

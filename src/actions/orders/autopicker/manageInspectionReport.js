@@ -338,3 +338,21 @@ export const saveEditedEngineReport =
         }
       );
     };
+
+export const savePhoto = (autoPickerId, orderID, photo) => (dispatch) => {
+  let data = new FormData();
+  data.append("file", photo);
+  let info = AutopickerReportService.savePhoto(
+    autoPickerId, orderID, data
+  )
+  return info;
+}
+
+export const getPhoto = (autoPickerId, orderID, path) => (dispatch) => {
+  return AutopickerReportService.getPhoto(
+    autoPickerId, orderID,  path 
+  ).then((resp) => {
+    return resp;
+
+  })
+};
