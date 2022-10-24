@@ -52,7 +52,7 @@ class CarPartReportForm extends Component {
   onAddNewDescription() {
     let newReport = this.state.reportPart;
     let newDescription =
-      { comment: '', photoUrl: "", recommendation: "", describingPart: "", id: ++counting }
+      { comment: '', photoUrl: null, recommendation: "", describingPart: "", id: ++counting }
     newReport.descriptions.push(newDescription);
     this.props.onChangeBodyReport(newReport);
     this.setState({ reportPart: newReport })
