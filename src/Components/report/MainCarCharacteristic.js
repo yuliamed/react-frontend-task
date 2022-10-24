@@ -188,7 +188,7 @@ class MainCarCharacteristic extends Component {
                 onChange={
                   (value) => {
                     let newReport = this.state.report;
-                    newReport.isMileageReal = (value.target.value);
+                    newReport.isMileageReal = (value.target.checked);
                     this.onChange(newReport);
                   }}></Checkbox>
             </Form.Item>
@@ -222,7 +222,8 @@ class MainCarCharacteristic extends Component {
                 onChange={
                   (value) => {
                     let newReport = this.state.report;
-                    newReport.isVinNumberReal = (value.target.value);
+                    console.log(value.target.checked);
+                    newReport.isVinNumberReal = (value.target.checked);
                     this.onChange(newReport);
                   }}></Checkbox>
             </Form.Item>
