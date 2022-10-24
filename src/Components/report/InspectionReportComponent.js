@@ -7,10 +7,11 @@ import { saveEditedSelectionReport, saveNewSelectionReport } from '../../actions
 import { changeOrderStatus } from '../../actions/orders/userOrder';
 import { ORDER_STATUSES } from '../../constants/const';
 import MainCarCharacteristic from './MainCarCharacteristic'
-import { editBodyReport, editBodyPartDescription, editTransmissionReport, editEngineReport, saveEditedMainDataReport, saveEditedBodyReport, saveEditedSalonReport, saveEditedElectroReport, saveEditedPendantReport, saveEditedTransmissionReport, saveEditedEngineReport, createInspectionReport, saveNewInspectionReport, editMainReportData } from '../../actions/orders/autopicker/manageInspectionReport';
+import { editBodyReport, editBodyPartDescription, editTransmissionReport, editEngineReport, saveEditedMainDataReport, saveEditedBodyReport, saveEditedSalonReport, saveEditedElectroReport, saveEditedPendantReport, saveEditedTransmissionReport, saveEditedEngineReport, createInspectionReport, saveNewInspectionReport, editMainReportData, saveEditedComputerErrorsReport } from '../../actions/orders/autopicker/manageInspectionReport';
 import CarPartReportForm from './parts/CarPartReportForm';
 import TransmissionReportComponent from './parts/TransmissionReportComponent';
 import EngineReport from './parts/EngineReport';
+import ComputerErrorReportComponent from './parts/ComputerErrorReportComponent';
 const { Panel } = Collapse;
 let thisObj;
 class InspectionReportComponent extends Component {
@@ -140,7 +141,7 @@ class InspectionReportComponent extends Component {
         generalRecommendation: "",
         descriptions: []
       },
-      carErrors:[]
+      carComputerErrors: []
 
     }
     const { dispatch } = this.props;
@@ -190,7 +191,7 @@ class InspectionReportComponent extends Component {
     dispatch(editEngineReport(newReport));
   }
 
-  onChangeMainInfo(report){
+  onChangeMainInfo(report) {
     const { dispatch } = this.props;
     dispatch(editMainReportData(report));
   }
@@ -230,6 +231,11 @@ class InspectionReportComponent extends Component {
     dispatch(saveEditedEngineReport(localStorage.getItem("userId"), this.state.orderId, report));
   }
 
+  onSaveComperErrorsReport(report){
+    const { dispatch } = this.props;
+    dispatch(saveEditedComputerErrorsReport(localStorage.getItem("userId"), this.state.orderId, report));
+  }
+
   render() {
     const { report, } = this.props;
     console.log(report);
@@ -260,7 +266,7 @@ class InspectionReportComponent extends Component {
           <br />
           <Divider orientation="left">Main car information</Divider>
           <MainCarCharacteristic report={report}
-            onChange={(report)=>this.onChangeMainInfo(report)}
+            onChange={(report) => this.onChangeMainInfo(report)}
             isCreating={this.state.isReportCreating}
             saveEditedInfo={(info) => this.saveEditedMainInfo(info)} />
           <Collapse defaultActiveKey={["1"]}>
@@ -307,6 +313,14 @@ class InspectionReportComponent extends Component {
                 onChangeReport={this.onEditEngineReport}
                 onEditNoteOnWork={this.onEditEngineNoteOnWork}
                 onSaveReport={(rep) => this.onSaveEngineReport(rep)}
+              />
+            </Panel>
+            <Panel header="Computer errors" key="7">
+              <ComputerErrorReportComponent isCreating={this.state.isReportCreating}
+                report={report.carComputerErrors}
+                //onChangeReport={this.onEditEngineReport}
+                //onEditNoteOnWork={this.onEditEngineNoteOnWork}
+                onSaveReport={(rep) => this.onSaveComperErrorsReport(rep)}
               />
             </Panel>
           </Collapse >

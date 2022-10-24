@@ -16,7 +16,10 @@ import {
   SAVE_EDITTED_TRANSMISSION_REPORT,
   EDIT_BODY_PART_DESCRIPTION,
   GET_INSPECTION_ORDER,
-  CREATE_INSPECTION_REPORT,CLEAN_REPORT, SAVE_NEW_INSPECTION_REPORT_SUCCESS
+  SAVE_EDITTED_COMPUTER_ERRORS_REPORT,
+  CREATE_INSPECTION_REPORT, CLEAN_REPORT,
+  SAVE_NEW_INSPECTION_REPORT_SUCCESS,
+  EDIT_INSPECTION_COMPUTER_ERRORS_REPORT
 } from "./types";
 
 import { SET_MESSAGE } from "../../types";
@@ -119,6 +122,17 @@ export const editTransmissionReport =
       console.log(report);
       dispatch({
         type: EDIT_INSPECTION_TRANSMISSION_REPORT,
+        payload: report
+      });
+      return report;
+    };
+
+export const editComputerErrorsReport =
+  (report) =>
+    (dispatch) => {
+      console.log(report);
+      dispatch({
+        type: EDIT_INSPECTION_COMPUTER_ERRORS_REPORT,
         payload: report
       });
       return report;
@@ -341,6 +355,37 @@ export const saveEditedEngineReport =
       );
     };
 
+export const saveEditedComputerErrorsReport =
+  (autoPickerId, orderID, computerErrors) =>
+    (dispatch) => {
+      return AutopickerReportService.editComputerErrorsReport(
+        autoPickerId, orderID, computerErrors
+      ).then(
+        (response) => {
+          dispatch({
+            type: SAVE_EDITTED_COMPUTER_ERRORS_REPORT,
+            payload: response
+          });
+          return response;
+        },
+        (error) => {
+
+          const message =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
+
+          dispatch({
+            type: SET_MESSAGE,
+            payload: message,
+          });
+          return Promise.reject();
+        }
+      );
+    };
+
 export const savePhoto = (autoPickerId, orderID, photo) => (dispatch) => {
   let data = new FormData();
   data.append("file", photo);
@@ -352,14 +397,14 @@ export const savePhoto = (autoPickerId, orderID, photo) => (dispatch) => {
 
 export const getPhoto = (autoPickerId, orderID, path) => (dispatch) => {
   return AutopickerReportService.getPhoto(
-    autoPickerId, orderID,  path 
+    autoPickerId, orderID, path
   ).then((resp) => {
     return resp;
 
   })
 };
 
-export const saveNewInspectionReport = (autoPickerId, orderID, report) => (dispatch)=>{
+export const saveNewInspectionReport = (autoPickerId, orderID, report) => (dispatch) => {
   return AutopickerReportService.saveNewIspectionReport(
     autoPickerId, orderID, report
   ).then(

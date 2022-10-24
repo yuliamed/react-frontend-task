@@ -74,6 +74,14 @@ class AutopickerReportService {
       });
   }
 
+  editComputerErrorsReport(autoPickerId, orderID, carErrorsReq) {
+    return commonReq
+      (PATCH, "/auto-picker/" + `${autoPickerId}` + "/inspection-orders/" + `${orderID}` + "/report/car-errors", carErrorsReq)
+      .then((response) => {
+        return response.data;
+      });
+  }
+
   savePhoto(autoPickerId, orderId, file) {
     return commonReq(POST, "/auto-picker/" + `${autoPickerId}`
       + "/inspection-orders/" + `${orderId}` + "/report/image", file)
