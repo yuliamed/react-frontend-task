@@ -12,36 +12,36 @@ export default class ComputerErrorReportComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      noteOnWorkSet: [],
+      carComputerErrors: [],
       isDisabled: true
     };
     thisObj = this;
-    this.onDeleteNoteToTransmission = this.onDeleteNoteToTransmission.bind(this);
+    this.onDeleteComputerError = this.onDeleteComputerError.bind(this);
   }
 
   async componentDidMount() {
     thisObj.setState({
-      noteOnWorkSet: this.props.report,
+      carComputerErrors: this.props.report,
       isDisabled: !this.props.isCreating
     })
   }
 
-  onAddNewNoteToTransmission() {
-    let newSet = this.state.noteOnWorkSet;
+  onAddNewComputerError() {
+    let newSet = this.state.carComputerErrors;
     newSet.push({
       name: "",
       description: "",
       id: ++counting,
     })
     this.props.onEditNoteSet(newSet)
-    this.setState({ noteOnWorkSet: newSet })
+    this.setState({ carComputerErrors: newSet })
   }
 
-  onDeleteNoteToTransmission(index) {
-    let newSet = this.state.noteOnWorkSet;
+  onDeleteComputerError(index) {
+    let newSet = this.state.carComputerErrors;
     newSet.splice(index, 1);
-    this.props.onEditNoteSet(newSet)
-    this.setState({ noteOnWorkSet: newSet })
+    this.props.onEditNoteSet(newSet);
+    this.setState({ carComputerErrors: newSet })
   }
 
   onEditInfo() {
@@ -49,7 +49,7 @@ export default class ComputerErrorReportComponent extends Component {
   }
 
   onSaveEditedInfo() {
-    this.props.onSaveReport({ noteOnWorkSet: this.state.noteOnWorkSet })
+    this.props.onSaveReport({ carComputerErrors: this.state.carComputerErrors })
     this.setState({ isDisabled: true })
   }
 
@@ -64,8 +64,8 @@ export default class ComputerErrorReportComponent extends Component {
               isDisabled={this.state.isDisabled}
               index={i}
               noteOnWork={report[i]}
-              onEdit={this.props.onEditNoteOnWork}
-              onRemove={this.onDeleteNoteToTransmission} />
+              onEdit={this.props.onEditNoteSet}
+              onRemove={this.onDeleteComputerError} />
           </div>
         );
       }
@@ -95,7 +95,7 @@ export default class ComputerErrorReportComponent extends Component {
           }}
             shape="round"
             onClick={() => {
-              this.onAddNewNoteToTransmission();
+              this.onAddNewComputerError();
             }}>
             <PlusCircleOutlined />Add Report
           </Button></Row>

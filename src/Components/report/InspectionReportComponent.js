@@ -7,7 +7,7 @@ import { saveEditedSelectionReport, saveNewSelectionReport } from '../../actions
 import { changeOrderStatus } from '../../actions/orders/userOrder';
 import { ORDER_STATUSES } from '../../constants/const';
 import MainCarCharacteristic from './MainCarCharacteristic'
-import { editBodyReport, editBodyPartDescription, editTransmissionReport, editEngineReport, saveEditedMainDataReport, saveEditedBodyReport, saveEditedSalonReport, saveEditedElectroReport, saveEditedPendantReport, saveEditedTransmissionReport, saveEditedEngineReport, createInspectionReport, saveNewInspectionReport, editMainReportData, saveEditedComputerErrorsReport } from '../../actions/orders/autopicker/manageInspectionReport';
+import { editBodyReport, editBodyPartDescription, editTransmissionReport, editEngineReport, saveEditedMainDataReport, saveEditedBodyReport, saveEditedSalonReport, saveEditedElectroReport, saveEditedPendantReport, saveEditedTransmissionReport, saveEditedEngineReport, createInspectionReport, saveNewInspectionReport, editMainReportData, saveEditedComputerErrorsReport, editComputerErrorsReport } from '../../actions/orders/autopicker/manageInspectionReport';
 import CarPartReportForm from './parts/CarPartReportForm';
 import TransmissionReportComponent from './parts/TransmissionReportComponent';
 import EngineReport from './parts/EngineReport';
@@ -34,7 +34,8 @@ class InspectionReportComponent extends Component {
     this.onEditEngineNoteOnWork = this.onEditEngineNoteOnWork.bind(this);
     this.onEditTransNoteOnWork = this.onEditTransNoteOnWork.bind(this);
     this.onEditNoteToTransmission = this.onEditNoteToTransmission.bind(this);
-
+    this.onEditCarError = this.onEditCarError.bind(this);
+    this.onEditCarErrorsReport = this.onEditCarErrorsReport.bind(this);
     this.saveEditedMainInfo = this.saveEditedMainInfo.bind(this);
   }
 
@@ -184,11 +185,26 @@ class InspectionReportComponent extends Component {
     dispatch(editEngineReport(report));
   }
 
+  onEditCarError(noteOnWork, id) {
+    const { dispatch, report } = this.props;
+    let carErrorReport = report.carComputerErrors;
+    carErrorReport[id] = noteOnWork;
+    report.carComputerErrors = carErrorReport;
+    dispatch(editComputerErrorsReport(report));
+  }
+
   onEditEngineReport(newEngineReport) {
     const { dispatch, report } = this.props;
     let newReport = report;
     newReport.engineReport = newEngineReport;
     dispatch(editEngineReport(newReport));
+  }
+
+  onEditCarErrorsReport(newCarErrorsReport) {
+    const { dispatch, report } = this.props;
+    let newReport = report;
+    newReport.carComputerErrors = newCarErrorsReport;
+    dispatch(editComputerErrorsReport(newReport));
   }
 
   onChangeMainInfo(report) {
@@ -318,8 +334,8 @@ class InspectionReportComponent extends Component {
             <Panel header="Computer errors" key="7">
               <ComputerErrorReportComponent isCreating={this.state.isReportCreating}
                 report={report.carComputerErrors}
-                //onChangeReport={this.onEditEngineReport}
-                //onEditNoteOnWork={this.onEditEngineNoteOnWork}
+                onChangeReport={this.onEditCarErrorsReport}
+                onEditNoteSet={this.onEditCarError}
                 onSaveReport={(rep) => this.onSaveComperErrorsReport(rep)}
               />
             </Panel>
