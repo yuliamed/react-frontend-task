@@ -15,6 +15,8 @@ import {
   SAVE_EDITTED_PENDANT_REPORT,
   SAVE_EDITTED_TRANSMISSION_REPORT,
   EDIT_BODY_PART_DESCRIPTION,
+  GET_INSPECTION_ORDER,
+  CREATE_INSPECTION_REPORT,CLEAN_REPORT, SAVE_NEW_INSPECTION_REPORT_SUCCESS
 } from "./types";
 
 import { SET_MESSAGE } from "../../types";
@@ -356,3 +358,62 @@ export const getPhoto = (autoPickerId, orderID, path) => (dispatch) => {
 
   })
 };
+
+export const saveNewInspectionReport = (autoPickerId, orderID, report) => (dispatch)=>{
+  return AutopickerReportService.saveNewIspectionReport(
+    autoPickerId, orderID, report
+  ).then(
+    (response) => {
+      dispatch({
+        type: SAVE_NEW_INSPECTION_REPORT_SUCCESS, payload: response
+      });
+      return response;
+    },
+    (error) => {
+
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
+      return Promise.reject();
+    }
+  );
+}
+
+export const createInspectionReport =
+  (report) =>
+    (dispatch) => {
+      console.log(report);
+      dispatch({
+        type: CREATE_INSPECTION_REPORT,
+        payload: report
+      });
+      return report;
+    };
+
+export const cleanInspectionReport =
+  () =>
+    (dispatch) => {
+      dispatch({
+        type: CLEAN_REPORT
+      });
+      return null;
+    };
+
+export const getInspectionOrder =
+  (order) =>
+    (dispatch) => {
+      console.log(order);
+      dispatch({
+        type: GET_INSPECTION_ORDER,
+        payload: order
+      });
+      return order;
+    };

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Col, Row, Button, Form, Input, Select, InputNumber, Space, DatePicker } from 'antd';
+import { Col, Row, Button,Checkbox, Form, Input, Select, InputNumber, Space, DatePicker } from 'antd';
 import { BodyTypeArr, BrandNameArr, TransmissionArr, EngineTypeArr, DriveTypeArr, CurrencyArr, } from "../../constants/enums"
 import { EditOutlined, SaveOutlined } from '@ant-design/icons';
 import moment from 'moment';
@@ -23,7 +23,7 @@ class MainCarCharacteristic extends Component {
 
   async componentDidMount() {
     const { dispatch } = this.props;
-    thisObj.setState({ report: this.props.report });
+    thisObj.setState({ report: this.props.report, isDisabled: !this.props.isCreating });
   }
 
   onSaveEditedInfo() {
@@ -43,6 +43,11 @@ class MainCarCharacteristic extends Component {
     return children
   }
 
+  onChange(report){
+    this.props.onChange(report);
+    this.setState({report: report})
+  }
+
   render() {
     let report = this.props.report;
 
@@ -55,38 +60,48 @@ class MainCarCharacteristic extends Component {
         <Form
           validateMessages={this.validateMessages}
         >
-          <DatePicker
-            disabled={this.state.isDisabled}
-            disabledDate={disabledDate}
-            defaultValue={moment(report.inspectionDate)}
-            onChange={
-              (date, dateString) => {
-                let newReport = this.state.report;
-                newReport.inspectionDate = dateString;
-                this.setState({ report: newReport })
-              }
-            } />
-          <Row align='end' style={{ marginLeft: "50px" }}>
-            <Col > {this.state.isDisabled ?
-              <Button type="primary"
-                shape="round"
-                onClick={() => { this.onEditInfo() }} >
-                <EditOutlined size={"large"} />
-                Edit
-              </Button>
-              : <Button type="primary"
-                shape="round"
-                onClick={() => { this.onSaveEditedInfo() }} >
-                <SaveOutlined size={"large"} />
-                Save
-              </Button>}
-            </Col>
-          </Row>
-
+          {this.props.isCreating ? <></> :
+            <Row align='end' style={{ marginLeft: "50px", marginBottom: "15px" }}>
+              <Col > {this.state.isDisabled ?
+                <Button type="primary"
+                  shape="round"
+                  onClick={() => { this.onEditInfo() }} >
+                  <EditOutlined size={"large"} />
+                  Edit
+                </Button>
+                : <Button type="primary"
+                  shape="round"
+                  onClick={() => { this.onSaveEditedInfo() }} >
+                  <SaveOutlined size={"large"} />
+                  Save
+                </Button>}
+              </Col>
+            </Row>
+          }
           <Space wrap>
+
+            <Form.Item
+              style={{ marginRight: '20px' }}
+              label="Inspection date"
+              name="Inspection dateы"
+              rules={[{ required: true }]}>
+              <DatePicker
+                disabled={this.state.isDisabled}
+                disabledDate={disabledDate}
+                defaultValue={moment(report.inspectionDate)}
+                onChange={
+                  (date, dateString) => {
+                    let newReport = this.state.report;
+                    newReport.inspectionDate = dateString;
+                    this.onChange(newReport);
+                  }
+                } />
+
+            </Form.Item>
             <Form.Item
               style={{ marginRight: '20px', width: 200 }}
               label="Brand"
+              name="Brand"
               rules={[{ required: true }]}>
               <Select
                 disabled={this.state.isDisabled}
@@ -98,8 +113,9 @@ class MainCarCharacteristic extends Component {
                   newReport.brand = {
                     name: (value)
                   }
-                  this.setState({ report: newReport })
+                  this.onChange(newReport);
                 }}
+
               >
                 {this.createOptionArr(BrandNameArr)}
               </Select>
@@ -108,18 +124,20 @@ class MainCarCharacteristic extends Component {
             <Form.Item
               label="Model:"
               name="Model"
+              style={{ marginRight: '20px' }}
               rules={[{ required: true },
               ]}
             >
               <Input
                 disabled={this.state.isDisabled}
                 defaultValue={report.model}
-                style={{ marginRight: '20px' }}
+                style={{ width: 200 }}
                 onChange={
                   (value) => {
                     let newReport = this.state.report;
+                    console.log(value.target.value);
                     newReport.model = (value.target.value);
-                    this.setState({ report: newReport })
+                    this.onChange(newReport);
                   }}
               />
             </Form.Item>
@@ -127,75 +145,116 @@ class MainCarCharacteristic extends Component {
             <Form.Item
               name="Year"
               label="Year: "
-              style={{ marginRight: '20px' }}
-              rules={[{ required: true },
-
-              ]}>
+              style={{ marginRight: '20px', width: 100 }}
+              rules={[{ required: true }]}>
               <InputNumber
                 disabled={this.state.isDisabled}
                 min={100}
                 value={report.year}
-
                 onChange={
                   (value) => {
                     let newReport = this.state.report;
                     newReport.year = (value.target.value);
-                    this.setState({ report: newReport })
+                    this.onChange(newReport);
                   }}
               />
-              <span className="ant-form-text"></span>
             </Form.Item>
             <Form.Item
               name="Mileage"
               label="Mileage: "
-              style={{ marginRight: '20px' }}
-              rules={[{ required: true },
-
-              ]}>
+              style={{ marginRight: '20px', width: 150 }}
+              rules={[{ required: true },]}>
               <InputNumber
                 disabled={this.state.isDisabled}
                 min={100}
                 value={report.mileage}
+                onChange={
+                  (value) => {
+                    let newReport = this.state.report;
+                    newReport.mileage = (value);
+                    this.onChange(newReport);
+                  }}
+              />
+            </Form.Item>
+            <p style={{ marginBottom: '25px', marginRight: '20px', }}>km</p>
+
+            <Form.Item
+              name="Is mileage real?"
+              label="Is mileage real? "
+              style={{ marginRight: '20px', width: 150 }}            >
+              <Checkbox
+                chacked={report.isMileageReal}
+                disabled={this.state.isDisabled}
+                onChange={
+                  (value) => {
+                    let newReport = this.state.report;
+                    newReport.isMileageReal = (value.target.value);
+                    this.onChange(newReport);
+                  }}></Checkbox>
+            </Form.Item>
+
+            <Form.Item
+              name="VIN number"
+              label="VIN number: "
+              style={{ marginRight: '20px', width: 150 }}
+              rules={[{ required: true },]}>
+              <Input
+                disabled={this.state.isDisabled}
+                min={100}
+                value={report.vinNumber}
 
                 onChange={
                   (value) => {
                     let newReport = this.state.report;
-                    newReport.mileage = (value.target.value);
-                    this.setState({ report: newReport })
+                    newReport.vinNumber = (value.target.value);
+                    this.onChange(newReport);
                   }}
-              /><span className="ant-form-text">km</span>
+              />
+            </Form.Item>
+
+            <Form.Item
+              name="Is VIN number real?"
+              label="Is VIN number real? "
+              style={{ marginRight: '20px', width: 150 }}>
+              <Checkbox
+                chacked={report.isVinNumberReal}
+                disabled={this.state.isDisabled}
+                onChange={
+                  (value) => {
+                    let newReport = this.state.report;
+                    newReport.isVinNumberReal = (value.target.value);
+                    this.onChange(newReport);
+                  }}></Checkbox>
             </Form.Item>
 
             <Form.Item
               name="Car price"
               label="Car price: "
-              style={{ marginRight: '20px' }}
-              rules={[{ required: true },
-
-              ]}>
+              style={{ marginRight: '10px' }}
+              rules={[{ required: true },]}>
               <InputNumber
                 disabled={this.state.isDisabled}
                 min={100}
+                style={{ width: 100 }}
                 value={report.costValue}
-
                 onChange={
                   (value) => {
                     let newReport = this.state.report;
-                    newReport.costValue = (value.target.value);
-                    this.setState({ report: newReport })
+                    newReport.costValue = (value);
+                    this.onChange(newReport);
                   }}
               /><span className="ant-form-text"></span>
             </Form.Item>
-            <Form.Item
 
+            <Form.Item
+              style={{ marginRight: '20px' }}
               label="Currency type"
               name="currency type"
-              rules={[{ required: true },
-              ]}>
+              rules={[{ required: true },]}>
               <Select
                 disabled={this.state.isDisabled}
                 defaultValue={report.currencyType.name}
-                style={{ marginRight: '20px' }}
+                style={{ marginRight: '20px', width: 100 }}
                 placeholder="Please select"
                 onChange={(value) => {
                   let newReport = this.state.report;
@@ -203,7 +262,7 @@ class MainCarCharacteristic extends Component {
                     name: (value)
                   }
 
-                  this.setState({ report: newReport })
+                  this.onChange(newReport);
                 }}
               >
                 {this.createOptionArr(CurrencyArr)}
@@ -212,8 +271,12 @@ class MainCarCharacteristic extends Component {
 
             <Form.Item
               style={{ marginRight: '20px' }}
-              label="Car engine volume:">
+              label="Car engine volume:"
+              name="Car engine volume"
+              rules={[{ required: true }]}>
+
               <InputNumber
+                style={{ width: 100 }}
                 disabled={this.state.isDisabled}
                 min={1}
                 max={20}
@@ -221,8 +284,8 @@ class MainCarCharacteristic extends Component {
                 onChange={
                   (value) => {
                     let newReport = this.state.report;
-                    newReport.engineVolume = (value.target.value);
-                    this.setState({ report: newReport })
+                    newReport.engineVolume = (value);
+                    this.onChange(newReport);
                   }}
               />
               <span className="ant-form-text">L</span>
@@ -231,17 +294,20 @@ class MainCarCharacteristic extends Component {
             <Form.Item
               style={{ marginRight: '20px' }}
               label="Engine type"
+              name="Engine type"
+              rules={[{ required: true }]}
             >
               <Select
                 disabled={this.state.isDisabled}
                 value={report.engine.name}
+                style={{ width: 150 }}
                 placeholder="Please select"
                 onChange={(value) => {
                   let newReport = this.state.report;
                   newReport.engine = {
                     name: (value)
                   }
-                  this.setState({ report: newReport })
+                  this.onChange(newReport);
                 }}
               >
                 {this.createOptionArr(EngineTypeArr)}
@@ -252,17 +318,20 @@ class MainCarCharacteristic extends Component {
             <Form.Item
               style={{ marginRight: '20px' }}
               label="Body type"
+              name="Body type"
+              rules={[{ required: true }]}
             >
               <Select
                 disabled={this.state.isDisabled}
                 defaultValue={report.body.name}
                 placeholder="Please select"
+                style={{ width: 150 }}
                 onChange={(value) => {
                   let newReport = this.state.report;
                   newReport.body = {
                     name: (value)
                   }
-                  this.setState({ report: newReport })
+                  this.onChange(newReport);
                 }}
               >
                 {this.createOptionArr(BodyTypeArr)}
@@ -271,17 +340,20 @@ class MainCarCharacteristic extends Component {
             <Form.Item
               style={{ marginRight: '20px' }}
               label="Drive"
+              name="drive"
+              rules={[{ required: true }]}
             >
               <Select
                 disabled={this.state.isDisabled}
                 placeholder="Please select"
+                style={{ width: 150 }}
                 defaultValue={report.drive.name}
                 onChange={(value) => {
                   let newReport = this.state.report;
                   newReport.drive = {
                     name: (value)
                   }
-                  this.setState({ report: newReport })
+                  this.onChange(newReport);
                 }}
               >
                 {this.createOptionArr(DriveTypeArr)}
@@ -292,17 +364,20 @@ class MainCarCharacteristic extends Component {
             <Form.Item
               style={{ marginRight: '20px' }}
               label="Transmission"
+              name="transmission"
+              rules={[{ required: true }]}
             >
               <Select
                 disabled={this.state.isDisabled}
                 placeholder="Please select"
+                style={{ width: 150 }}
                 defaultValue={report.transmission.name}
                 onChange={(value) => {
                   let newReport = this.state.report;
                   newReport.transmission = {
                     name: (value)
                   }
-                  this.setState({ report: newReport })
+                  this.onChange(newReport);
                 }}
               >
                 {this.createOptionArr(TransmissionArr)}

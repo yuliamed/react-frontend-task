@@ -17,6 +17,7 @@ export default class EngineReport extends Component {
         oilPure: ""
       },
       isDisabled: true,
+      isCreating: false
     };
     thisObj = this;
     this.onDeleteNote = this.onDeleteNote.bind(this);
@@ -24,7 +25,9 @@ export default class EngineReport extends Component {
 
   async componentDidMount() {
     thisObj.setState({
-      report: this.props.report
+      report: this.props.report,
+      isDisabled: !this.props.isCreating,
+      //isCreating: this.props.isCreating,
     })
   }
 
@@ -76,21 +79,22 @@ export default class EngineReport extends Component {
       }
     return (
       <Card>
-        <Row align="end" style={{ marginBottom: '10px' }} >
-          {this.state.isDisabled ?
-            <Button type="primary"
-              shape="round"
-              onClick={() => { this.onEditInfo() }} >
-              <EditOutlined size={"large"} />
-              Edit
-            </Button>
-            : <Button type="primary"
-              shape="round"
-              onClick={() => { this.onSaveEditedInfo() }} >
-              <SaveOutlined size={"large"} />
-              Save
-            </Button>}
-        </Row>
+        {this.props.isCreating ? <></> :
+          <Row align="end" style={{ marginBottom: '10px' }} >
+            {this.state.isDisabled ?
+              <Button type="primary"
+                shape="round"
+                onClick={() => { this.onEditInfo() }} >
+                <EditOutlined size={"large"} />
+                Edit
+              </Button>
+              : <Button type="primary"
+                shape="round"
+                onClick={() => { this.onSaveEditedInfo() }} >
+                <SaveOutlined size={"large"} />
+                Save
+              </Button>}
+          </Row>}
         <Form.Item
           style={{ width: '80%' }}
 

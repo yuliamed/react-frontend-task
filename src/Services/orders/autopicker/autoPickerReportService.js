@@ -90,6 +90,13 @@ class AutopickerReportService {
       });
   }
 
+  saveNewIspectionReport(autoPickerId, orderId, report) {
+    return commonReq(POST, "/auto-picker/" + `${autoPickerId}`
+      + "/inspection-orders/" + `${orderId}` + "/report", report).then((response) => {
+        return response.data;
+      });
+  }
+
 }
 
 export default new AutopickerReportService()

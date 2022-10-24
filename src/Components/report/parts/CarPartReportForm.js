@@ -35,7 +35,8 @@ class CarPartReportForm extends Component {
     console.log(report);
     thisObj.setState({
       markValue: this.props.report.bodyReport.mark,
-      reportPart: this.props.reportPart
+      reportPart: this.props.reportPart,
+      isDisabled: !this.props.isCreating
     })
   }
 
@@ -91,20 +92,21 @@ class CarPartReportForm extends Component {
 
     return (
       <><Form>
-        <Row style={{ margin: '10px' }} align="end">
-          {this.state.isDisabled ?
-            <Button type="primary"
-              shape="round"
-              onClick={() => { this.onEditInfo() }} >
-              <EditOutlined size={"large"} />
-              Edit
-            </Button>
-            : <Button type="primary"
-              shape="round"
-              onClick={() => { this.onSaveEditedInfo() }} >
-              <SaveOutlined size={"large"} />
-              Save
-            </Button>}</Row>
+        {this.props.isCreating ? <></> :
+          <Row style={{ margin: '10px' }} align="end">
+            {this.state.isDisabled ?
+              <Button type="primary"
+                shape="round"
+                onClick={() => { this.onEditInfo() }} >
+                <EditOutlined size={"large"} />
+                Edit
+              </Button>
+              : <Button type="primary"
+                shape="round"
+                onClick={() => { this.onSaveEditedInfo() }} >
+                <SaveOutlined size={"large"} />
+                Save
+              </Button>}</Row>}
         <Form.Item
           label="Mark"
           name="Mark"

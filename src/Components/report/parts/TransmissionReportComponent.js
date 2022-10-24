@@ -5,7 +5,7 @@ import { START_REPORT_PROCESS } from '../../../constants/colors';
 import NoteOnWorkForm from './NoteOnWorkForm';
 
 let thisObj = null;
-let counting=0;
+let counting = 0;
 
 export default class TransmissionReportComponent extends Component {
 
@@ -22,6 +22,7 @@ export default class TransmissionReportComponent extends Component {
   async componentDidMount() {
     thisObj.setState({
       noteOnWorkSet: this.props.report,
+      isDisabled: !this.props.isCreating
     })
   }
 
@@ -70,23 +71,23 @@ export default class TransmissionReportComponent extends Component {
       }
     return (
       <Card>
-
-        <Row align="end" style={{ marginBottom: '10px' }}>
-          {this.state.isDisabled ?
-            <Button type="primary"
-              shape="round"
-              onClick={() => { this.onEditInfo() }} >
-              <EditOutlined size={"large"} />
-              Edit
-            </Button>
-            : <Button type="primary"
-              shape="round"
-              onClick={() => { this.onSaveEditedInfo() }} >
-              <SaveOutlined size={"large"} />
-              Save
-            </Button>}
-        </Row>
-
+        {this.props.isCreating ? <></> :
+          <Row align="end" style={{ marginBottom: '10px' }}>
+            {this.state.isDisabled ?
+              <Button type="primary"
+                shape="round"
+                onClick={() => { this.onEditInfo() }} >
+                <EditOutlined size={"large"} />
+                Edit
+              </Button>
+              : <Button type="primary"
+                shape="round"
+                onClick={() => { this.onSaveEditedInfo() }} >
+                <SaveOutlined size={"large"} />
+                Save
+              </Button>}
+          </Row>
+        }
         <Row align="end" >
           <Button type="primary" hidden={this.state.isDisabled} style={{
             background: START_REPORT_PROCESS,

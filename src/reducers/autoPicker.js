@@ -21,7 +21,9 @@ import {
     SAVE_EDITTED_ELECTRIC_REPORT,
     SAVE_EDITTED_INSPECTION_MAIN_INFO,
     SAVE_EDITTED_PENDANT_REPORT,
-    SAVE_EDITTED_TRANSMISSION_REPORT
+    SAVE_EDITTED_TRANSMISSION_REPORT,
+    CREATE_INSPECTION_REPORT,
+    SAVE_NEW_INSPECTION_REPORT_FAIL, SAVE_NEW_INSPECTION_REPORT_SUCCESS,
 } from "../actions/orders/autopicker/types";
 
 const initialState = { report: null, order: null };
@@ -70,16 +72,23 @@ export default function (state = initialState, action) {
                 ...state, report: payload,
             };
         case SAVE_EDITTED_INSPECTION_BODY_REPORT, SAVE_EDITTED_INSPECTION_SALON_REPORT,
-            SAVE_EDITTED_ELECTRIC_REPORT,SAVE_EDITTED_INSPECTION_MAIN_INFO,
+            SAVE_EDITTED_ELECTRIC_REPORT, SAVE_EDITTED_INSPECTION_MAIN_INFO,
             SAVE_EDITTED_ENGINE_REPORT, SAVE_EDITTED_PENDANT_REPORT,
-            SAVE_EDITTED_TRANSMISSION_REPORT :
+            SAVE_EDITTED_TRANSMISSION_REPORT, //CREATE_INSPECTION_REPORT, 
+            SAVE_NEW_INSPECTION_REPORT_FAIL, SAVE_NEW_INSPECTION_REPORT_SUCCESS:
+            console.log(payload);
             return {
                 ...state, report: payload,
             };
-        case EDIT_BODY_PART_DESCRIPTION:{
+        case CREATE_INSPECTION_REPORT:
+            console.log(payload);
+            return {
+                ...state, report: payload,
+            };
+        case EDIT_BODY_PART_DESCRIPTION: {
             let newReport = state.report;
-            newReport.bodyReport.descriptions[payload.id]=payload.description;
-            return{
+            newReport.bodyReport.descriptions[payload.id] = payload.description;
+            return {
                 ...state, report: newReport
             }
         }
