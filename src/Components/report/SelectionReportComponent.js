@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Row, Col, Button, Modal } from 'antd';
+import { Row, Col, Button, Modal, Tag } from 'antd';
 import { connect } from "react-redux";
 import { EditOutlined, SaveOutlined, PlusCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import SelectionReportForm from './SelectionReportForm';
@@ -93,28 +93,17 @@ class SelectionReportComponent extends Component {
     this.render();
   }
 
-  // handleOk() {
-  //   this.setState({ isModalCancelingOrderOpen: false });
-  //   this.onChangeOrderStatus(ORDER_STATUSES.CLOSED);
-  // };
-
-  // handleCancel() {
-  //   this.setState({ isModalCancelingOrderOpen: false });
-  // };
-
   render() {
     const { report, order } = this.props;
     let modalClosingOrder =
       <Modal title="Confirm closing order" onOk={() => this.handleOk()} onCancel={() => this.handleCancel()}>
         <h2>Are you sure that report finished?</h2>
       </Modal>;
-
     let arr = [];
     if (report != null && report.selectedCarSet.length != 0)
       for (let i = 0; i < report.selectedCarSet.length; i++) {
         arr.push(
-          this.props.isEdittingAllowed != "false" ?
-
+          this.props.isEdittingAllowed != false ?
             <SelectionReportForm reportPart={report.selectedCarSet[i]}
               isDisabled={this.state.isDisabled}
               key={i}
@@ -127,6 +116,9 @@ class SelectionReportComponent extends Component {
               index={i} />
         )
       }
+    else {
+      arr = <Tag color="geekblue">Report is not ready</Tag>
+    }
 
     let visibleButton =
       report == null ?
@@ -159,12 +151,12 @@ class SelectionReportComponent extends Component {
       <>
         <Row align='end'>
           <Col span={4}>
-            {this.props.isEdittingAllowed?
+            {this.props.isEdittingAllowed ?
               visibleButton : <></>
             }
           </Col>
           <Col >
-            <div hidden={order.status.name == ORDER_STATUSES.CLOSED || order.status.name == ORDER_STATUSES.CANCELED}>
+            <div hidden={order.status.name == ORDER_STATUSES.CLOSED || order.status.name == ORDER_STATUSES.CANCELED || !this.props.isEdittingAllowed}>
               <Button
                 style={{ background: START_REPORT_PROCESS, borderColor: START_REPORT_PROCESS }}
                 shape="circle"

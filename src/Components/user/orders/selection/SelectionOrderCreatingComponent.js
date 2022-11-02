@@ -7,6 +7,7 @@ import { BodyTypeArr, BrandNameArr, TransmissionArr, EngineTypeArr, DriveTypeArr
 import AutoPickerSelector from "../AutoPickerSelector";
 import { findAllAutoPickers } from "../../../../actions/manageUsers";
 import { createArrWithName } from "../../../common/processArrays";
+import { validateMessages } from "../../../common/validateForms";
 const { Content } = Layout;
 const { TextArea } = Input;
 
@@ -86,17 +87,6 @@ class SelectionOrderCreatingComponent extends Component {
     return children
   }
 
-
-  validateMessages = {
-    required: '${label} is required!',
-    pattern: '${label} must contain digits and letters.',
-    types: {
-      email: '${label} not a valid',
-      number: '${label} is not a valid number!',
-      string: '${label} must be a string!'
-    },
-  };
-
   render() {
     console.log("object");
     return (
@@ -105,13 +95,13 @@ class SelectionOrderCreatingComponent extends Component {
           width: "800px"
         }}
           align="start"
-          title="Selection order"
+          title="Заказ на подбор авто"
           actions={[
-            <SaveOutlined title="save order"
+            <SaveOutlined title="Сохранить заказ"
                 onClick={(e) => this.onSaveOrder(e)}
                 disabled={true} />
             ,
-            <CloseOutlined title="Cancel order" 
+            <CloseOutlined title="отменить заказ" 
             onClick={(e) => this.onCancelOrder(e)}
             />,
           ]}
@@ -120,16 +110,16 @@ class SelectionOrderCreatingComponent extends Component {
             <Content >
               <Layout style={{ display: 'flex', padding: 15 }} align="horizontal" >
                 <Content >
-                  <Card title="Order info" size="small"
+                  <Card title="Информация о заказе" size="small"
                   >
                     <Form
                       //form={form}
-                      validateMessages={this.validateMessages}
+                      validateMessages={validateMessages}
                     >
                       <Row>
                         <Form.Item
-                          label="Min year:"
-                          name="min year"
+                          label="Минимальный год:"
+                          name="Минимальный год"
                           rules={[{ required: true },
                           ]}
                         >
@@ -151,8 +141,8 @@ class SelectionOrderCreatingComponent extends Component {
                           />
                         </Form.Item>
                         <Form.Item
-                          name="Mileage"
-                          label="Mileage: "
+                          name="Пробег"
+                          label="Пробег: "
                           rules={[{ required: true },
                           ]}>
                           <InputNumber
@@ -168,14 +158,14 @@ class SelectionOrderCreatingComponent extends Component {
                                 }
                               }))
                             }}
-                          /><span className="ant-form-text">km</span>
+                          /><span className="ant-form-text">км</span>
                         </Form.Item>
                       </Row>
-                      <p>Car price:</p>
+                      <p>Цена:</p>
                       <Row>
                         <Form.Item
-                          label="from"
-                          name="car price from"
+                          label="От"
+                          name="Цена машины от"
                           style={{ marginRight: '16px' }}
                           rules={[{ required: true },
                           ]}>
@@ -193,10 +183,10 @@ class SelectionOrderCreatingComponent extends Component {
                         </Form.Item>
                         <Form.Item
                           style={{ marginRight: '16px' }}
-                          name="car price to"
+                          name="Цена машины до"
                           rules={[{ required: true },
                           ]}
-                          label="to">
+                          label="до">
                           <InputNumber
                             onChange={(value) => {
                               this.setState((state) => ({
@@ -211,13 +201,13 @@ class SelectionOrderCreatingComponent extends Component {
                         </Form.Item>
                         <Form.Item
 
-                          label="Currency type"
-                          name="currency type"
+                          label="Тип валюты"
+                          name="Тип валюты"
                           rules={[{ required: true },
                           ]}>
                           <Select
                             style={{ margin: '0 16px' }}
-                            placeholder="Please select"
+                            placeholder="Выберете"
                             onChange={(value) => this.setState
                               ((state) => ({
                                 ...state,
@@ -236,12 +226,12 @@ class SelectionOrderCreatingComponent extends Component {
 
                       <Row >
                         <Col>
-                          <p>Car engine volume:</p>
+                          <p>Объём двигателя:</p>
                         </Col>
                       </Row>
                       <Row>
                         <Form.Item
-                          label="min:"
+                          label="Минимум:"
                         >
                           <InputNumber
                             min={0.5}
@@ -260,7 +250,7 @@ class SelectionOrderCreatingComponent extends Component {
                         </Form.Item>
 
                         <Form.Item
-                          label="max:">
+                          label="Максимум:">
                           <InputNumber
                             min={1}
 
@@ -282,7 +272,7 @@ class SelectionOrderCreatingComponent extends Component {
                     </Form>
 
                     <Form.Item
-                      label="Engine types"
+                      label="Типы двигателя"
                     >
                       <Select
 
@@ -291,7 +281,7 @@ class SelectionOrderCreatingComponent extends Component {
                         style={{
                           width: '100%',
                         }}
-                        placeholder="Please select"
+                        placeholder="Выберете"
 
                         onChange={(value) => this.setState((state) => ({
                           ...state,
@@ -307,7 +297,7 @@ class SelectionOrderCreatingComponent extends Component {
                     </Form.Item>
 
                     <Form.Item
-                      label="Body typies"
+                      label="Типы кузовов"
                     >
                       <Select
 
@@ -316,7 +306,7 @@ class SelectionOrderCreatingComponent extends Component {
                         style={{
                           width: '100%',
                         }}
-                        placeholder="Please select"
+                        placeholder="Выберете"
                         onChange={(value) => this.setState((state) => ({
                           ...state,
                           order: {
@@ -331,7 +321,7 @@ class SelectionOrderCreatingComponent extends Component {
                     </Form.Item>
 
                     <Form.Item
-                      label="Brands"
+                      label="Бренды"
                     >
                       <Select
                         mode="multiple"
@@ -339,7 +329,7 @@ class SelectionOrderCreatingComponent extends Component {
                         style={{
                           width: '100%',
                         }}
-                        placeholder="Please select"
+                        placeholder="Выберете"
 
                         onChange={(value) => this.setState((state) => ({
                           ...state,
@@ -355,7 +345,7 @@ class SelectionOrderCreatingComponent extends Component {
                     </Form.Item>
 
                     <Form.Item
-                      label="Drives"
+                      label="Типы привода"
                     >
                       <Select
 
@@ -364,7 +354,7 @@ class SelectionOrderCreatingComponent extends Component {
                         style={{
                           width: '100%',
                         }}
-                        placeholder="Please select"
+                        placeholder="Выберете"
 
                         onChange={(value) => this.setState((state) => ({
                           ...state,
@@ -380,7 +370,7 @@ class SelectionOrderCreatingComponent extends Component {
                     </Form.Item>
 
                     <Form.Item
-                      label="Transmissions"
+                      label="Типы коробки передач"
                     >
                       <Select
 
@@ -389,7 +379,7 @@ class SelectionOrderCreatingComponent extends Component {
                         style={{
                           width: '100%',
                         }}
-                        placeholder="Please select"
+                        placeholder="Выберете"
 
                         onChange={(value) => this.setState((state) => ({
                           ...state,
@@ -405,7 +395,7 @@ class SelectionOrderCreatingComponent extends Component {
                     </Form.Item>
 
                     <Form.Item
-                      label="Auto-picker"
+                      label="Автоподборщик"
                     >
                       <AutoPickerSelector
                         getSelectedAutoPicker={this.getSelectedAutoPicker}
@@ -413,9 +403,9 @@ class SelectionOrderCreatingComponent extends Component {
                       />
                     </Form.Item>
                     <Form.Item
-                      label="Additional Info"
+                      label="Дополнительная информация"
                     >
-                      <TextArea placeholder="info about order"
+                      <TextArea placeholder="Дополнительная информация"
                         onChange={(value) => {
                           this.setState((state) => ({
                             ...state,

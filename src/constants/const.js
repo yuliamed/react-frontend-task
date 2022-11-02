@@ -10,7 +10,7 @@ export const ORDER_STATUSES = {
     CANCELED: "CANCELED"
 };
 export const ORDER_PAGES = {
-    ACTUAL_ORDERS: "Actual orders",
-    CANCELED: "Canceled",
-    CLOSED: "Closed"
+    ACTUAL_ORDERS: "Актуальные заказы",
+    CANCELED: "Отменённые",
+    CLOSED: "Закрытые"
 }

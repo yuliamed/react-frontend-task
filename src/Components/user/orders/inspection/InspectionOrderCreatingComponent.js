@@ -81,7 +81,7 @@ class InspectionOrderCreatingComponent extends Component {
           width: "800px"
         }}
           align="start"
-          title="Inspection order"
+          title="Заказ на осмотр авто"
           actions={[
             !this.state.isSavingAllowed ?
               <Popover content={content} title="Title" trigger="hover">
@@ -99,12 +99,12 @@ class InspectionOrderCreatingComponent extends Component {
             <Content >
               <Layout style={{ display: 'flex', padding: 15 }} align="horizontal" >
                 <Content >
-                  <Card title="Order info" size="small"
+                  <Card title="Информация по заказу" size="small"
                   >
                     <Form>
                       <Form.Item
-                        label="Car URL"
-                        name="url"
+                        label="Ссылка на авто"
+                        name="ссылка"
                         rules={[{ required: true },
                         { type: 'url', warningOnly: true },
                         { type: 'string', min: 6 }
@@ -124,25 +124,25 @@ class InspectionOrderCreatingComponent extends Component {
                         />
                       </Form.Item>
                       <Form.Item
-                        name="additional info"
-                        label="Additional Info"
+                        name="Дополнительная информация"
+                        label="Дополнительная информация"
                         rules={[
                           { type: 'string', max: 512 }
                         ]}
                       >
-                        <TextArea placeholder="info about order"
+                        <TextArea placeholder="Дополнительная информация"
                           onChange={
                             (e) => this.setState({
                               ...this.state, additionalInfo: e.target.value
                             })} />
                       </Form.Item>
                       <Form.Item
-                        label="Auto-picker"
+                        label="Автоподборщик"
 
                       >
                         <Select
                           allowClear
-                          placeholder="Please select"
+                          placeholder="Выберете"
                           onChange={(value) => {
                             return this.setState(
                               { autoPickerId: value }

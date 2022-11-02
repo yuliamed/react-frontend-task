@@ -14,17 +14,17 @@ export function getItem(label, key, icon, children, type) {
 
 export const profileMenu = [
     getItem(
-        "Your profile",
-        "profile",
+        "Мой профиль",
+        "Профиль",
         <UserOutlined />, [
         getItem(
-            <NavLink to={"/users/" + localStorage.getItem("userId")}>Profile</NavLink>,
+            <NavLink to={"/users/" + localStorage.getItem("userId")}>Профиль</NavLink>,
             "profile info",
             <EditOutlined />
         ),
         getItem(
             <LogOutLink />,
-            "log out",
+            "Выход",
             <LoginOutlined />
         )
     ]

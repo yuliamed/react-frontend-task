@@ -13,7 +13,7 @@ const LogOutLink = () => {
             //let history = useNavigate();
             history("/sign-in", { replace: true });
 
-        }}>LogOut</NavLink>
+        }}>Выход</NavLink>
     );
 
 }

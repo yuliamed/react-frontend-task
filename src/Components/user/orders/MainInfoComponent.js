@@ -23,9 +23,9 @@ class MainInfoComponent extends Component {
   render() {
     return (
       <Descriptions layout="vertical" labelStyle={{"font-weight": "500"}}>
-        <Descriptions.Item label="Date of order">{this.state.creationDate.substr(0, 10)}</Descriptions.Item>
-        <Descriptions.Item label="Status of order"><Tag color={this.getTagColor(this.state.status.name)}>{this.state.status.name}</Tag ></Descriptions.Item>
-        <Descriptions.Item label="Auto-picker">{this.state.autoPicker == null ? <Tag color="magenta">does not set yet </Tag> :
+        <Descriptions.Item label="Дата заказа">{this.state.creationDate.substr(0, 10)}</Descriptions.Item>
+        <Descriptions.Item label="Статус заказа"><Tag color={this.getTagColor(this.state.status.name)}>{this.state.status.name}</Tag ></Descriptions.Item>
+        <Descriptions.Item label="Автоподборщик">{this.state.autoPicker == null ? <Tag color="magenta">Не выставлен </Tag> :
           <Tag >{this.state.autoPicker.name}</Tag>}</Descriptions.Item>
       </Descriptions >
     );

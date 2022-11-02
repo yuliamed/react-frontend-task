@@ -84,7 +84,7 @@ class WithNavigate extends React.Component {
   }
 
   validateMessages = {
-    required: '${label} is required!',
+    required: '${label} обязательное поле',
     pattern: '${label} must contain digits and letters.',
     types: {
       email: '${label} not a valid',
@@ -118,34 +118,34 @@ class WithNavigate extends React.Component {
             >
               {/* <Alert message="Warning Text" type="warning" /> */}
 
-              <h1 className='form-label'>Sign Up</h1>
+              <h1 className='form-label'>Регистрация</h1>
               <Form.Item hidden="true">
                 <Alert message={this.state.message} type="error" />
               </Form.Item>
               <Form.Item
-                label="Name"
-                name="Name"
+                label="Имя"
+                name="Имя"
                 rules={[{
                   required: true,
                   type: "string"
                 }]}
               >
                 <Input
-                  placeholder="Carrie "
+                  placeholder="Костя"
                   onChange={
                     e => this.setState({ ...this.state, name: e.target.value })} />
               </Form.Item>
 
               <Form.Item
-                label="Surname"
-                name="Surname"
+                label="Фамилия"
+                name="Фамилия"
                 rules={[{
                   required: true,
                   type: "string"
                 }]}
               >
                 <Input
-                  placeholder="Bradshaw"
+                  placeholder="Иванов"
                   onChange={e => this.setState({ ...this.state, surname: e.target.value })} />
               </Form.Item>
 
@@ -163,21 +163,21 @@ class WithNavigate extends React.Component {
               </Form.Item>
 
               <Form.Item
-                label="Pass"
-                name="Pass"
+                label="Пароль"
+                name="Пароль"
                 rules={[{
                   required: true,
                   //pattern: "^(?=.*[0-9])(?=.*[a-zA-Zа-яА-Я]).{6,20}$",
                 }]}>
                 <Input.Password
 
-                  placeholder="pass"
+                  placeholder="Пароль"
                   onChange={e => this.setState({ ...this.state, pass: e.target.value })} />
               </Form.Item>
 
               <Form.Item
-                label="Confirm pass"
-                name="Confirm pass"
+                label="Повтор пароля"
+                name="Повтор пароля"
                 rules={[
                   {
                     required: true,
@@ -185,7 +185,7 @@ class WithNavigate extends React.Component {
                   }
                 ]}>
                 <Input.Password
-                  placeholder="confirm pass"
+                  placeholder="Повтор пароля"
                   onChange={e => this.setState({ ...this.state, confirmPass: e.target.value })} />
               </Form.Item>
               <Form.Item
@@ -198,7 +198,7 @@ class WithNavigate extends React.Component {
               >
                 <Checkbox onChange={e => this.setState({
                   ...this.state, isAutoPicker: true
-                })}>Sign up as auto-picker
+                })}>Я автоподборщик
                 </Checkbox>
               </Form.Item>
               <Form.Item>
@@ -207,7 +207,7 @@ class WithNavigate extends React.Component {
                   htmlType="submit"
                   shape='round'
                   disabled={this.isButtonDisabled}>
-                  Sign up
+                  Зарегистрироваться
                 </Button>
               </Form.Item>
             </Form>

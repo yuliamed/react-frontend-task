@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { findAll, setAutopicker } from '../../actions/orders/admin/manageOrders';
 import Header from '../common/headers/Header'
 import { connect } from "react-redux";
-import { Button, Typography, Table, Tag, Popconfirm } from 'antd';
+import { Button, Table, Tag, } from 'antd';
 import { ORDER_STATUSES } from '../../constants/const';
 import { SELECTION_ORDER_COLOR, INSPECTION_ORDER_COLOR, getTagColor } from '../../constants/colors';
 import AutoPickerSelector from '../user/orders/AutoPickerSelector'
@@ -10,8 +10,6 @@ import { findAllAutoPickers } from "../../actions/manageUsers";
 import { useNavigate } from 'react-router-dom';
 import { getSelectionReport } from '../../actions/orders/autopicker/manageOrders';
 let thisObj;
-
-
 
 class WithNavigate extends Component {
   constructor(props) {
@@ -97,13 +95,13 @@ class WithNavigate extends Component {
         sortDirections: ['descend'],
       },
       {
-        title: 'Type of order',
+        title: 'Тип заказа',
         dataIndex: 'autoUrl',
         render: autoUrl => autoUrl == null ? <Tag color={SELECTION_ORDER_COLOR}>
-          Selection
+          Подбор
         </Tag>
           : <Tag color={INSPECTION_ORDER_COLOR}>
-            Inspection
+            Осмотр
           </Tag>,
 
         filters: [
@@ -119,7 +117,7 @@ class WithNavigate extends Component {
         onFilter: (value, record) => value == null ? record.autoUrl == null ? record : null : record.autoUrl != null ? record : null,
       },
       {
-        title: 'Date',
+        title: 'Дата',
         dataIndex: 'creationDate',
         render: creationDate => creationDate.slice(0, 10) + " " + creationDate.slice(11, 19),
         defaultSortOrder: 'descend',
@@ -129,7 +127,7 @@ class WithNavigate extends Component {
         sortDirections: ['descend'],
       },
       {
-        title: 'Auto Picker',
+        title: 'Автоподборщик',
         dataIndex: ['autoPicker'],
         render: (_, rec) => {
           console.log("auto-picker " + rec.id + " " + rec.autoPicker);
@@ -137,11 +135,11 @@ class WithNavigate extends Component {
           return rec.autoPicker != null ?
             <Tag >{rec.autoPicker.name + " " + rec.autoPicker.surname}</Tag> :
             <>
-              <Tag hidden={editable} color="magenta">does not set yet</Tag>
+              <Tag hidden={editable} color="magenta">не установлен</Tag>
               <Button hidden={editable} size='small' onClick={() => {
                 console.log("object");
                 this.setState({ editingOrder: rec })
-              }}>edit</Button>
+              }}>изменить</Button>
               <div hidden={!editable}><AutoPickerSelector
                 getSelectedAutoPicker={this.getSelectedAutoPicker}
                 array={this.state.autoPickers}
@@ -151,24 +149,24 @@ class WithNavigate extends Component {
                 this.onSaveAutoPicker();
                 console.log("object - 1 ");
                 // this.setState({ editingOrder: '', selectedAutopickerId: "" })
-              }}>save</Button>
+              }}>сохранить</Button>
 
               <Button hidden={!editable} size='small' onClick={() => {
                 console.log("object - 2 ");
                 this.setState({ editingOrder: '', selectedAutopickerId: "" })
-              }}>calcel</Button>
+              }}>отмена</Button>
             </>
         }
         ,
         onFilter: (value, record) => record.address.indexOf(value) === 0,
       },
       {
-        title: 'Creator',
+        title: 'Заказчик',
         dataIndex: ['creator'],
         render: creator => creator.name + " " + creator.surname,
       },
       {
-        title: 'Status',
+        title: 'Статус',
         key: "status",
         dataIndex: ["status"],
         render: status => <Tag color={getTagColor(status.name)}>
@@ -195,14 +193,14 @@ class WithNavigate extends Component {
         onFilter: (value, record) => record.status.name.indexOf(value) === 0,
       },
       {
-        title: 'Action',
+        title: 'Действие',
         key: "",
         //dataIndex: ,
         render: (order) =>
           // <Typography.Link onClick={() => this.onEditOrder(id)}>
           //   Edit
           // </Typography.Link>
-          <Button onClick={() => this.onEditOrder(order)}>Edit</Button>
+          <Button onClick={() => this.onEditOrder(order)}>Редактировать</Button>
         ,
 
       },
@@ -232,7 +230,7 @@ class WithNavigate extends Component {
 function mapStateToProps(state) {
   const { isLoggedIn } = state.auth;
   const { message } = state.message;
-  const { report } = state.autopicker;
+  const { report } = state.autoPicker;
   return {
     isLoggedIn,
     message, report

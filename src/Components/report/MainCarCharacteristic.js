@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Col, Row, Button,Checkbox, Form, Input, Select, InputNumber, Space, DatePicker } from 'antd';
+import { Col, Row, Button, Checkbox, Form, Input, Select, InputNumber, Space, DatePicker } from 'antd';
 import { BodyTypeArr, BrandNameArr, TransmissionArr, EngineTypeArr, DriveTypeArr, CurrencyArr, } from "../../constants/enums"
 import { EditOutlined, SaveOutlined } from '@ant-design/icons';
 import moment from 'moment';
@@ -43,9 +43,9 @@ class MainCarCharacteristic extends Component {
     return children
   }
 
-  onChange(report){
+  onChange(report) {
     this.props.onChange(report);
-    this.setState({report: report})
+    this.setState({ report: report })
   }
 
   render() {
@@ -83,7 +83,7 @@ class MainCarCharacteristic extends Component {
             <Form.Item
               style={{ marginRight: '20px' }}
               label="Inspection date"
-              name="Inspection dateы"
+              name="Inspection date"
               rules={[{ required: true }]}>
               <DatePicker
                 disabled={this.state.isDisabled}
@@ -178,20 +178,16 @@ class MainCarCharacteristic extends Component {
             </Form.Item>
             <p style={{ marginBottom: '25px', marginRight: '20px', }}>km</p>
 
-            <Form.Item
-              name="Is mileage real?"
-              label="Is mileage real? "
-              style={{ marginRight: '20px', width: 150 }}            >
-              <Checkbox
-                chacked={report.isMileageReal}
-                disabled={this.state.isDisabled}
-                onChange={
-                  (value) => {
-                    let newReport = this.state.report;
-                    newReport.isMileageReal = (value.target.checked);
-                    this.onChange(newReport);
-                  }}></Checkbox>
-            </Form.Item>
+            <Checkbox
+              style={{ marginRight: '20px', width: 200, marginBottom: "25px" }}
+              chacked={report.isMileageReal}
+              disabled={this.state.isDisabled}
+              onChange={
+                (value) => {
+                  let newReport = this.state.report;
+                  newReport.isMileageReal = (value.target.checked);
+                  this.onChange(newReport);
+                }}>Is mileage real?</Checkbox>
 
             <Form.Item
               name="VIN number"
@@ -212,21 +208,17 @@ class MainCarCharacteristic extends Component {
               />
             </Form.Item>
 
-            <Form.Item
-              name="Is VIN number real?"
-              label="Is VIN number real? "
-              style={{ marginRight: '20px', width: 150 }}>
-              <Checkbox
-                chacked={report.isVinNumberReal}
-                disabled={this.state.isDisabled}
-                onChange={
-                  (value) => {
-                    let newReport = this.state.report;
-                    console.log(value.target.checked);
-                    newReport.isVinNumberReal = (value.target.checked);
-                    this.onChange(newReport);
-                  }}></Checkbox>
-            </Form.Item>
+            <Checkbox
+              style={{ marginRight: '20px', width: 200, marginBottom: "25px" }}
+              chacked={report.isVinNumberReal}
+              disabled={this.state.isDisabled}
+              onChange={
+                (value) => {
+                  let newReport = this.state.report;
+                  console.log(value.target.checked);
+                  newReport.isVinNumberReal = (value.target.checked);
+                  this.onChange(newReport);
+                }}>Is VIN number real?</Checkbox>
 
             <Form.Item
               name="Car price"
@@ -242,6 +234,25 @@ class MainCarCharacteristic extends Component {
                   (value) => {
                     let newReport = this.state.report;
                     newReport.costValue = (value);
+                    this.onChange(newReport);
+                  }}
+              /><span className="ant-form-text"></span>
+            </Form.Item>
+
+            <Form.Item
+              name="Auction price"
+              label="Auction price: "
+              style={{ marginRight: '10px' }}
+              rules={[{ required: true },]}>
+              <InputNumber
+                disabled={this.state.isDisabled}
+                min={100}
+                style={{ width: 100 }}
+                value={report.auctionValue}
+                onChange={
+                  (value) => {
+                    let newReport = this.state.report;
+                    newReport.auctionValue = (value);
                     this.onChange(newReport);
                   }}
               /><span className="ant-form-text"></span>

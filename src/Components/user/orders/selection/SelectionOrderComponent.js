@@ -39,7 +39,7 @@ class WithNavigate extends Component {
         status={this.state.order.status}
         autoPicker={this.state.order.autoPicker} />
       <Collapse>
-        <Panel header="Order info" key="1">
+        <Panel header="Информация о заказе" key="1">
           <Card size="small">
             <SelectionOrderInfoComponent order={this.state.order}></SelectionOrderInfoComponent>
           </Card>

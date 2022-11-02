@@ -111,10 +111,10 @@ class UserOrdersComponent extends Component {
               if (u.autoUrl != null)
                 return <InspectionOrderComponent key={index}
                   user_order={u}
-                >Inspection</InspectionOrderComponent>
+                >Оценка</InspectionOrderComponent>
               else
                 return <SelectionOrderComponent key={index}
-                  user_order={u}>Selection</SelectionOrderComponent>
+                  user_order={u}>Подбор</SelectionOrderComponent>
             }
           )}
       </Space>

@@ -272,10 +272,13 @@ class Profile extends Component {
               size={{ xs: 240, sm: 320, md: 400, lg: 640, xl: 800, xxl: 1000 }}
               style={{ maxHeight: 400, maxWidth: 400 }}
               shape="square"
-              src={this.state.imageData == null ? BASE_USER_PICTURE : `data:image/jpeg;base64,${this.state.imageData}`}
+              src={BASE_USER_PICTURE}
+              //src={this.state.imageData == null ? BASE_USER_PICTURE : `data:image/jpeg;base64,${this.state.imageData}`}
               preview={false}
             />
-            <Row align='end'>
+            <br />
+            <Row align='center'>
+
               <Col>
                 <ImgCrop
                   style={{
@@ -303,6 +306,7 @@ class Profile extends Component {
 
               </Col>
             </Row>
+            <br />
             <Form.Item
               label="Email">
               <Input label="Email" placeholder="Email"
@@ -313,7 +317,7 @@ class Profile extends Component {
                   this.handleChange(e)}
               ></Input>
             </Form.Item>
-            <Form.Item label="Name">
+            <Form.Item label="Имя">
               <Input placeholder="Name"
                 value={user.name}
                 autoComplete="name"
@@ -322,7 +326,7 @@ class Profile extends Component {
                 onInput={e => this.handleChange(e)}></Input>
             </Form.Item>
 
-            <Form.Item label="Surname">
+            <Form.Item label="Фамилия">
               <Input placeholder="Surname"
                 value={user.surname}
                 type="text"
@@ -331,10 +335,10 @@ class Profile extends Component {
 
               </Input></Form.Item>
 
-            <Button onClick={() => this.onChangeProfile()} disabled={!isEdited}>Save Profile</Button>
+            <Button onClick={() => this.onChangeProfile()} disabled={!isEdited}>Сохранить</Button>
             <Button onClick={(e) => {
               this.onChangePass(e)
-            }} disabled={false} hidden={this.state.isPassChanging}>Change Pass</Button>
+            }} disabled={false} hidden={this.state.isPassChanging}>Изменить пароль</Button>
 
 
           </Form>{modal}

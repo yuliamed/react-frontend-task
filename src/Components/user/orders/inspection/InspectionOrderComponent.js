@@ -36,10 +36,10 @@ class WithNavigate extends Component {
       status={this.state.order.status}
       autoPicker={this.state.order.autoPicker} />
       <Collapse>
-        <Panel header="Order info" key="1">
+        <Panel header="Информация о заказе" key="1">
           <Descriptions contentStyle={{ "font-weight": 'bold' }}>
             <Descriptions.Item
-              label="Car URL"
+              label="Ссылка на авто"
               style={{
                 "font-weight": 'bold'
               }}
@@ -50,7 +50,7 @@ class WithNavigate extends Component {
           </Descriptions>
           <Descriptions contentStyle={{ "font-weight": 'bold' }}>
             <Descriptions.Item
-              label="Additional Info"
+              label="Дополнительная информация"
             >
               {this.state.order.additionalInfo}
             </Descriptions.Item>
@@ -61,7 +61,7 @@ class WithNavigate extends Component {
     </>
     return (
       <>
-        <OrderComponent innerCard={card} type="inspection" onMoreInfo={this.onMoreInfo}></OrderComponent>
+        <OrderComponent innerCard={card} orderId={this.state.order.id} type="inspection" onMoreInfo={this.onMoreInfo}></OrderComponent>
       </ >
     );
   }

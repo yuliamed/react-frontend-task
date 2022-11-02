@@ -3,15 +3,15 @@ import { Row, Col, Button, Divider, Collapse, } from 'antd';
 import { connect } from "react-redux";
 import { EditOutlined, SaveOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { START_REPORT_PROCESS } from '../../constants/colors';
-import { saveEditedSelectionReport, saveNewSelectionReport } from '../../actions/orders/autopicker/manageOrders';
+import { saveEditedSelectionReport,  } from '../../actions/orders/autopicker/manageOrders';
 import { changeOrderStatus } from '../../actions/orders/userOrder';
 import { ORDER_STATUSES } from '../../constants/const';
-import MainCarCharacteristic from './MainCarCharacteristic'
 import { editBodyReport, editBodyPartDescription, editTransmissionReport, editEngineReport, saveEditedMainDataReport, saveEditedBodyReport, saveEditedSalonReport, saveEditedElectroReport, saveEditedPendantReport, saveEditedTransmissionReport, saveEditedEngineReport, createInspectionReport, saveNewInspectionReport, editMainReportData, saveEditedComputerErrorsReport, editComputerErrorsReport } from '../../actions/orders/autopicker/manageInspectionReport';
 import CarPartReportForm from './parts/CarPartReportForm';
 import TransmissionReportComponent from './parts/TransmissionReportComponent';
 import EngineReport from './parts/EngineReport';
 import ComputerErrorReportComponent from './parts/ComputerErrorReportComponent';
+import MainCarCharacteristic from './MainCarCharacteristic'
 const { Panel } = Collapse;
 let thisObj;
 class InspectionReportComponent extends Component {
@@ -59,6 +59,7 @@ class InspectionReportComponent extends Component {
       .then(() => {
         this.setState({ isDisabled: true, isReportCreating: false })
       })
+      .catch((error)=>alert("Всё фигня, переделывай! = " + error))
 
   }
 
@@ -91,8 +92,8 @@ class InspectionReportComponent extends Component {
       isMileageReal: true,
       vinNumber: "",
       isVinNumberReal: true,
-      costValue: "",
-      auctionValue: "",
+      costValue: 0,
+      auctionValue: 0,
       currencyType: {
         name: ""
       },

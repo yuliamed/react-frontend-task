@@ -66,13 +66,13 @@ class WithNavigate extends Component {
         sortDirections: ['descend'],
       },
       {
-        title: 'Type of order',
+        title: 'Тип заказа',
         dataIndex: 'autoUrl',
         render: autoUrl => autoUrl == null ? <Tag color={SELECTION_ORDER_COLOR}>
-          Selection
+          Подбор
         </Tag>
           : <Tag color={INSPECTION_ORDER_COLOR}>
-            Inspection
+            Осмотр
           </Tag>,
 
         filters: [
@@ -88,7 +88,7 @@ class WithNavigate extends Component {
         onFilter: (value, record) => value == null ? record.autoUrl == null ? record : null : record.autoUrl != null ? record : null,
       },
       {
-        title: 'Date',
+        title: 'Дата',
         dataIndex: 'creationDate',
         render: creationDate => creationDate.slice(0, 10) + " " + creationDate.slice(11, 19),
         defaultSortOrder: 'ascend',
@@ -98,12 +98,12 @@ class WithNavigate extends Component {
         sortDirections: ['descend', 'ascend'],
       },
       {
-        title: 'Creator',
+        title: 'Заказчик',
         dataIndex: ['creator'],
         render: creator => creator.name + " " + creator.surname,
       },
       {
-        title: 'Status',
+        title: 'Статус',
         key: "status",
         dataIndex: ["status"],
         render: status => <Tag color={getTagColor(status.name)}>
@@ -131,14 +131,14 @@ class WithNavigate extends Component {
         defaultFilteredValue: [ORDER_STATUSES.CREATED, ORDER_STATUSES.IN_PROCESS]
       },
       {
-        title: 'Action',
+        title: 'Действие',
         key: "",
         //dataIndex: ,
         render: (order) =>
           // <Typography.Link onClick={() => this.onEditOrder(id)}>
           //   Edit
           // </Typography.Link>
-          <Button onClick={() => this.onEditOrder(order)}>Edit</Button>
+          <Button onClick={() => this.onEditOrder(order)}>Редатировать</Button>
         ,
 
       },

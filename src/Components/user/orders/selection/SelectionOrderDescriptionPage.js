@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BodyTypeArr, BrandNameArr, TransmissionArr, EngineTypeArr, DriveTypeArr, CurrencyArr, } from "../../../../constants/enums"
-import { Modal, Divider, Form, Input, Select, Row, Col, Collapse, InputNumber, Button, } from 'antd';
+import { Modal, Divider, Form, Input, Select, Row, Col, Collapse, InputNumber, Button,Tag } from 'antd';
 import { connect } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { EditOutlined, CloseSquareOutlined, SaveOutlined, LeftOutlined } from '@ant-design/icons';
@@ -75,7 +75,8 @@ class WithNavigate extends Component {
     dispatch(changeOrderStatus(
       this.state.order.creator.id, this.state.order.id, ORDER_STATUSES.CANCELED
     )).then(() => {
-      this.props.navigate("../user-orders", { replace: true });
+      window.history.go(-1);
+      //this.props.navigate("../user-orders", { replace: true });
     })
   }
 
@@ -482,12 +483,12 @@ class WithNavigate extends Component {
               </Form.Item>
 
             </Panel>
-            <Panel header="Auto-picker information" key="3">
-             <UserCard user={this.state.order.autoPicker}/>
+            <Panel header="Auto-picker information" key="3">{
+              this.state.order.autoPicker == null ? <Tag color="magenta">does not set yet </Tag> :
+                <UserCard user={this.state.order.autoPicker} />}
             </Panel>
             <Panel header="Responce information" key="4">
-
-              <SelectionReportComponent isEdittingAllowed="false"></SelectionReportComponent>
+              <SelectionReportComponent isEdittingAllowed={false}></SelectionReportComponent>
             </Panel>
           </Collapse>
         </Content>

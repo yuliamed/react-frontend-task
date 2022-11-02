@@ -7,11 +7,11 @@ const UserHeaderContainer = () => {
     let id = localStorage.getItem("userId");
     const items = [
         getItem(
-            <NavLink to={'/users/' + id + '/orders'}>My orders</NavLink>,
+            <NavLink to={'/users/' + id + '/orders'}>Мои заказы</NavLink>,
             "user orders",
         ),
         getItem(
-            <NavLink to={'/users/' + id + '/new-order'}>New orders</NavLink>,
+            <NavLink to={'/users/' + id + '/new-order'}>Навые заказы</NavLink>,
             "new order",
         ),
     ]
@@ -26,11 +26,11 @@ const UserHeaderContainer = () => {
                 >
                 </Menu>
             </Col>
-            <Col flex="0 1 200px">
+            <Col flex="0 1 250px">
                 <Row justify="end">
                     <Menu
                         style={{
-                            width: "150px"
+                            width: "200px"
                         }}
                         theme="dark"
                         mode="horizontal"

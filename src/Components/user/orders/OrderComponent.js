@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Card } from 'antd';
 import { FormOutlined } from '@ant-design/icons';
+
 class OrderComponent extends Component {
 
   constructor(props) {
@@ -11,7 +12,7 @@ class OrderComponent extends Component {
     this.onMoreInfo = props.onMoreInfo;
   }
   render() {
-    let title = this.props.type == "selection" ? "Selection order " + this.props.orderId : "Inspection order"
+    let title = this.props.type == "selection" ? "Заказ на подбор " + this.props.orderId : "Заказ на оценку " + this.props.orderId 
     let headStyle = this.props.type == "selection" ? { backgroundColor: '#2b40f8', color: '#ffffff' } : { backgroundColor: '#7d2bf8', color: '#ffffff' }
     return (
       <>
@@ -23,7 +24,7 @@ class OrderComponent extends Component {
           extra={<Button shape='round' onClick={
             this.onMoreInfo
           }>
-            <FormOutlined label='View order' title="View order" visible={false} /> View order</Button>}
+            <FormOutlined label='View order' title="View order" visible={false} />Просмотр</Button>}
         >{this.props.innerCard}
         </Card>
       </>

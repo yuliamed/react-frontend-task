@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Divider, Form, Input, Select, Row, Col, Collapse, Button, } from 'antd';
+import { Modal, Divider, Form, Input, Select, Row, Col, Collapse, Button, Tag } from 'antd';
 import { connect } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { EditOutlined, CloseSquareOutlined, SaveOutlined, LeftOutlined } from '@ant-design/icons';
@@ -10,6 +10,7 @@ import { updateOrder, getOrderById } from "../../../../actions/orders/userInspec
 import { Content } from 'antd/lib/layout/layout';
 import { ORDER_STATUSES } from '../../../../constants/const';
 import UserCard from '../../UserCard';
+import InspectionReportDescription from '../../report/InspectionReportDescription';
 const { Panel } = Collapse;
 const { TextArea } = Input;
 const { Option } = Select;
@@ -71,7 +72,8 @@ class WithNavigate extends Component {
     dispatch(changeOrderStatus(
       this.state.order.creator.id, this.state.order.id, ORDER_STATUSES.CANCELED
     )).then(() => {
-      this.props.navigate("../user-orders", { replace: true });
+
+      this.props.navigate(window.history.go(-1), { replace: true });
     })
   }
 
@@ -129,7 +131,7 @@ class WithNavigate extends Component {
               }}>
               <Row justify="end">
                 <Button type="primary" danger shape="round" size={"large"}
-                  onClick={(e) => this.onCancelOrder(e)}><CloseSquareOutlined />Cancel</Button>
+                  onClick={(e) => this.onCancelOrder(e)}><CloseSquareOutlined />Отменить</Button>
               </Row>
             </Col>
           </Row>
@@ -141,26 +143,26 @@ class WithNavigate extends Component {
               marginRight: "60px",
               display: 'vertical',
             }}>
-            <Panel header="Order information" key="1" >
+            <Panel header="Информация о заказе" key="1" >
 
-              <Divider orientation="left">Main information</Divider>
+              <Divider orientation="left">Основная информация</Divider>
               <MainInfoComponent creationDate={this.state.order.creationDate}
                 status={this.state.order.status}
                 autoPicker={this.state.order.autoPicker} />
-              <Divider orientation="left">Characteristic</Divider>
+              <Divider orientation="left">Характеристика</Divider>
               <Row align='end'>
                 <Col >
                   {this.state.isDisabled ?
-                    <Button type="primary" shape="round" onClick={() => { this.onEditInfo() }} ><EditOutlined size={"large"} /> Edit</Button>
-                    : <Button type="primary" shape="round" onClick={() => { this.onSaveEditedInfo() }} ><SaveOutlined size={"large"} /> Save</Button>}
+                    <Button type="primary" shape="round" onClick={() => { this.onEditInfo() }} ><EditOutlined size={"large"} /> Редактировать</Button>
+                    : <Button type="primary" shape="round" onClick={() => { this.onSaveEditedInfo() }} ><SaveOutlined size={"large"} /> Сохранить</Button>}
 
                 </Col>
               </Row>
               <br />
               <Form>
                 <Form.Item
-                  label="Car URL"
-                  name="url"
+                  label="Ссылка"
+                  name="Ссылка"
                   rules={[{ required: true },
                   { type: 'url', warningOnly: true },
                   { type: 'string', min: 6 }
@@ -182,8 +184,8 @@ class WithNavigate extends Component {
                   />
                 </Form.Item>
                 <Form.Item
-                  name="additional info"
-                  label="Additional Info"
+                  name="Дополнительная информация"
+                  label="Дополнительная информация"
                   rules={[
                     { type: 'string', max: 512 }
                   ]}
@@ -192,7 +194,7 @@ class WithNavigate extends Component {
                     allowClear
                     disabled={this.state.isDisabled}
                     value={this.state.order.additionalInfo}
-                    placeholder="info about order"
+                    placeholder="Информация о заказе"
                     onChange={(value) => {
                       console.log("value")
                       this.setState((state) => ({
@@ -207,11 +209,15 @@ class WithNavigate extends Component {
                 </Form.Item>
               </Form>
             </Panel>
-            <Panel header="Auto-picker information" key="3">
-            <UserCard/>
+            <Panel header="Информация об автоподборщике" key="3">
+              {this.state.order.autoPicker == null ? <Tag color="magenta">Не установлен</Tag> :
+                <UserCard user={this.state.order.autoPicker} />}
             </Panel>
-            <Panel header="Responce information" key="4">
-              <p>info info info</p>
+            <Panel header="Отчёт" key="4">
+              {
+                this.state.order.report == null ? <Tag color="magenta">Отчёт не готов </Tag> :
+                  <InspectionReportDescription report={this.state.order.report}/>
+              }
             </Panel>
           </Collapse>
         </Content>
