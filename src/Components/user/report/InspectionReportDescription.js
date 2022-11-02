@@ -5,6 +5,7 @@ import TransmissionReportComponent from '../../report/parts/TransmissionReportCo
 import EngineReport from '../../report/parts/EngineReport';
 import ComputerErrorReportComponent from '../../report/parts/ComputerErrorReportComponent';
 import MainCarCharacteristic from '../../report/MainCarCharacteristic'
+import MainInfoReport from './MainInfoReport';
 
 const { Panel } = Collapse;
 
@@ -13,7 +14,7 @@ export default class InspectionReportDescription extends Component {
     super(props);
     this.state = {
       isReportCreating: false,
-     
+
     };
   }
   render() {
@@ -22,10 +23,8 @@ export default class InspectionReportDescription extends Component {
     return (
       <div style={{ marginLeft: "4%", marginRight: "4%" }}>
         <Divider orientation="left">Main car information</Divider>
-        <MainCarCharacteristic report={report}
-          onChange={(report) => this.onChangeMainInfo(report)}
-          isCreating={this.state.isReportCreating}
-          saveEditedInfo={(info) => this.saveEditedMainInfo(info)} />
+        <MainInfoReport
+          report={report} />
         <Collapse defaultActiveKey={["1"]}>
           <Panel header="Body report" key="1" >
             <CarPartReportForm reportPart={report.bodyReport}

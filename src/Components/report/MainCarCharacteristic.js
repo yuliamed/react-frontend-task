@@ -50,7 +50,7 @@ class MainCarCharacteristic extends Component {
 
   render() {
     let report = this.props.report;
-
+    console.log( report);
     const disabledDate = (current) => {
       // Can not select days before today and today
       return current && current > moment().endOf('day');
@@ -404,11 +404,12 @@ class MainCarCharacteristic extends Component {
 }
 
 
-function mapStateToProps(state) {
-  const { report } = state.autoPicker;
-  return {
-    report,
-  };
-}
+// function mapStateToProps(state) {
+//   const { report } = state.autoPicker;
+//   return {
+//     report,
+//   };
+// }
 
-export default connect(mapStateToProps)(MainCarCharacteristic);
+//export default connect(mapStateToProps)(MainCarCharacteristic);
+export default MainCarCharacteristic;

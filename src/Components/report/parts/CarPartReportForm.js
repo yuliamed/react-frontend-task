@@ -22,7 +22,7 @@ class CarPartReportForm extends Component {
         generalComment: "",
         descriptions: [],
       },
-      markValue: props.report.mark,
+      markValue: null,
       isDisabled: true,
     };
     this.onChange = this.onChange.bind(this);
@@ -197,5 +197,6 @@ function mapStateToProps(state) {
     report, order
   };
 }
+// export default connect(mapStateToProps)(CarPartReportForm);
 
-export default connect(mapStateToProps)(CarPartReportForm);
+export default (CarPartReportForm);
