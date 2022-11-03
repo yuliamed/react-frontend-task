@@ -42,64 +42,64 @@ class MainInfoReport extends Component {
         >
           <Descriptions.Item
             style={{ marginRight: '20px' }}
-            label="Inspection date">
+            label="Дата осмотра">
             {report.inspectionDate}
           </Descriptions.Item>
 
           <Descriptions.Item
             style={{ marginRight: '20px', width: 200 }}
-            label="Brand">
+            label="Марка">
             {report.brand.name}
           </Descriptions.Item>
 
           <Descriptions.Item
-            label="Model"
+            label="Модель"
             style={{ marginRight: '20px' }}>
             {report.model}
           </Descriptions.Item>
 
           <Descriptions.Item
-            label="Year"
+            label="Год"
             style={{ marginRight: '20px', width: 100 }}
           >
             {report.year}
           </Descriptions.Item>
 
           <Descriptions.Item
-            label="Mileage "
+            label="Пробег "
             style={{ marginRight: '20px', width: 150 }}
           >
             {report.mileage} km
           </Descriptions.Item>
 
           <Descriptions.Item
-            label="Is mileage real? "
+            label="Пробег реален? "
             style={{ marginRight: '20px', width: 150 }}>
             {report.isMileageReal ? "Yes" : "No"}
           </Descriptions.Item>
 
           <Descriptions.Item
-            label="VIN number: "
+            label="VIN номер "
             style={{ marginRight: '20px', width: 150 }}
           >
             {report.vinNumber}
           </Descriptions.Item>
 
           <Descriptions.Item
-            label="Is VIN number real?"
+            label="VIN Номер настоящий?"
             style={{ marginRight: '20px', width: 150 }}>
             {report.isVinNumberReal ? "Yes" : "No"}
           </Descriptions.Item>
 
           <Descriptions.Item
-            label="Car price: "
+            label="Цена "
             style={{ marginRight: '10px' }}
           >
             {report.costValue}
           </Descriptions.Item>
 
           <Descriptions.Item
-            label="Auction price: "
+            label="Цена с учётом скидки "
             style={{ marginRight: '10px' }}
           >
             {report.auctionValue}
@@ -107,39 +107,39 @@ class MainInfoReport extends Component {
 
           <Descriptions.Item
             style={{ marginRight: '20px' }}
-            label="Currency type"
+            label="Тип валюты"
           >{report.currencyType.name}
           </Descriptions.Item>
 
           <Descriptions.Item
             style={{ marginRight: '20px' }}
-            label="Car engine volume:"
+            label="Объём двигателя:"
           >
             {report.engineVolume}
           </Descriptions.Item>
 
           <Descriptions.Item
             style={{ marginRight: '20px' }}
-            label="Engine type"
+            label="Тип двигателя"
           >
             {report.engine.name}
           </Descriptions.Item>
 
           <Descriptions.Item
             style={{ marginRight: '20px' }}
-            label="Body type"
+            label="Тип кузова"
           >{report.body.name}
           </Descriptions.Item>
 
           <Descriptions.Item
             style={{ marginRight: '20px' }}
-            label="Drive"
+            label="Привод"
           >{report.drive.name}
           </Descriptions.Item>
 
           <Descriptions.Item
             style={{ marginRight: '20px' }}
-            label="Transmission"
+            label="Тип трансмиссии"
           >{report.transmission.name}
           </Descriptions.Item>
 
