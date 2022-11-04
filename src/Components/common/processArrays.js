@@ -1,4 +1,4 @@
-import { Select } from "antd";
+import { Select, Tag } from "antd";
 const { Option } = Select;
 
 export function createOptionArr(arr) {
@@ -37,3 +37,11 @@ export function createOptionArrWithIdsKey(arr) {
     }
     return children
 }
+
+export function getTagListFromArr(arr) {
+    let newArr = [];
+    for (let i = 0; i < arr.length; i++) {
+      newArr.push(<Tag >{arr[i].name}</Tag>)
+    }
+    return newArr;
+  }

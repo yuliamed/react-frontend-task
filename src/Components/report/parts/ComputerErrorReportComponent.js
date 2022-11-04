@@ -3,6 +3,7 @@ import { Row, Button, Input, Card, } from 'antd';
 import { PlusCircleOutlined, SaveOutlined, EditOutlined } from '@ant-design/icons';
 import { START_REPORT_PROCESS } from '../../../constants/colors';
 import NoteOnWorkForm from './NoteOnWorkForm';
+import ComputerErrorForm from './ComputerErrorForm';
 
 let thisObj = null;
 let counting = 0;
@@ -60,7 +61,7 @@ export default class ComputerErrorReportComponent extends Component {
       for (let i = 0; i < report.length; i++) {
         descriptions.push(
           <div key={report[i].id}>
-            <NoteOnWorkForm id={i}
+            <ComputerErrorForm id={i}
               isDisabled={this.state.isDisabled}
               index={i}
               noteOnWork={report[i]}
@@ -78,13 +79,13 @@ export default class ComputerErrorReportComponent extends Component {
                 shape="round"
                 onClick={() => { this.onEditInfo() }} >
                 <EditOutlined size={"large"} />
-                Edit
+                Изменить
               </Button>
               : <Button type="primary"
                 shape="round"
                 onClick={() => { this.onSaveEditedInfo() }} >
                 <SaveOutlined size={"large"} />
-                Save
+                Сохранить
               </Button>}
           </Row>
         }
@@ -97,7 +98,7 @@ export default class ComputerErrorReportComponent extends Component {
             onClick={() => {
               this.onAddNewComputerError();
             }}>
-            <PlusCircleOutlined />Add Report
+            <PlusCircleOutlined />Добавить ошибку
           </Button></Row>
         {descriptions}
       </Card>

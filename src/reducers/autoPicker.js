@@ -28,12 +28,12 @@ import {
     SAVE_EDITTED_COMPUTER_ERRORS_REPORT,
     EDIT_INSPECTION_COMPUTER_ERRORS_REPORT
 } from "../actions/orders/autopicker/types";
+import React, { useState } from 'react';
 
 const initialState = { report: null, order: null };
 
 export default function (state = initialState, action) {
     const { type, payload } = action;
-
     switch (type) {
         case SAVE_NEW_SELECTION_REPORT_SUCCESS:
             return {
@@ -67,7 +67,13 @@ export default function (state = initialState, action) {
             return {
                 ...state, report: payload,
             };
-        case EDIT_INSPECTION_BODY_REPORT, EDIT_INSPECTION_SALON_REPORT,
+        case EDIT_INSPECTION_BODY_REPORT:
+            let newReport = state.report;
+            newReport.bodyReport = payload;
+            return {
+                ...state, report: newReport
+            }
+        case EDIT_INSPECTION_SALON_REPORT,
             EDIT_INSPECTION_ELECTRIC_REPORT, EDIT_INSPECTION_MAIN_INFO,
             EDIT_INSPECTION_ENGINE_REPORT, EDIT_INSPECTION_PENDANT_REPORT,
             EDIT_INSPECTION_TRANSMISSION_REPORT, EDIT_INSPECTION_COMPUTER_ERRORS_REPORT:

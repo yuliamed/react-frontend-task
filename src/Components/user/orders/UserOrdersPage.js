@@ -25,7 +25,7 @@ class UserOrdersComponent extends Component {
       visibleOrders: [],
     };
     this.onChangeOrderFilter = this.onChangeOrderFilter.bind(this);
-    this.getOrdersComponents = this.getOrdersComponents.bind(this);
+    //this.getOrdersComponents = this.getOrdersComponents.bind(this);
     thisObj = this;
   }
 
@@ -60,29 +60,6 @@ class UserOrdersComponent extends Component {
     //this.render();
   }
 
-  getOrdersComponents() {
-    let orders = <Empty description="You haven`t got any orders(" />
-    if (this.state.visibleOrders.length != 0) {
-      orders = <Space direction="vertical" wrap>
-        {
-          this.state.visibleOrders.map(
-            (u, index,) => {
-              if (u.autoUrl == null) {
-                console.log("Mapping " + u.id);
-                return <SelectionOrderComponent key={index}
-                  user_order={u}>Selection</SelectionOrderComponent>
-              }
-              else return <InspectionOrderComponent key={index}
-                user_order={u}
-              >Inspection</InspectionOrderComponent>
-
-            }
-          )}
-      </Space>
-    }
-    return orders;
-  }
-
   async componentDidMount() {
     const { dispatch } = this.props;
     dispatch(findUserOrders(this.state.userId)).then((data) => {
@@ -101,7 +78,7 @@ class UserOrdersComponent extends Component {
       return <p>Loading...</p>;
     }
 
-    let orders = <Button>HEY</Button>
+    let orders = <Empty description="You haven`t got any orders(" />
     if (this.state.orders.length == 0) orders = <h2>You haven`t got any orders(</h2>
     else {
       orders = <Space direction="vertical" wrap>
@@ -109,11 +86,11 @@ class UserOrdersComponent extends Component {
           this.state.visibleOrders.map(
             (u, index,) => {
               if (u.autoUrl != null)
-                return <InspectionOrderComponent key={index}
+                return <InspectionOrderComponent key={u.id}
                   user_order={u}
                 >Оценка</InspectionOrderComponent>
               else
-                return <SelectionOrderComponent key={index}
+                return <SelectionOrderComponent key={u.id}
                   user_order={u}>Подбор</SelectionOrderComponent>
             }
           )}
@@ -133,8 +110,7 @@ class UserOrdersComponent extends Component {
           }
           onChange={(value) => this.onChangeOrderFilter(value)} />
         <Space direction="vertical" size="large" style={{ display: 'flex' }}>
-
-          {this.getOrdersComponents()}
+          {orders}
         </Space>
       </div >
     );

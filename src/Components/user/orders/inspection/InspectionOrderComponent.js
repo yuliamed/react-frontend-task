@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { useNavigate } from 'react-router-dom';
-import { Descriptions, Collapse } from 'antd';
+import { Descriptions, Collapse, Divider } from 'antd';
 import { CANCEL_ORDER_STATUS } from "../../../../constants/const"
 import MainInfoComponent from "../MainInfoComponent";
 import OrderComponent from "../OrderComponent";
@@ -48,11 +48,13 @@ class WithNavigate extends Component {
 
             </Descriptions.Item>
           </Descriptions>
-          <Descriptions contentStyle={{ "font-weight": 'bold' }}>
+          <Divider orientation="left" orientationMargin="0">
+            Дополнительная информация
+          </Divider>
+          <Descriptions>
             <Descriptions.Item
-              label="Дополнительная информация"
             >
-              {this.state.order.additionalInfo}
+              {this.state.order.additionalInfo == null || this.state.order.additionalInfo == "" ? "Информации нет" : this.state.order.additionalInfo}
             </Descriptions.Item>
           </Descriptions>
 

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Divider, Descriptions, Select, Tag } from 'antd';
-
+import { Divider, Descriptions, Select, } from 'antd';
+import { BodyTypeMapWithEngKeys, DriveTypeMap, EngineTypeMap, TransmissionMap } from '../../../../constants/enums';
+import { getTagListFromMap } from '../../../common/processMap'
+import { getTagListFromArr } from '../../../common/processArrays'
 let thisObj;
 
 class SelectionOrderInfoComponent extends Component {
@@ -10,123 +12,122 @@ class SelectionOrderInfoComponent extends Component {
       order: props.order,
     };
     thisObj = this;
-    this.getListFromArr = this.getListFromArr.bind(this);
   }
 
   async componentDidMount() {
     this.setState({ order: this.props.order });
 
   }
-  getListFromArr(arr) {
-    let newArr = [];
-    for (let i = 0; i < arr.length; i++) {
 
-      newArr.push(<Tag >{arr[i].name}</Tag>)
-    }
-    return newArr;
-  }
   render() {
     return (
       <>
         <Descriptions contentStyle={{ "font-weight": 'bold' }}>
           <Descriptions.Item
-            label="Min year"
+            label="Минимальный год"
             style={{ margin: '0 16px' }}
           >
             {this.state.order.minYear}
           </Descriptions.Item>
 
           <Descriptions.Item
-            label="Mileage"
+            label="Пробег"
             style={{ margin: '0 16px' }}
           >
-            {this.state.order.mileage + " km"}
+            {this.state.order.mileage + " км"}
           </Descriptions.Item>
         </Descriptions>
         <Divider orientation="left" orientationMargin="0">
-          Car price
+          Цена
         </Divider>
         <Descriptions contentStyle={{ "font-weight": 'bold' }}>
 
-          <Descriptions.Item label="from"
+          <Descriptions.Item label="От"
             style={{ margin: '0 16px' }}
           >{this.state.order.rangeFrom}</Descriptions.Item>
-          <Descriptions.Item label="to"
+          <Descriptions.Item label="До"
             style={{ margin: '0 16px' }}
           >{this.state.order.rangeTo}</Descriptions.Item>
           <Select
-            label="Currency type"
+            label="Тип валюты"
           >
             {this.state.order.currencyType.name}
           </Select>
         </Descriptions>
         <Divider orientation="left" orientationMargin="0">
-          Car engine volume
+          Параметры машины
         </Divider>
-        <Descriptions contentStyle={{ "font-weight": 'bold' }}>
+        <Descriptions >
+          <p>Объём двигателя </p>
           <Descriptions.Item
-            label="min"
-          >{this.state.order.minEngineVolume}</Descriptions.Item>
+            contentStyle={{ "font-weight": 'bold' }}
+            label="от"
+          >{this.state.order.minEngineVolume}   L</Descriptions.Item>
           <Descriptions.Item
-            label="max"
+            label="до"
+            contentStyle={{ "font-weight": 'bold' }}
             style={{ margin: '0 16px' }}
 
-          >{this.state.order.maxEngineVolume}</Descriptions.Item>
-          <p>L</p>
+          >{this.state.order.maxEngineVolume}  L</Descriptions.Item>
+
         </Descriptions>
         <Descriptions>
           <Descriptions.Item
             style={{
               width: '100%',
             }}
-            label="Engine types"
+            label="Типы двигателя"
           >
-            {this.getListFromArr(this.state.order.engines)}
+            {getTagListFromMap(EngineTypeMap, this.state.order.engines)}
           </Descriptions.Item>
         </Descriptions>
-        <Descriptions>
-          <Descriptions.Item label="Additional Info"
-          >{this.state.order.additionalInfo}</Descriptions.Item>
-        </Descriptions>
+
         <Descriptions>
           <Descriptions.Item
-            label="Body typies"
+            label="Типы кузовов"
             style={{
               width: '100%',
             }}
           >
-            {this.getListFromArr(this.state.order.bodies)}
-          </Descriptions.Item>
-        </Descriptions>
-        <Descriptions>
-          <Descriptions.Item
-            label="Brands"
-            style={{
-              width: '100%',
-            }}
-          >
-            {this.getListFromArr(this.state.order.brands)}
+            {getTagListFromMap(BodyTypeMapWithEngKeys, this.state.order.bodies)}
           </Descriptions.Item>
         </Descriptions>
         <Descriptions>
           <Descriptions.Item
-            label="Drives"
+            label="Марки"
             style={{
               width: '100%',
             }}
           >
-            {this.getListFromArr(this.state.order.drives)}
+            {getTagListFromArr(this.state.order.brands)}
+          </Descriptions.Item>
+        </Descriptions>
+        <Descriptions>
+          <Descriptions.Item
+            label="Приводы"
+            style={{
+              width: '100%',
+            }}
+          >
+            {getTagListFromMap(DriveTypeMap, this.state.order.drives)}
           </Descriptions.Item>
         </Descriptions>
         <Descriptions >
           <Descriptions.Item
-            label="Transmissions"
+            label="Трансмиссии"
             style={{
               width: '100%',
             }}
           >
-            {this.getListFromArr(this.state.order.transmissions)}
+            {getTagListFromMap(TransmissionMap, this.state.order.transmissions)}
           </Descriptions.Item>
+        </Descriptions>
+        <Divider orientation="left" orientationMargin="0">
+          Дополнительная информация
+        </Divider>
+        <Descriptions>
+          <Descriptions.Item
+          >{this.state.order.additionalInfo == null ? "Информации нет" : this.state.order.additionalInfo}</Descriptions.Item>
         </Descriptions>
 
       </>

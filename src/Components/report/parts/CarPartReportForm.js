@@ -5,7 +5,6 @@ import CarPartDescriptionReportForm from '../CarPartDescriptionReportForm';
 import { PlusCircleOutlined } from '@ant-design/icons';
 import { START_REPORT_PROCESS } from '../../../constants/colors';
 import { connect } from "react-redux";
-import { getKeyThenIncreaseKey } from 'antd/lib/message';
 
 const { TextArea } = Input;
 let thisObj = null;
@@ -54,6 +53,7 @@ class CarPartReportForm extends Component {
     let newDescription =
       { comment: '', photoUrl: null, recommendation: "", describingPart: "", id: ++counting }
     newReport.descriptions.push(newDescription);
+    console.log("add part");
     this.props.onChangeBodyReport(newReport);
     this.setState({ reportPart: newReport })
   }
@@ -99,17 +99,17 @@ class CarPartReportForm extends Component {
                 shape="round"
                 onClick={() => { this.onEditInfo() }} >
                 <EditOutlined size={"large"} />
-                Edit
+                Редактировать
               </Button>
               : <Button type="primary"
                 shape="round"
                 onClick={() => { this.onSaveEditedInfo() }} >
                 <SaveOutlined size={"large"} />
-                Save
+                Сохранить
               </Button>}</Row>}
         <Form.Item
-          label="Mark"
-          name="Mark"
+          label="Оценка"
+          name="Оценка"
           rules={[{ required: true },
           ]}
         >
@@ -139,9 +139,9 @@ class CarPartReportForm extends Component {
         <Form.Item
           style={{ width: '80%' }}
 
-          label="Comment"
+          label="Комментарий"
         >
-          <TextArea placeholder="info about car part"
+          <TextArea placeholder="Информация по машине"
             defaultValue={
               this.props.reportPart.generalComment
             }
@@ -155,9 +155,9 @@ class CarPartReportForm extends Component {
         </Form.Item>
         <Form.Item
           style={{ width: '80%' }}
-          label="Recommendation"
+          label="Рекомендации"
         >
-          <TextArea placeholder="Recommendation about car part"
+          <TextArea placeholder="Рекомендации по машине"
             defaultValue={
               this.props.reportPart.generalRecommendation
             }
@@ -178,7 +178,7 @@ class CarPartReportForm extends Component {
             onClick={() => {
               this.onAddNewDescription();
             }}>
-            <PlusCircleOutlined />Add Report
+            <PlusCircleOutlined />Добавить отчёт
           </Button>
         </Row>
         <Space direction='horizontal' align="baseline" wrap>
@@ -197,6 +197,6 @@ function mapStateToProps(state) {
     report, order
   };
 }
-// export default connect(mapStateToProps)(CarPartReportForm);
+ export default connect(mapStateToProps)(CarPartReportForm);
 
-export default (CarPartReportForm);
+//export default (CarPartReportForm);

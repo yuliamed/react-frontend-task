@@ -67,13 +67,13 @@ class MainCarCharacteristic extends Component {
                   shape="round"
                   onClick={() => { this.onEditInfo() }} >
                   <EditOutlined size={"large"} />
-                  Edit
+                  Изменить
                 </Button>
                 : <Button type="primary"
                   shape="round"
                   onClick={() => { this.onSaveEditedInfo() }} >
                   <SaveOutlined size={"large"} />
-                  Save
+                  Сохранить
                 </Button>}
               </Col>
             </Row>
@@ -82,8 +82,8 @@ class MainCarCharacteristic extends Component {
 
             <Form.Item
               style={{ marginRight: '20px' }}
-              label="Inspection date"
-              name="Inspection date"
+              label="Дата осмотра"
+              name="Дата осмотра"
               rules={[{ required: true }]}>
               <DatePicker
                 disabled={this.state.isDisabled}
@@ -100,8 +100,8 @@ class MainCarCharacteristic extends Component {
             </Form.Item>
             <Form.Item
               style={{ marginRight: '20px', width: 200 }}
-              label="Brand"
-              name="Brand"
+              label="Марка"
+              name="Марка"
               rules={[{ required: true }]}>
               <Select
                 disabled={this.state.isDisabled}
@@ -122,8 +122,8 @@ class MainCarCharacteristic extends Component {
 
             </Form.Item>
             <Form.Item
-              label="Model:"
-              name="Model"
+              label="Модель:"
+              name="Модель"
               style={{ marginRight: '20px' }}
               rules={[{ required: true },
               ]}
@@ -143,8 +143,8 @@ class MainCarCharacteristic extends Component {
             </Form.Item>
 
             <Form.Item
-              name="Year"
-              label="Year: "
+              name="Год"
+              label="Год: "
               style={{ marginRight: '20px', width: 100 }}
               rules={[{ required: true }]}>
               <InputNumber
@@ -160,8 +160,8 @@ class MainCarCharacteristic extends Component {
               />
             </Form.Item>
             <Form.Item
-              name="Mileage"
-              label="Mileage: "
+              name="Пробег"
+              label="Пробег: "
               style={{ marginRight: '20px', width: 150 }}
               rules={[{ required: true },]}>
               <InputNumber
@@ -176,7 +176,7 @@ class MainCarCharacteristic extends Component {
                   }}
               />
             </Form.Item>
-            <p style={{ marginBottom: '25px', marginRight: '20px', }}>km</p>
+            <p style={{ marginBottom: '25px', marginRight: '20px', }}>км</p>
 
             <Checkbox
               style={{ marginRight: '20px', width: 200, marginBottom: "25px" }}
@@ -187,11 +187,11 @@ class MainCarCharacteristic extends Component {
                   let newReport = this.state.report;
                   newReport.isMileageReal = (value.target.checked);
                   this.onChange(newReport);
-                }}>Is mileage real?</Checkbox>
+                }}>Пробег действительный?</Checkbox>
 
             <Form.Item
-              name="VIN number"
-              label="VIN number: "
+              name="VIN номер"
+              label="VIN номер: "
               style={{ marginRight: '20px', width: 150 }}
               rules={[{ required: true },]}>
               <Input
@@ -218,11 +218,11 @@ class MainCarCharacteristic extends Component {
                   console.log(value.target.checked);
                   newReport.isVinNumberReal = (value.target.checked);
                   this.onChange(newReport);
-                }}>Is VIN number real?</Checkbox>
+                }}>VIN номер настоящий?</Checkbox>
 
             <Form.Item
-              name="Car price"
-              label="Car price: "
+              name="Цена"
+              label="Цена: "
               style={{ marginRight: '10px' }}
               rules={[{ required: true },]}>
               <InputNumber
@@ -240,8 +240,8 @@ class MainCarCharacteristic extends Component {
             </Form.Item>
 
             <Form.Item
-              name="Auction price"
-              label="Auction price: "
+              name="Цена с торгом"
+              label="Цена с торгом: "
               style={{ marginRight: '10px' }}
               rules={[{ required: true },]}>
               <InputNumber
@@ -260,8 +260,8 @@ class MainCarCharacteristic extends Component {
 
             <Form.Item
               style={{ marginRight: '20px' }}
-              label="Currency type"
-              name="currency type"
+              label="Тип валюты"
+              name="Тип валюты"
               rules={[{ required: true },]}>
               <Select
                 disabled={this.state.isDisabled}
@@ -283,8 +283,8 @@ class MainCarCharacteristic extends Component {
 
             <Form.Item
               style={{ marginRight: '20px' }}
-              label="Car engine volume:"
-              name="Car engine volume"
+              label="Объём двигателя:"
+              name="Объём двигателя"
               rules={[{ required: true }]}>
 
               <InputNumber
@@ -305,8 +305,8 @@ class MainCarCharacteristic extends Component {
 
             <Form.Item
               style={{ marginRight: '20px' }}
-              label="Engine type"
-              name="Engine type"
+              label="Тип двигателя"
+              name="Тип двигателя"
               rules={[{ required: true }]}
             >
               <Select
@@ -329,8 +329,8 @@ class MainCarCharacteristic extends Component {
 
             <Form.Item
               style={{ marginRight: '20px' }}
-              label="Body type"
-              name="Body type"
+              label="Тип кузова"
+              name="Тип кузова"
               rules={[{ required: true }]}
             >
               <Select
@@ -351,8 +351,8 @@ class MainCarCharacteristic extends Component {
             </Form.Item>
             <Form.Item
               style={{ marginRight: '20px' }}
-              label="Drive"
-              name="drive"
+              label="Привод"
+              name="Привод"
               rules={[{ required: true }]}
             >
               <Select
@@ -375,8 +375,8 @@ class MainCarCharacteristic extends Component {
 
             <Form.Item
               style={{ marginRight: '20px' }}
-              label="Transmission"
-              name="transmission"
+              label="Трансмиссия"
+              name="Трансмиссия"
               rules={[{ required: true }]}
             >
               <Select

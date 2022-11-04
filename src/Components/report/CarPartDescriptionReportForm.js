@@ -126,7 +126,7 @@ class CarPartDescriptionReportForm extends Component {
         </Row>
         <Form>
           <Form.Item
-            label="Name of car part"
+            label="Название части машины"
           >
             <Input
               disabled={this.props.isDisabled}
@@ -141,10 +141,9 @@ class CarPartDescriptionReportForm extends Component {
           </Form.Item>
 
           <Form.Item
-            label="Comment"
+            label="Комментарий"
           >
-
-            <TextArea placeholder="info about car part"
+            <TextArea placeholder="Комментарии по машине"
               disabled={this.props.isDisabled}
               defaultValue={description.comment}
               onChange={
@@ -155,9 +154,9 @@ class CarPartDescriptionReportForm extends Component {
                 }} />
           </Form.Item>
           <Form.Item
-            label="Recommendation"
+            label="Рекомендация"
           >
-            <TextArea placeholder="Recommendation about car part"
+            <TextArea placeholder="Рекомендации по машине"
               disabled={this.props.isDisabled}
               defaultValue={description.recommendation}
               onChange={
@@ -168,7 +167,7 @@ class CarPartDescriptionReportForm extends Component {
                 }} />
           </Form.Item>
           <Form.Item
-            label="Photo">
+            label="Фотография">
             {description.photoUrl == null ? upload : imageForm}
 
           </Form.Item>

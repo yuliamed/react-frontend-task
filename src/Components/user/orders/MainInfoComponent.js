@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Descriptions, Tag } from 'antd';
-import { ORDER_STATUSES } from '../../../constants/const';
+import { getTagColorForOrderStatus } from '../../common/colors';
+import { OrderStatusMap } from '../../../constants/enums'
+import { getColoredTagFromMap } from '../../common/processMap'
 
 class MainInfoComponent extends Component {
   constructor(props) {
@@ -10,21 +12,15 @@ class MainInfoComponent extends Component {
       status: props.status,
       autoPicker: props.autoPicker,
     };
-    this.getTagColor = this.getTagColor.bind(this);
   }
-  getTagColor(statusName) {
-    switch (statusName) {
-      case ORDER_STATUSES.CANCELED: return "red";
-      case ORDER_STATUSES.CLOSED: return "blue";
-      case ORDER_STATUSES.CREATED: return "gold";
-      case ORDER_STATUSES.IN_PROCESS: return "cyan";
-    }
-  }
+
   render() {
     return (
-      <Descriptions layout="vertical" labelStyle={{"font-weight": "500"}}>
+      <Descriptions layout="vertical" labelStyle={{ "font-weight": "500" }}>
         <Descriptions.Item label="Дата заказа">{this.state.creationDate.substr(0, 10)}</Descriptions.Item>
-        <Descriptions.Item label="Статус заказа"><Tag color={this.getTagColor(this.state.status.name)}>{this.state.status.name}</Tag ></Descriptions.Item>
+        <Descriptions.Item label="Статус заказа">
+          {getColoredTagFromMap(OrderStatusMap, this.state.status.name, getTagColorForOrderStatus(this.state.status.name))}
+        </Descriptions.Item>
         <Descriptions.Item label="Автоподборщик">{this.state.autoPicker == null ? <Tag color="magenta">Не выставлен </Tag> :
           <Tag >{this.state.autoPicker.name}</Tag>}</Descriptions.Item>
       </Descriptions >

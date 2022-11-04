@@ -216,7 +216,7 @@ class WithNavigate extends Component {
             <Panel header="Отчёт" key="4">
               {
                 this.state.order.report == null ? <Tag color="magenta">Отчёт не готов </Tag> :
-                  <InspectionReportDescription report={this.state.order.report}/>
+                  <InspectionReportDescription orderId={this.state.order.id} report={this.state.order.report}/>
               }
             </Panel>
           </Collapse>

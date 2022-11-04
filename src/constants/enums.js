@@ -1,5 +1,17 @@
 export const BodyTypeArr = ["SEDAN", "STATION_WAGON", "HATCHBACK", "MINIVAN", "OFF_ROAD_VEHICLE", "COMPARTMENT", "MINIBUS", "VAN", "PICKUP_TRUCK"]
 
+export const BodyTypeMapWithEngKeys = new Map([
+    ["SEDAN", 'Седан'],
+    ["STATION_WAGON", 'Универсал'],
+    ["HATCHBACK", 'Хэтчбэк'],
+    ["MINIVAN", 'Минивен'],
+    ["OFF_ROAD_VEHICLE", 'Внедорожник'],
+    ["COMPARTMENT", 'Купе'],
+    ["MINIBUS", 'Микроавтобус'],
+    ["VAN", 'Фургон'],
+    ["PICKUP_TRUCK", "Пикап"]
+])
+
 export const CurrencyArr = [
     'BYN', 'RUS', 'USD', 'EUR', 'CAD'
 ]
@@ -8,17 +20,37 @@ export const DriveTypeArr = [
     'FRONT', 'REAR', 'FULL'
 ]
 
+export const DriveTypeMap = new Map([
+    ['FRONT', "Передний"], ['REAR', 'Задний'], ['FULL', 'Полный']
+])
+
 export const EngineTypeArr = [
     'GASOLINE', 'DIESEL', 'ELECTRIC', 'GASOLINE_HYBRID', 'DIESEL_HYBRID'
 ]
+
+export const EngineTypeMap = new Map([
+    ['GASOLINE', 'Бензиновый'],
+    ['DIESEL', 'Дизельный'],
+    ['ELECTRIC', 'Электрический'],
+    ['GASOLINE_HYBRID', 'Бензиновый гибрид'],
+    ['DIESEL_HYBRID', 'Дизельный дибрид']
+])
 
 export const OrderStatusArr = [
     'CREATED', 'IN_PROCESS', 'CLOSED', 'CANCELED'
 ]
 
+export const OrderStatusMap = new Map([
+    ['CREATED', 'Создан'], ['IN_PROCESS', 'В обработке'], ['CLOSED', 'Закрыт'], ['CANCELED', 'Отменён']
+])
+
 export const TransmissionArr = [
     'MACHINE', 'MECHANICAL', 'ROBOT', 'VARIATOR'
 ]
+
+export const TransmissionMap = new Map([
+    ['MACHINE',''],  ['MECHANICAL','Механическия'], ['ROBOT','Роботизированная'], ['VARIATOR','Виатор']
+])
 
 export const BrandNameArr = [
     'HYUNDAI'
