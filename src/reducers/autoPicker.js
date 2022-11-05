@@ -28,7 +28,6 @@ import {
     SAVE_EDITTED_COMPUTER_ERRORS_REPORT,
     EDIT_INSPECTION_COMPUTER_ERRORS_REPORT
 } from "../actions/orders/autopicker/types";
-import React, { useState } from 'react';
 
 const initialState = { report: null, order: null };
 

@@ -258,7 +258,7 @@ class Profile extends Component {
         <Card bordered={true}
           style={{
             marginLeft: '2%',
-            width: '60%',
+            width: '50%',
             backgroundColor: "#f0f2f5",
             padding: "2%"
           }}
@@ -270,7 +270,7 @@ class Profile extends Component {
           }>
             <Avatar
               size={{ xs: 240, sm: 320, md: 400, lg: 640, xl: 800, xxl: 1000 }}
-              style={{ maxHeight: 400, maxWidth: 400 }}
+              style={{ maxHeight: 300, maxWidth: 300 }}
               shape="square"
               src={BASE_USER_PICTURE}
               //src={this.state.imageData == null ? BASE_USER_PICTURE : `data:image/jpeg;base64,${this.state.imageData}`}

@@ -145,14 +145,14 @@ class UserInfoComponent extends Component {
         <Form className="form-user-card" bordered={true}
           style={{
             marginLeft: '2%',
-            width: '290',
+            width: '350px',
             backgroundColor: "#f0f2f5",
             padding: "2%",
           }}
         >
           <Image
             style={{
-              width: '95%',
+              width: '70%',
               padding: "2%"
             }}
             src={BASE_USER_PICTURE}

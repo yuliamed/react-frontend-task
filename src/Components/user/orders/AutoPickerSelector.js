@@ -28,7 +28,7 @@ class AutoPickerSelector extends Component {
     return (
       <Select
         allowClear
-        placeholder="Please select"
+        placeholder="Выбрать"
         onSelect={(value) => {
           console.log(value)
           this.onSelect(value);
