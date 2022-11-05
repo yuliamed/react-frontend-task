@@ -5,11 +5,11 @@ const { Header, } = Layout;
 
 const items = [
     getItem(
-        <NavLink to="/sign-up">SignUp</NavLink>,
+        <NavLink to="/sign-up">Зарегистрироваться</NavLink>,
         "sign up",
     ),
     getItem(
-        <NavLink to="/sign-in">SignIn</NavLink>,
+        <NavLink to="/sign-in">Войти</NavLink>,
         "sign in",
     ),
 
@@ -18,7 +18,7 @@ const UserHeaderContainer = () => {
 
     return (
         <Header><Row>
-            <Col flex="1 1 200px"><a>Main page of our company</a></Col>
+            <Col flex="1 1 200px"><a>Главная страница</a></Col>
             <Col flex="0 1 300px">
                 <Row justify="end">
                     <Menu

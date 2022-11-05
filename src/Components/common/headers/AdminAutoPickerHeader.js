@@ -12,16 +12,16 @@ const UserHeaderContainer = () => {
         <Layout>
             <Header align="center">
                 
-                <NavLink to="/profile">Profile</NavLink>
-                <NavLink to="/users">Users</NavLink>
-                <NavLink to="/orders">Orders</NavLink>
+                <NavLink to="/profile">Профиль</NavLink>
+                <NavLink to="/users">Пользователи</NavLink>
+                <NavLink to="/orders">Заказы</NavLink>
                 <NavLink to="/logout" onClick={
                     (event) => {
                         dispatch(logout());
                         event.preventDefault();
                         //let history = useNavigate();
                         history("/sign-in", { replace: true });
-                    }}>LogOut</NavLink>
+                    }}>Выйти</NavLink>
             </Header>
         </Layout>);
     //

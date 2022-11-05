@@ -179,7 +179,7 @@ class WithNavigate extends React.Component {
               validateMessages={this.validateMessages}
             >
               <Form.Item>
-                <h1>Input your account data</h1>
+                <h1>Введите данные</h1>
               </Form.Item>
 
               <Form.Item
@@ -197,28 +197,27 @@ class WithNavigate extends React.Component {
               <div hidden={this.state.isPassChanging}>
                 <Form.Item
 
-                  label="Pass"
-                  name="pass"
+                  label="Пароль"
+                  name="Пароль"
                   rules={[{
                     required: true,
                   }]}>
-                  <Input.Password placeholder="pass"
+                  <Input.Password placeholder="Пароль"
                     hidden={this.state.isPassChanging}
                     onChange={(e) => {
                       this.setState({ ...this.state, pass: e.target.value })
-                      console.log(this.state.pass)
                     }
                     } />
                 </Form.Item>
               </div>
 
               <Form.Item >
-                <label hidden={isHiddenError}>Check your authentication data</label>
+                <label hidden={isHiddenError}>Проверьте данные </label>
               </Form.Item>
               <Space direction="vertical" wrap>
                 <Form.Item  >
                   <Button type="primary" shape="round" htmlType="submit" disabled={isButtonDisabled} hidden={this.state.isPassChanging}>
-                    Sign in
+                    Вход
                   </Button>
                   {message && (
 
@@ -230,7 +229,7 @@ class WithNavigate extends React.Component {
                 </Form.Item>
 
                 <Form.Item >
-                  <a onClick={(e) => this.onForgetPass(e)} hidden={this.state.isPassChanging}>Forget your pass?</a>
+                  <a onClick={(e) => this.onForgetPass(e)} hidden={this.state.isPassChanging}>Забыли пароль?</a>
                 </Form.Item>
                 <>
                   {modal}
