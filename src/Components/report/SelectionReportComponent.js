@@ -95,10 +95,6 @@ class SelectionReportComponent extends Component {
 
   render() {
     const { report, order } = this.props;
-    let modalClosingOrder =
-      <Modal title="Confirm closing order" onOk={() => this.handleOk()} onCancel={() => this.handleCancel()}>
-        <h2>Are you sure that report finished?</h2>
-      </Modal>;
     let arr = [];
     if (report != null && report.selectedCarSet.length != 0)
       for (let i = 0; i < report.selectedCarSet.length; i++) {
@@ -117,7 +113,7 @@ class SelectionReportComponent extends Component {
         )
       }
     else {
-      arr = <Tag color="geekblue">Report is not ready</Tag>
+      arr = <Tag color="geekblue">Отчёт не готов</Tag>
     }
 
     let visibleButton =
@@ -128,7 +124,7 @@ class SelectionReportComponent extends Component {
           onClick={() =>
             this.onCreatNewReport()
           }>
-          Create report
+          Сохдать Отчёт
         </Button> :
         order.status.name == ORDER_STATUSES.CLOSED
           || order.status.name == ORDER_STATUSES.CANCELED ? <></> :
@@ -137,13 +133,13 @@ class SelectionReportComponent extends Component {
               shape="round"
               onClick={() => { this.onEditInfo() }} >
               <EditOutlined size={"large"} />
-              Edit
+              Редактировать
             </Button>
             : <Button type="primary"
               shape="round"
               onClick={() => { this.onSaveEditedInfo() }} >
               <SaveOutlined size={"large"} />
-              Save
+              Сохранить
             </Button>
 
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Select, Row, Col, Collapse, Button, } from 'antd';
+import { Modal, Select, Row, Col, Collapse, Button, Divider, } from 'antd';
 import { connect } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { LeftOutlined } from '@ant-design/icons';
@@ -9,9 +9,9 @@ import { updateOrder, getOrderById } from "../../../actions/orders/userSelection
 import { Content } from 'antd/lib/layout/layout';
 import { ORDER_STATUSES } from '../../../constants/const';
 import SelectionReportComponent from '../../report/SelectionReportComponent';
-import { START_REPORT_PROCESS } from '../../../constants/colors';
-import SelectionOrderDescription from '../../order/SelectionOrderDescription';
 import { cleanSelectionReport } from '../../../actions/orders/autopicker/manageOrders';
+import SelectionOrderInfoComponent from '../../user/orders/selection/SelectionOrderInfoComponent';
+import MainInfoComponent from '../../user/orders/MainInfoComponent';
 
 const { Panel } = Collapse;
 const { Option } = Select;
@@ -69,7 +69,6 @@ class WithNavigate extends Component {
   }
 
   onProccessOrder() {
-    console.log("Order changed")
     const { dispatch } = this.props;
     dispatch(changeOrderStatus(
       this.state.order.creator.id, this.state.order.id, ORDER_STATUSES.CANCELED
@@ -80,7 +79,6 @@ class WithNavigate extends Component {
 
   createOptionArr(arr) {
     const children = [];
-
     for (let i = 0; i < arr.length; i++) {
       children.push(<Option key={arr[i]}>{arr[i]}</Option>);
     }
@@ -90,7 +88,6 @@ class WithNavigate extends Component {
   onEditInfo(e) {
     this.setState({ isDisabled: false })
     this.render();
-    console.log(e)
   }
 
   onSaveEditedInfo(e) {
@@ -102,7 +99,6 @@ class WithNavigate extends Component {
       .this((resp) => {
         this.setState({ order: resp })
       })
-    console.log(this.state.newTransmissions)
     this.render();
   }
 
@@ -113,7 +109,7 @@ class WithNavigate extends Component {
   }
 
   handleOk() {
-    this.setState({ isModalCancelingOrderOpen: false, isEdittingAllowed:false });
+    this.setState({ isModalCancelingOrderOpen: false, isEdittingAllowed: false });
     this.onChangeOrderStatus(ORDER_STATUSES.CLOSED);
   };
 
@@ -124,12 +120,11 @@ class WithNavigate extends Component {
   onClosingOrderProccess() {
     console.log("closing");
     this.setState({ isModalCancelingOrderOpen: true });
-    console.log(this.state.isModalCancelingOrderOpen);
   }
 
   render() {
     if (this.state.isLoading) {
-      return <p>Loading...</p>;
+      return <p>Загрузка...</p>;
     }
     return (
       <><Header />
@@ -150,18 +145,6 @@ class WithNavigate extends Component {
               <LeftOutlined />
             </Button>
           </Col>
-          {/* <Col flex="3 6 "
-            style={{
-              marginLeft: "60px",
-              marginRight: "60px",
-              display: 'vertical',
-            }}>
-            <Row justify="end">
-              <Button type="primary" hidden={this.state.order.status.name == ORDER_STATUSES.CANCELED || this.state.order.status.name == ORDER_STATUSES.CLOSED}
-                shape="round" size={"large"} style={{ background: START_REPORT_PROCESS, borderColor: START_REPORT_PROCESS }}
-                onClick={(e) => this.onProccessOrder(e)}>Start process</Button>
-            </Row>
-          </Col> */}
         </Row>
           <Collapse defaultActiveKey={["1"]}
             style={{
@@ -170,9 +153,16 @@ class WithNavigate extends Component {
               marginRight: "60px",
               display: 'vertical',
             }}>
-            <Panel header="Order information" key="1" ><SelectionOrderDescription order={this.state.order} /></Panel>
+            <Panel header="Информация по заказу" key="1" >
+              <Divider orientation="left">Основная информация</Divider>
+              <MainInfoComponent creationDate={this.state.order.creationDate}
+                status={this.state.order.status}
+                autoPicker={this.state.order.autoPicker} />
+              <Divider orientation="left">Характеристика</Divider>
+              <SelectionOrderInfoComponent order={this.state.order} />
+            </Panel>
 
-            <Panel header="Responce information" key="4">
+            <Panel header="Отчёт по заказу" key="2">
 
               <SelectionReportComponent onCloseProccess={() => this.onClosingOrderProccess()}
                 orderId={this.state.order.id}
@@ -182,12 +172,11 @@ class WithNavigate extends Component {
           </Collapse>
 
         </Content>
-        <Modal title="Confirm closing order" 
-        //visible={this.state.isModalCancelingOrderOpen} 
-        visible={this.state.isModalCancelingOrderOpen}
+        <Modal title="Закрытие заказа"
+          visible={this.state.isModalCancelingOrderOpen}
           onOk={() => this.handleOk()}
           onCancel={() => this.handleCancel()}>
-          <h2>Are you sure that report is finished?</h2>
+          <h2>Действительно закрыть заказ?</h2>
         </Modal>
       </>
     );

@@ -48,8 +48,8 @@ class SelectionReportForm extends Component {
       >
         <br />
         <Form.Item
-          label="Car URL"
-          name="url"
+          label="Ссылка на авто"
+          name="Ссылка на авто"
           rules={[{ required: true },
           { type: 'url', warningOnly: true },
           { type: 'string', min: 6 }
@@ -71,8 +71,8 @@ class SelectionReportForm extends Component {
           />
         </Form.Item>
         <Form.Item
-          name="comment"
-          label="Comment"
+          name="Комментарий"
+          label="Комментарий"
           rules={[
             { type: 'string', max: 512 }
           ]}
@@ -81,7 +81,7 @@ class SelectionReportForm extends Component {
             disabled={this.props.isDisabled}
             defaultValue={this.props.reportPart.comment}
             allowClear
-            placeholder="info about selected car"
+            placeholder="Информация по выбранной машине"
             onChange={(value) => {
               let newReportPart = report.selectedCarSet[this.props.index]
               newReportPart.comment = value.target.value;
