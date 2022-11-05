@@ -1,12 +1,10 @@
 import React, { Component } from "react";
-import { Navigate } from 'react-router-dom';
 import { connect } from "react-redux";
 import { banUser, approveUser, addUserRole } from "../../actions/manageUsers";
-import jwt from 'jwt-decode'
-import { LoadingOutlined, PlusOutlined, PlusSquareOutlined, DeleteOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, List, Input, Card, Modal, Form, Image, Upload, message, Checkbox, Layout, } from "antd";
+import { Button, List, Card, Image, Checkbox, Layout, Row, Col, Descriptions } from "antd";
 import { BASE_USER_PICTURE } from "../../constants/const";
-
+import { getPhoto, } from "../../actions/account";
+const { Meta } = Card;
 const CheckboxGroup = Checkbox.Group;
 let thisObj;
 
@@ -17,7 +15,8 @@ class UserInfoComponent extends Component {
       user: props.user_account,
       isRolesListChanging: false,
       rolesList: ["ADMIN", "USER", "AUTO_PICKER"],
-      checkedList: []
+      checkedList: [],
+      imageData: null
     };
 
     this.getPictureUrl = this.getPictureUrl.bind(this);
@@ -93,7 +92,11 @@ class UserInfoComponent extends Component {
 
   async componentDidMount() {
     this.setState({ user: this.props.user_account });
-
+    const { dispatch } = this.props;
+    dispatch(getPhoto(this.props.user_account.id)).then(
+      (responce) => {
+        this.setState({ imageData: responce })
+      })
   }
 
   render() {
@@ -104,14 +107,14 @@ class UserInfoComponent extends Component {
       else return "Yes"
     }
     const checkBanButton = () => {
-      if (user.banDate == null) return "Ban"
-      else return "Unban"
+      if (user.banDate == null) return "Заблокировать"
+      else return "Разблокировать"
     }
     let activationMode = null;
     if (user.isActive) {
       activationMode = <p><strong style={{
         color: "#304B26"
-      }}>Active</strong></p>
+      }}>Активный</strong></p>
     } else {
       activationMode = <Button onClick={(e) => {
         this.onActivate(e, user.id)
@@ -128,76 +131,88 @@ class UserInfoComponent extends Component {
         <p>CHANGING</p>
         <CheckboxGroup options={this.state.rolesList}
           onChange={onListChange} />
-        <Button onClick={(e) => this.onSaveRoleList(e)}>Save</Button>
+        <Button onClick={(e) => this.onSaveRoleList(e)}>Сохранить</Button>
       </>
     } else {
       changeRolesList = <Button onClick={() => {
         this.setState({ isRolesListChanging: true });
         this.countArr();
-      }}>ChangeList</Button>
+      }}>Добавить роль</Button>
     }
 
     return (
 
-      <
-        >
-
-        <Form className="form-user-card" bordered={true}
+      <>
+        <Card bordered={true}
           style={{
-            marginLeft: '2%',
-            width: '350px',
-            backgroundColor: "#f0f2f5",
-            padding: "2%",
+            marginRight: '4%',
+            marginLeft: '4%',
+            backgroundColor: "#ffffff",
+            border:"red"
           }}
         >
-          <Image
-            style={{
-              width: '70%',
-              padding: "2%"
-            }}
-            src={BASE_USER_PICTURE}
-            preview={false}
-          />
-          <p>
-            <strong>Email:</strong>
-            <label
+          <Row align="middle">
+            <Col span={6} >
+              <Image
+                style={{
+                  padding: "2%",
+                }}
+                src={this.state.imageData == null ? BASE_USER_PICTURE : `data:image/jpeg;base64,${this.state.imageData}`}
+                preview={false}
+              />
+            </Col>
+            <Col span={14} >
+              <Meta style={{ "font-weight": 'bold', margin: 10 }}
+                title={this.state.user.name + " " + this.state.user.surname} />
 
-            >{user.email}
-            </label>
-          </p>
-          <p>
-            <strong>Name:</strong>
-            <label
+              <Descriptions style={{ "font-weight": 'bold', margin: 10 }}>
+                <Descriptions.Item
+                  label="Последнее посещения портала"
+                  style={{ margin: '0 16px' }}
+                >
+                  {this.state.user.lastVisitDate.substr(0, 10) + " " + (this.state.user.lastVisitDate.substr(11, 15))}
+                </Descriptions.Item>
+              </Descriptions>
+              <Descriptions style={{ "font-weight": 'bold', margin: 10 }}>
+                <Descriptions.Item
+                  label="Email"
+                  style={{ margin: '0 16px' }}
+                >
+                  {user.email}
+                </Descriptions.Item>
+              </Descriptions>
+              <Descriptions style={{ "font-weight": 'bold', margin: 10 }}>
+                <Descriptions.Item
+                  label="Роли пользователя"
+                  style={{ margin: '0 16px' }}
+                >
+                  {user.roles.map(home => <p>{home.name}</p>)}
+                </Descriptions.Item>
+              </Descriptions>
 
-            >{user.name}
-            </label>
-          </p>
-          <p>
-            <strong>Surname:</strong>
-            <label
-            >{user.surname}
-            </label>
+              <Descriptions style={{ "font-weight": 'bold', margin: 10 }}>
+                <Descriptions.Item
+                  label="Заблокирован?"
+                  style={{ margin: '0 16px' }}
+                >
+                  {checkBan()}
+                </Descriptions.Item>
+              </Descriptions>
+            </Col>
+            <Col span={4}>
+              <Layout align="center">
+                {activationMode}
+                {changeRolesList}
+                <Button onClick={(e) => {
+                  if (user.banDate == null)
+                    this.onBanProfile(e, user.id, true);
+                  else this.onBanProfile(e, user.id, false);
+                }}>{checkBanButton()}</Button></Layout>
+            </Col>
+          </Row>
 
-          </p>
-          <p>
-            <strong>Roles:</strong>
-            <List>{user.roles.map(home => <p>{home.name}</p>)}</List>
 
-          </p>
-          <p>
-            <strong>Is banned: </strong>
-            <label>{checkBan()}</label>
-          </p>
-          <Layout align="center">
-            {activationMode}
-            {changeRolesList}
-            <Button onClick={(e) => {
-              if (user.banDate == null)
-                this.onBanProfile(e, user.id, true);
-              else this.onBanProfile(e, user.id, false);
-            }}>{checkBanButton()}</Button></Layout>
-
-        </Form >
+        </Card >
       </ >
     );
   }
