@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { BodyTypeArr, BrandNameArr, TransmissionArr, EngineTypeArr, DriveTypeArr, CurrencyArr, } from "../../../../constants/enums"
-import { Modal, Divider, Form, Input, Select, Row, Col, Collapse, InputNumber, Button, Tag } from 'antd';
+import { BodyTypeMapWithEngKeys, BrandNameArr, CurrencyArr, EngineTypeMap, DriveTypeMap, TransmissionMap, } from "../../../../constants/enums"
+import { Divider, Form, Input, Select, Row, Col, Collapse, InputNumber, Button, Tag } from 'antd';
 import { connect } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { EditOutlined, CloseSquareOutlined, SaveOutlined, LeftOutlined } from '@ant-design/icons';
@@ -13,10 +13,11 @@ import { ORDER_STATUSES } from '../../../../constants/const';
 import SelectionReportComponent from '../../../report/SelectionReportComponent';
 import UserCard from '../../UserCard';
 import ModalCancelOrder from '../ModalCancelOrder';
+import { getNamedOptionListFromMap, getNamesListFromMap } from '../../../common/processMap';
+import { createArrWithName, createOptionArr } from '../../../common/processArrays';
 
 const { Panel } = Collapse;
 const { TextArea } = Input;
-const { Option } = Select;
 let thisObj;
 
 class WithNavigate extends Component {
@@ -31,11 +32,9 @@ class WithNavigate extends Component {
     }
     this.onEditInfo = this.onEditInfo.bind(this);
     this.onSaveEditedInfo = this.onSaveEditedInfo.bind(this);
-    this.createOptionArr = this.createOptionArr.bind(this);
     this.getArrByNames = this.getArrByNames.bind(this);
     this.onCancelOrder = this.onCancelOrder.bind(this);
     this.cancelOrder = this.cancelOrder.bind(this);
-    this.createArrWithName = this.createArrWithName.bind(this);
     thisObj = this;
   }
 
@@ -45,17 +44,6 @@ class WithNavigate extends Component {
       thisObj.setState({ order: data, isLoading: false })
     }
     )
-  }
-
-  createArrWithName(arr) {
-    let newArr = [];
-    for (let i = 0; i < arr.length; i++) {
-      let obj = {
-        name: arr[i]
-      }
-      newArr.push(obj)
-    }
-    return newArr;
   }
 
   onCancelOrder(e) {
@@ -79,14 +67,6 @@ class WithNavigate extends Component {
       window.history.go(-1);
       //this.props.navigate("../user-orders", { replace: true });
     })
-  }
-
-  createOptionArr(arr) {
-    const children = [];
-    for (let i = 0; i < arr.length; i++) {
-      children.push(<Option key={arr[i]}>{arr[i]}</Option>);
-    }
-    return children
   }
 
   onEditInfo(e) {
@@ -146,7 +126,7 @@ class WithNavigate extends Component {
               marginRight: "160px",
               display: 'vertical',
             }}>
-            <Panel header="Order information" key="1" >
+            <Panel header="Информация о заказе" key="1" >
               <Divider orientation="left">Основная информация</Divider>
               <MainInfoComponent creationDate={this.state.order.creationDate}
                 status={this.state.order.status}
@@ -154,7 +134,7 @@ class WithNavigate extends Component {
               <Divider orientation="left">Характеристика</Divider>
 
               <Row align='end'>
-                <Col >
+                <Col style={{ marginBottom: "15px" }}>
                   {this.state.isDisabled ?
                     <Button type="primary" shape="round"
                       onClick={() => { this.onEditInfo() }} >
@@ -249,7 +229,6 @@ class WithNavigate extends Component {
 
                   <Select
                     disabled={this.state.isDisabled}
-
                     style={{ margin: '0 16px' }}
                     placeholder="Please select"
                     defaultValue={this.state.order.currencyType.name}
@@ -257,11 +236,11 @@ class WithNavigate extends Component {
                       ...state,
                       order: {
                         ...state.order,
-                        currencyType: this.createArrWithName([value])[0]
+                        currencyType: createArrWithName([value])[0]
                       }
                     }))}
                   >
-                    {this.createOptionArr(CurrencyArr)}
+                    {createOptionArr(CurrencyArr)}
                   </Select>
                 </Col>
               </Row>
@@ -313,10 +292,6 @@ class WithNavigate extends Component {
                 <Col span={4}>
                   <p>L</p>
                 </Col>
-
-              </Row>
-              <Row >
-
               </Row>
 
               <Form.Item
@@ -330,20 +305,16 @@ class WithNavigate extends Component {
                     width: '100%',
                   }}
                   placeholder="Выбрать"
-                  defaultValue={() => {
-                    let arr = this.getArrByNames(this.state.order.engines);
-                    this.setState({ newTransmissions: arr });
-                    return arr;
-                  }}
+                  defaultValue={getNamesListFromMap(this.state.order.engines)}
                   onChange={(value) => this.setState((state) => ({
                     ...state,
                     order: {
                       ...state.order,
-                      engines: this.createArrWithName(value)
+                      engines: createArrWithName(value)
                     }
                   }))}
                 >
-                  {this.createOptionArr(EngineTypeArr)}
+                  {getNamedOptionListFromMap(EngineTypeMap)}
                 </Select>
 
               </Form.Item>
@@ -359,23 +330,16 @@ class WithNavigate extends Component {
                     width: '100%',
                   }}
                   placeholder="Выбрать"
-                  defaultValue={
-                    () => {
-                      let arr = this.getArrByNames(this.state.order.bodies);
-                      this.setState({ newTransmissions: arr });
-                      return arr;
-                    }
-
-                  }
+                  defaultValue={getNamesListFromMap(this.state.order.bodies)}
                   onChange={(value) => this.setState((state) => ({
                     ...state,
                     order: {
                       ...state.order,
-                      bodies: this.createArrWithName(value)
+                      bodies: createArrWithName(value)
                     }
                   }))}
                 >
-                  {this.createOptionArr(BodyTypeArr)}
+                  {getNamedOptionListFromMap(BodyTypeMapWithEngKeys)}
                 </Select>
 
               </Form.Item>
@@ -400,11 +364,11 @@ class WithNavigate extends Component {
                     ...state,
                     order: {
                       ...state.order,
-                      brands: this.createArrWithName(value)
+                      brands: createArrWithName(value)
                     }
                   }))}
                 >
-                  {this.createOptionArr(BrandNameArr)}
+                  {createOptionArr(BrandNameArr)}
                 </Select>
 
               </Form.Item>
@@ -420,22 +384,16 @@ class WithNavigate extends Component {
                     width: '100%',
                   }}
                   placeholder="Выбрать"
-                  defaultValue={
-                    () => {
-                      let arr = this.getArrByNames(this.state.order.drives);
-                      this.setState({ newDrives: arr });
-                      return arr;
-                    }
-                  }
+                  defaultValue={getNamesListFromMap(this.state.order.drives)}
                   onChange={(value) => this.setState((state) => ({
                     ...state,
                     order: {
                       ...state.order,
-                      drives: this.createArrWithName(value)
+                      drives: createArrWithName(value)
                     }
                   }))}
                 >
-                  {this.createOptionArr(DriveTypeArr)}
+                  {getNamedOptionListFromMap(DriveTypeMap)}
                 </Select>
 
               </Form.Item>
@@ -451,20 +409,16 @@ class WithNavigate extends Component {
                     width: '100%',
                   }}
                   placeholder="Выбрать"
-                  defaultValue={() => {
-                    let arr = this.getArrByNames(this.state.order.transmissions);
-                    this.setState({ newTransmissions: arr });
-                    return arr;
-                  }}
+                  defaultValue={getNamesListFromMap(this.state.order.transmissions)}
                   onChange={(value) => this.setState((state) => ({
                     ...state,
                     order: {
                       ...state.order,
-                      transmissions: this.createArrWithName(value)
+                      transmissions: createArrWithName(value)
                     }
                   }))}
                 >
-                  {this.createOptionArr(TransmissionArr)}
+                  {getNamedOptionListFromMap(TransmissionMap)}
                 </Select>
               </Form.Item>
               <Form.Item

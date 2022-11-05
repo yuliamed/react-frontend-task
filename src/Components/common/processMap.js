@@ -1,4 +1,5 @@
-import { Tag } from 'antd';
+import { Tag, Select } from 'antd';
+const { Option } = Select;
 
 export function getKey(map, value) {
   const arr = [...map].find((pair) => pair[1] == value);
@@ -30,4 +31,21 @@ export function getColoredTagFromMap(baseMape, value, color) {
   newArr = (<Tag color={color}>{rus_name}</Tag>)
 
   return newArr;
+}
+
+export function getNamesListFromMap(arr) {
+  let newArr = [];
+  for (let i = 0; i < arr.length; i++) {
+    let rus_name = (arr[i].name);
+    newArr.push(rus_name);
+  }
+  return newArr;
+}
+
+export function getNamedOptionListFromMap(baseMape) {
+  let children = [];
+  baseMape.forEach((value, key, map) => {
+    children.push(<Option key={key}>{value}</Option>)
+  })
+  return children
 }
