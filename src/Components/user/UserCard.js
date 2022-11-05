@@ -50,10 +50,10 @@ class UserCard extends Component {
                 
               <Descriptions style={{ "font-weight": 'bold', margin:10 }}>
                 <Descriptions.Item
-                  label="Last visit"
+                  label="Последнее посещения портала"
                   style={{ margin: '0 16px' }}
                 >
-                  {this.state.user.lastVisitDate}
+                  {this.state.user.lastVisitDate.substr(0, 10) + " " + (this.state.user.lastVisitDate.substr(11, 15)) }
                 </Descriptions.Item>
               </Descriptions>
             </Col>
