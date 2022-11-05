@@ -8,6 +8,8 @@ import { ORDER_STATUSES } from '../../constants/const';
 import { SELECTION_ORDER_COLOR, INSPECTION_ORDER_COLOR, getTagColor } from '../../constants/colors';
 import { useNavigate } from 'react-router-dom';
 import { getOrderById } from '../../actions/orders/userSelectionOrder';
+import { getColoredTagFromMap } from '../common/processMap';
+import { OrderStatusMap } from '../../constants/enums';
 let thisObj;
 
 
@@ -106,9 +108,7 @@ class WithNavigate extends Component {
         title: 'Статус',
         key: "status",
         dataIndex: ["status"],
-        render: status => <Tag color={getTagColor(status.name)}>
-          {status.name}
-        </Tag>,
+        render: status => getColoredTagFromMap(OrderStatusMap, status.name, getTagColor(status.name)),
         filters: [
           {
             text: ORDER_STATUSES.CREATED,

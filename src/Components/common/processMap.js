@@ -26,10 +26,8 @@ export function getTagFromMap(baseMape, value) {
 
 export function getColoredTagFromMap(baseMape, value, color) {
   let newArr = <Tag >пусто</Tag>;
-
   let rus_name = baseMape.get(value);
   newArr = (<Tag color={color}>{rus_name}</Tag>)
-
   return newArr;
 }
 
