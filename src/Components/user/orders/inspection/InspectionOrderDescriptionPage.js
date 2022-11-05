@@ -11,6 +11,7 @@ import { Content } from 'antd/lib/layout/layout';
 import { ORDER_STATUSES } from '../../../../constants/const';
 import UserCard from '../../UserCard';
 import InspectionReportDescription from '../../report/InspectionReportDescription';
+import ModalCancelOrder from '../ModalCancelOrder';
 const { Panel } = Collapse;
 const { TextArea } = Input;
 const { Option } = Select;
@@ -216,18 +217,14 @@ class WithNavigate extends Component {
             <Panel header="Отчёт" key="4">
               {
                 this.state.order.report == null ? <Tag color="magenta">Отчёт не готов </Tag> :
-                  <InspectionReportDescription orderId={this.state.order.id} report={this.state.order.report}/>
+                  <InspectionReportDescription orderId={this.state.order.id} report={this.state.order.report} />
               }
             </Panel>
           </Collapse>
         </Content>
-        <Modal title="Really??" visible={this.state.isOrderCancelling} onOk={() => {
-          this.cancelOrder()
-        }}
-          onCancel={() => this.setState({ isOrderCancelling: false })}>
-          <h2>Do you really want to cancel this order? </h2><br></br>
-          <h4>Auto Picker will stop processing it(</h4>
-        </Modal>
+        <ModalCancelOrder isOrderCancelling={this.state.isOrderCancelling}
+          cancelOrder={() => this.cancelOrder()}
+          onCancelCancelling={() => this.setState({ isOrderCancelling: false })} />
       </>
     );
   }

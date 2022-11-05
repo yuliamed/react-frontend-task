@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BodyTypeArr, BrandNameArr, TransmissionArr, EngineTypeArr, DriveTypeArr, CurrencyArr, } from "../../../../constants/enums"
-import { Modal, Divider, Form, Input, Select, Row, Col, Collapse, InputNumber, Button,Tag } from 'antd';
+import { Modal, Divider, Form, Input, Select, Row, Col, Collapse, InputNumber, Button, Tag } from 'antd';
 import { connect } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { EditOutlined, CloseSquareOutlined, SaveOutlined, LeftOutlined } from '@ant-design/icons';
@@ -12,6 +12,7 @@ import { Content } from 'antd/lib/layout/layout';
 import { ORDER_STATUSES } from '../../../../constants/const';
 import SelectionReportComponent from '../../../report/SelectionReportComponent';
 import UserCard from '../../UserCard';
+import ModalCancelOrder from '../ModalCancelOrder';
 
 const { Panel } = Collapse;
 const { TextArea } = Input;
@@ -82,7 +83,6 @@ class WithNavigate extends Component {
 
   createOptionArr(arr) {
     const children = [];
-
     for (let i = 0; i < arr.length; i++) {
       children.push(<Option key={arr[i]}>{arr[i]}</Option>);
     }
@@ -110,15 +110,15 @@ class WithNavigate extends Component {
 
   render() {
     if (this.state.isLoading) {
-      return <p>Loading...</p>;
+      return <p>Загрузка...</p>;
     }
     return (
       <><Header />
         <Content><Row>
           <Col flex="0 1"
             style={{
-              marginLeft: "60px",
-              marginRight: "60px",
+              marginLeft: "160px",
+              marginRight: "160px",
               display: 'vertical',
             }}>
             <Button shape="circle" size={"large"}
@@ -129,29 +129,29 @@ class WithNavigate extends Component {
           </Col>
           <Col flex="3 6 "
             style={{
-              marginLeft: "60px",
-              marginRight: "60px",
+              marginLeft: "160px",
+              marginRight: "160px",
               display: 'vertical',
             }}>
             <Row justify="end">
               <Button type="primary" hidden={this.state.order.status.name == ORDER_STATUSES.CANCELED || this.state.order.status.name == ORDER_STATUSES.CLOSED} danger shape="round" size={"large"}
-                onClick={(e) => this.onCancelOrder(e)}><CloseSquareOutlined />Cancel</Button>
+                onClick={(e) => this.onCancelOrder(e)}><CloseSquareOutlined />Отменить</Button>
             </Row>
           </Col>
         </Row>
           <Collapse defaultActiveKey={["1"]}
             style={{
               margin: "15px",
-              marginLeft: "60px",
-              marginRight: "60px",
+              marginLeft: "160px",
+              marginRight: "160px",
               display: 'vertical',
             }}>
             <Panel header="Order information" key="1" >
-              <Divider orientation="left">Main information</Divider>
+              <Divider orientation="left">Основная информация</Divider>
               <MainInfoComponent creationDate={this.state.order.creationDate}
                 status={this.state.order.status}
                 autoPicker={this.state.order.autoPicker} />
-              <Divider orientation="left">Characteristic</Divider>
+              <Divider orientation="left">Характеристика</Divider>
 
               <Row align='end'>
                 <Col >
@@ -159,18 +159,18 @@ class WithNavigate extends Component {
                     <Button type="primary" shape="round"
                       onClick={() => { this.onEditInfo() }} >
                       <EditOutlined size={"large"} />
-                      Edit
+                      Редактировать
                     </Button>
                     : <Button type="primary" shape="round"
                       onClick={() => { this.onSaveEditedInfo() }} >
                       <SaveOutlined size={"large"} />
-                      Save
+                      Сохранить
                     </Button>}
                 </Col>
               </Row>
               <Row style={{ marginBottom: "10px" }}>
                 <Col >
-                  <p>Min year:</p>
+                  <p>Минимальный год:</p>
                 </Col>
                 <Col span={10}>
                   <InputNumber
@@ -191,7 +191,7 @@ class WithNavigate extends Component {
                     }}
                   />
                 </Col>
-                <p>Mileage: </p>
+                <p>Пробег: </p>
                 <Col span={4}>
                   <InputNumber
                     min={100}
@@ -209,18 +209,18 @@ class WithNavigate extends Component {
                     }}
                   />
                 </Col>
-                <Col span={4}>
-                  <p>km</p>
+                <Col span={1}>
+                  <p>км</p>
                 </Col>
 
               </Row>
               <Row >
                 <Col>
-                  <p>Car price:</p>
+                  <p>Цена машины:</p>
                 </Col>
               </Row>
               <Row style={{ marginBottom: "20px" }}>
-                <p>from: </p>
+                <p>от: </p>
                 <Col span={4}>
                   <InputNumber
                     disabled={this.state.isDisabled}
@@ -237,7 +237,7 @@ class WithNavigate extends Component {
                     }}
                   />
                 </Col>
-                <p>to: </p>
+                <p>до: </p>
                 <Col span={4}>
                   <InputNumber
                     disabled={this.state.isDisabled}
@@ -268,11 +268,11 @@ class WithNavigate extends Component {
 
               <Row >
                 <Col>
-                  <p>Car engine volume:</p>
+                  <p>Объём двигателя:</p>
                 </Col>
               </Row>
               <Row style={{ marginBottom: "20px" }}>
-                <p>min: </p>
+                <p>минимум: </p>
                 <Col span={4}>
                   <InputNumber
                     min={0.5}
@@ -291,7 +291,7 @@ class WithNavigate extends Component {
                     }}
                   />
                 </Col>
-                <p>max: </p>
+                <p>максимум: </p>
                 <Col span={4}>
                   <InputNumber
                     min={1}
@@ -320,7 +320,7 @@ class WithNavigate extends Component {
               </Row>
 
               <Form.Item
-                label="Engine types"
+                label="Типы дивигателя"
               >
                 <Select
                   disabled={this.state.isDisabled}
@@ -329,7 +329,7 @@ class WithNavigate extends Component {
                   style={{
                     width: '100%',
                   }}
-                  placeholder="Please select"
+                  placeholder="Выбрать"
                   defaultValue={() => {
                     let arr = this.getArrByNames(this.state.order.engines);
                     this.setState({ newTransmissions: arr });
@@ -347,23 +347,9 @@ class WithNavigate extends Component {
                 </Select>
 
               </Form.Item>
+
               <Form.Item
-                label="Additional Info"
-              >
-                <TextArea placeholder="info about order" disabled={this.state.isDisabled} defaultValue={this.state.order.additionalInfo}
-                  onChange={(value) => {
-                    console.log("value")
-                    this.setState((state) => ({
-                      ...state,
-                      order: {
-                        ...state.order,
-                        additionalInfo: value.target.value
-                      }
-                    }))
-                  }} />
-              </Form.Item>
-              <Form.Item
-                label="Body typies"
+                label="Типы кузова"
               >
                 <Select
                   disabled={this.state.isDisabled}
@@ -372,7 +358,7 @@ class WithNavigate extends Component {
                   style={{
                     width: '100%',
                   }}
-                  placeholder="Please select"
+                  placeholder="Выбрать"
                   defaultValue={
                     () => {
                       let arr = this.getArrByNames(this.state.order.bodies);
@@ -395,7 +381,7 @@ class WithNavigate extends Component {
               </Form.Item>
 
               <Form.Item
-                label="Brands"
+                label="Марки"
               >
                 <Select
                   disabled={this.state.isDisabled}
@@ -404,7 +390,7 @@ class WithNavigate extends Component {
                   style={{
                     width: '100%',
                   }}
-                  placeholder="Please select"
+                  placeholder="Выбрать"
                   defaultValue={() => {
                     let arr = this.getArrByNames(this.state.order.brands);
                     this.setState({ newBrands: arr });
@@ -424,7 +410,7 @@ class WithNavigate extends Component {
               </Form.Item>
 
               <Form.Item
-                label="Drives"
+                label="Приводы"
               >
                 <Select
                   disabled={this.state.isDisabled}
@@ -433,7 +419,7 @@ class WithNavigate extends Component {
                   style={{
                     width: '100%',
                   }}
-                  placeholder="Please select"
+                  placeholder="Выбрать"
                   defaultValue={
                     () => {
                       let arr = this.getArrByNames(this.state.order.drives);
@@ -455,7 +441,7 @@ class WithNavigate extends Component {
               </Form.Item>
 
               <Form.Item
-                label="Transmissions"
+                label="Трансмиссия"
               >
                 <Select
                   disabled={this.state.isDisabled}
@@ -464,7 +450,7 @@ class WithNavigate extends Component {
                   style={{
                     width: '100%',
                   }}
-                  placeholder="Please select"
+                  placeholder="Выбрать"
                   defaultValue={() => {
                     let arr = this.getArrByNames(this.state.order.transmissions);
                     this.setState({ newTransmissions: arr });
@@ -481,24 +467,42 @@ class WithNavigate extends Component {
                   {this.createOptionArr(TransmissionArr)}
                 </Select>
               </Form.Item>
+              <Form.Item
+                label="Дополнительная информация"
+              >
+                <TextArea placeholder="Дополнительная информация о заказе" disabled={this.state.isDisabled} defaultValue={this.state.order.additionalInfo}
+                  onChange={(value) => {
+                    console.log("value")
+                    this.setState((state) => ({
+                      ...state,
+                      order: {
+                        ...state.order,
+                        additionalInfo: value.target.value
+                      }
+                    }))
+                  }} />
+              </Form.Item>
 
             </Panel>
-            <Panel header="Auto-picker information" key="3">{
+            <Panel header="Информация об автоподборщике" key="3">{
               this.state.order.autoPicker == null ? <Tag color="magenta">does not set yet </Tag> :
                 <UserCard user={this.state.order.autoPicker} />}
             </Panel>
-            <Panel header="Responce information" key="4">
+            <Panel header="Отчёт" key="4">
               <SelectionReportComponent isEdittingAllowed={false}></SelectionReportComponent>
             </Panel>
           </Collapse>
         </Content>
-        <Modal title="Really??" visible={this.state.isOrderCancelling} onOk={() => {
+        <ModalCancelOrder isOrderCancelling={this.state.isOrderCancelling}
+          cancelOrder={() => this.cancelOrder()}
+          onCancelCancelling={() => this.setState({ isOrderCancelling: false })} />
+        {/* <Modal title="Действительно?" visible={this.state.isOrderCancelling} onOk={() => {
           this.cancelOrder()
         }}
           onCancel={() => this.setState({ isOrderCancelling: false })}>
-          <h2>Do you really want to cancel this order? </h2><br></br>
-          <h4>Auto Picker will stop processing it(</h4>
-        </Modal>
+          <h2>Вы действительно хотите отменить заказ? </h2><br></br>
+          <h4>Автоподборщик перестанет обрабатывать вашу заявку(</h4>
+        </Modal> */}
       </>
     );
   }
