@@ -15,23 +15,23 @@ class ManageUsersService {
     }
 
     findAll(p_pageNumber = 0, p_pageSize = 20, p_typeOfRole = "", p_name = "",
-    p_surname = "", p_isActive) {
-        let reqParams={
+        p_surname = "", p_isActive) {
+        let reqParams = {
             pageNumber: p_pageNumber,
             pageSize: p_pageSize,
-            name:p_name,
+            name: p_name,
             surname: p_surname
         };
-        
+
         return commonReq
-            (GET, "/admin/users" + "?pageNumber="+`${p_pageNumber}`+"&pageSize="+`${p_pageSize}`).then((response) => {
+            (GET, "/admin/users" + "?pageNumber=" + `${p_pageNumber}` + "&pageSize=" + `${p_pageSize}`).then((response) => {
                 return response.data;
             });
     }
 
-    findAllAutoPickers(){
+    findAllAutoPickers() {
         return commonReq
-            (GET, "/admin/users"+ "?typeOfRole="+"AUTO_PICKER"+"&isActive="+"true").then((response) => {
+            (GET, "/admin/users" + "?typeOfRole=" + "AUTO_PICKER" + "&isActive=" + "true").then((response) => {
                 return response.data;
             });
     }
@@ -51,6 +51,12 @@ class ManageUsersService {
     addUserRole(id, reqParams) {
         return commonReq
             (PATCH, "admin/users/" + `${id}`, reqParams).then((response) => {
+                return response.data;
+            });
+    }
+    changeRoleList(id, list) {
+        return commonReq
+            (PATCH, "admin/users/" + `${id}` + "/roles", list).then((response) => {
                 return response.data;
             });
     }

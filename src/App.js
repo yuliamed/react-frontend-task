@@ -36,7 +36,9 @@ function App() {
 
           <Route path="/admin/users" exact={true} element={<AdminComponent />} />
           <Route path="/admin/orders" exact={true} element={<OrderPage />} />
-
+          <Route path="/admin/users/:userId/selection-order/:orderId" exact={true} element={<SelectionOrderDescription isAdmin={true}/>} />
+          <Route path="/admin/users/:userId/inspection-order/:orderId" exact={true} element={<InspectionOrderDescription isAdmin={true}/>} />
+          
           <Route path="/auto-picker/:autoPickerId/orders" exact={true} element={<AutopickerOrdersPage />} />
           <Route path="/auto-picker/:autoPickerId/orders/:orderId" exact={true} element={<AutopickerOrdersPage />} />
           <Route path="/auto-picker/:autoPickerId/inspection-order/:orderId"

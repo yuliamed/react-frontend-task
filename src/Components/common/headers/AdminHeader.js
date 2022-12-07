@@ -30,7 +30,7 @@ const UserHeaderContainer = () => {
                 <Row justify="end">
                     <Menu
                         style={{
-                            width: "150px"
+                            width: "200px"
                         }}
                         theme="dark"
                         mode="horizontal"

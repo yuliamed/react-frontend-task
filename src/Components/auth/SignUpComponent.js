@@ -122,6 +122,20 @@ class WithNavigate extends React.Component {
               <Form.Item hidden="true">
                 <Alert message={this.state.message} type="error" />
               </Form.Item>
+
+              <Form.Item
+                label="Фамилия"
+                name="Фамилия"
+                rules={[{
+                  required: true,
+                  type: "string"
+                }]}
+              >
+                <Input
+                  placeholder="Иванов"
+                  onChange={e => this.setState({ ...this.state, surname: e.target.value })} />
+              </Form.Item>
+
               <Form.Item
                 label="Имя"
                 name="Имя"
@@ -137,16 +151,17 @@ class WithNavigate extends React.Component {
               </Form.Item>
 
               <Form.Item
-                label="Фамилия"
-                name="Фамилия"
+                label="Отчество"
+                name="Отчество"
                 rules={[{
                   required: true,
                   type: "string"
                 }]}
               >
                 <Input
-                  placeholder="Иванов"
-                  onChange={e => this.setState({ ...this.state, surname: e.target.value })} />
+                  placeholder="Васильевич"
+                  onChange={
+                    e => this.setState({ ...this.state, name: e.target.value })} />
               </Form.Item>
 
               <Form.Item

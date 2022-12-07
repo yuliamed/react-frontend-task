@@ -1,12 +1,21 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { banUser, approveUser, addUserRole } from "../../actions/manageUsers";
-import { Button, List, Card, Image, Checkbox, Layout, Row, Col, Descriptions } from "antd";
+import { banUser, approveUser, changeRoleList } from "../../actions/manageUsers";
+import { Button, Card, Image, Checkbox, Layout, Row, Col, Descriptions } from "antd";
 import { BASE_USER_PICTURE } from "../../constants/const";
 import { getPhoto, } from "../../actions/account";
+import { UserRolesMap } from "../../constants/enums";
+import { getTagListFromMap } from "../common/processMap";
 const { Meta } = Card;
-const CheckboxGroup = Checkbox.Group;
 let thisObj;
+
+const options = [];
+UserRolesMap.forEach((value, key, map) => {
+  options.push({
+    label: value,
+    value: key,
+  },)
+});
 
 class UserInfoComponent extends Component {
   constructor(props) {
@@ -34,12 +43,12 @@ class UserInfoComponent extends Component {
     const { dispatch } = this.props;
     e.preventDefault();
 
-    this.state.checkedList.forEach((item) => {
-      dispatch(addUserRole(this.state.user.id, item)).then((resp) => {
-        this.setState({ user: resp });
-        this.render();
-      })
+
+    dispatch(changeRoleList(this.state.user.id, this.state.checkedList)).then((resp) => {
+      this.setState({ user: resp });
+      this.render();
     })
+
     this.setState({ isRolesListChanging: false });
     alert("User " + this.state.user.name + " " + this.state.user.surname + " " + "was changed!");
 
@@ -103,8 +112,8 @@ class UserInfoComponent extends Component {
 
     let user = this.state.user;
     const checkBan = () => {
-      if (user.banDate == null) return "No"
-      else return "Yes"
+      if (user.banDate == null) return "Нет"
+      else return "Да"
     }
     const checkBanButton = () => {
       if (user.banDate == null) return "Заблокировать"
@@ -128,16 +137,17 @@ class UserInfoComponent extends Component {
     let changeRolesList = null;
     if (this.state.isRolesListChanging) {
       changeRolesList = <>
-        <p>CHANGING</p>
-        <CheckboxGroup options={this.state.rolesList}
-          onChange={onListChange} />
-        <Button onClick={(e) => this.onSaveRoleList(e)}>Сохранить</Button>
+        <p>Роли:</p>
+        <Checkbox.Group options={options} defaultValue={['Apple']} onChange={(values) => this.setState({ checkedList: values })} />
+        <Button onClick={(e) => this.onSaveRoleList(e)} loading={this.state.checkedList.length == 0}>Сохранить</Button>
+        <Button onClick={() => this.setState({ isRolesListChanging: false })} >Отмена</Button>
+        <br />
       </>
     } else {
-      changeRolesList = <Button onClick={() => {
+      changeRolesList = <Button wrap onClick={() => {
         this.setState({ isRolesListChanging: true });
         this.countArr();
-      }}>Добавить роль</Button>
+      }}>Изменить роли</Button>
     }
 
     return (
@@ -148,7 +158,7 @@ class UserInfoComponent extends Component {
             marginRight: '4%',
             marginLeft: '4%',
             backgroundColor: "#ffffff",
-            border:"red"
+            border: "red"
           }}
         >
           <Row align="middle">
@@ -186,13 +196,13 @@ class UserInfoComponent extends Component {
                   label="Роли пользователя"
                   style={{ margin: '0 16px' }}
                 >
-                  {user.roles.map(home => <p>{home.name}</p>)}
+                  {getTagListFromMap(UserRolesMap, user.roles)}
                 </Descriptions.Item>
               </Descriptions>
 
               <Descriptions style={{ "font-weight": 'bold', margin: 10 }}>
                 <Descriptions.Item
-                  label="Заблокирован?"
+                  label="В блоке"
                   style={{ margin: '0 16px' }}
                 >
                   {checkBan()}
@@ -200,7 +210,7 @@ class UserInfoComponent extends Component {
               </Descriptions>
             </Col>
             <Col span={4}>
-              <Layout align="center">
+              <Layout align="center" style={{backgroundColor: "#61D7A4"}}>
                 {activationMode}
                 {changeRolesList}
                 <Button onClick={(e) => {

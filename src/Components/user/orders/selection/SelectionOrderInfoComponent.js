@@ -23,19 +23,19 @@ class SelectionOrderInfoComponent extends Component {
     return (
       <>
         <Descriptions contentStyle={{ "font-weight": 'bold' }}>
-          <Descriptions.Item
+          {this.state.order.minYear != null ? <Descriptions.Item
             label="Минимальный год"
             style={{ margin: '0 16px' }}
           >
             {this.state.order.minYear}
           </Descriptions.Item>
-
-          <Descriptions.Item
+            : <></>}
+          {this.state.order.minYear != null ? <Descriptions.Item
             label="Пробег"
             style={{ margin: '0 16px' }}
           >
             {this.state.order.mileage + " км"}
-          </Descriptions.Item>
+          </Descriptions.Item> : <></>}
         </Descriptions>
         <Divider orientation="left" orientationMargin="0">
           Цена
@@ -57,7 +57,7 @@ class SelectionOrderInfoComponent extends Component {
         <Divider orientation="left" orientationMargin="0">
           Параметры машины
         </Divider>
-        <Descriptions >
+        <Descriptions hidden={this.state.order.minEngineVolume == null}>
           <p>Объём двигателя </p>
           <Descriptions.Item
             contentStyle={{ "font-weight": 'bold' }}
@@ -71,8 +71,8 @@ class SelectionOrderInfoComponent extends Component {
           >{this.state.order.maxEngineVolume}  L</Descriptions.Item>
 
         </Descriptions>
-        <Descriptions>
-          <Descriptions.Item
+        <Descriptions isVisible={false} >
+          <Descriptions.Item 
             style={{
               width: '100%',
             }}
@@ -81,47 +81,51 @@ class SelectionOrderInfoComponent extends Component {
             {getTagListFromMap(EngineTypeMap, this.state.order.engines)}
           </Descriptions.Item>
         </Descriptions>
-
-        <Descriptions>
-          <Descriptions.Item
-            label="Типы кузовов"
-            style={{
-              width: '100%',
-            }}
-          >
-            {getTagListFromMap(BodyTypeMapWithEngKeys, this.state.order.bodies)}
-          </Descriptions.Item>
-        </Descriptions>
-        <Descriptions>
-          <Descriptions.Item
-            label="Марки"
-            style={{
-              width: '100%',
-            }}
-          >
-            {getTagListFromArr(this.state.order.brands)}
-          </Descriptions.Item>
-        </Descriptions>
-        <Descriptions>
-          <Descriptions.Item
-            label="Приводы"
-            style={{
-              width: '100%',
-            }}
-          >
-            {getTagListFromMap(DriveTypeMap, this.state.order.drives)}
-          </Descriptions.Item>
-        </Descriptions>
-        <Descriptions >
-          <Descriptions.Item
-            label="Трансмиссии"
-            style={{
-              width: '100%',
-            }}
-          >
-            {getTagListFromMap(TransmissionMap, this.state.order.transmissions)}
-          </Descriptions.Item>
-        </Descriptions>
+        {this.state.order.bodies != [] ?
+          <Descriptions>
+            <Descriptions.Item
+              label="Типы кузовов"
+              style={{
+                width: '100%',
+              }}
+            >
+              {getTagListFromMap(BodyTypeMapWithEngKeys, this.state.order.bodies)}
+            </Descriptions.Item>
+          </Descriptions> : <></>}
+        {this.state.order.brands != [] ?
+          <Descriptions>
+            <Descriptions.Item
+              label="Марки"
+              style={{
+                width: '100%',
+              }}
+            >
+              {getTagListFromArr(this.state.order.brands)}
+            </Descriptions.Item>
+          </Descriptions> : <></>}
+        {this.state.order.drives != [] ?
+          <Descriptions>
+            <Descriptions.Item
+              label="Приводы"
+              style={{
+                width: '100%',
+              }}
+            >
+              {getTagListFromMap(DriveTypeMap, this.state.order.drives)}
+            </Descriptions.Item>
+          </Descriptions> : <></>}
+        {this.state.order.transmissions != [] ?
+          <Descriptions >
+            <Descriptions.Item
+              label="Трансмиссии"
+              style={{
+                width: '100%',
+              }}
+            >
+              {getTagListFromMap(TransmissionMap, this.state.order.transmissions)}
+            </Descriptions.Item>
+          </Descriptions>
+          : <></>}
         <Divider orientation="left" orientationMargin="0">
           Дополнительная информация
         </Divider>

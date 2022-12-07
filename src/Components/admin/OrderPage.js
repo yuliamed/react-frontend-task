@@ -9,8 +9,16 @@ import AutoPickerSelector from '../user/orders/AutoPickerSelector'
 import { findAllAutoPickers } from "../../actions/manageUsers";
 import { useNavigate } from 'react-router-dom';
 import { getSelectionReport } from '../../actions/orders/autopicker/manageOrders';
+import { getColoredTagFromMap } from "../common/processMap"
+import { OrderStatusMap } from "../../constants/enums"
 let thisObj;
-
+let filterForStatus = [];
+OrderStatusMap.forEach((value, key, map) => {
+  filterForStatus.push({
+    text: value,
+    value: key,
+  },)
+})
 class WithNavigate extends Component {
   constructor(props) {
     super(props);
@@ -78,8 +86,8 @@ class WithNavigate extends Component {
     const { dispatch } = this.props;
     dispatch(getSelectionReport(order.report))
     if (order.autoUrl == null)
-      this.props.navigate("../users/" + this.state.userId + "/selection-order/" + order.id, { push: true });
-    else this.props.navigate("../users/" + this.state.userId + "/inspection-order/" + order.id, { push: true });
+      this.props.navigate("/admin/users/" + this.state.userId + "/selection-order/" + order.id, { push: true });
+    else this.props.navigate("/admin/users/" + this.state.userId + "/inspection-order/" + order.id, { push: true });
   }
   isEditing = (record) => {
     return record === this.state.editingOrder;
@@ -92,7 +100,6 @@ class WithNavigate extends Component {
         key: "id",
         dataIndex: 'id',
         sorter: (a, b) => a.id - b.id,
-        sortDirections: ['descend'],
       },
       {
         title: 'Тип заказа',
@@ -106,11 +113,11 @@ class WithNavigate extends Component {
 
         filters: [
           {
-            text: "Selection",
+            text: "Подбор",
             value: null,
           },
           {
-            text: "Inspection",
+            text: "Осмотр",
             value: "1",
           },
         ],
@@ -169,27 +176,8 @@ class WithNavigate extends Component {
         title: 'Статус',
         key: "status",
         dataIndex: ["status"],
-        render: status => <Tag color={getTagColor(status.name)}>
-          {status.name}
-        </Tag>,
-        filters: [
-          {
-            text: ORDER_STATUSES.CREATED,
-            value: ORDER_STATUSES.CREATED,
-          },
-          {
-            text: ORDER_STATUSES.IN_PROCESS,
-            value: ORDER_STATUSES.IN_PROCESS,
-          },
-          {
-            text: ORDER_STATUSES.CANCELED,
-            value: ORDER_STATUSES.CANCELED,
-          },
-          {
-            text: ORDER_STATUSES.CLOSED,
-            value: ORDER_STATUSES.CLOSED,
-          },
-        ],
+        render: status => getColoredTagFromMap(OrderStatusMap, status.name, getTagColor(status.name)),
+        filters: filterForStatus,
         onFilter: (value, record) => record.status.name.indexOf(value) === 0,
       },
       {
@@ -200,7 +188,7 @@ class WithNavigate extends Component {
           // <Typography.Link onClick={() => this.onEditOrder(id)}>
           //   Edit
           // </Typography.Link>
-          <Button onClick={() => this.onEditOrder(order)}>Редактировать</Button>
+          <Button onClick={() => this.onEditOrder(order)}>Просмотреть</Button>
         ,
 
       },
@@ -210,7 +198,7 @@ class WithNavigate extends Component {
       console.log('params', pagination, filters, sorter, extra);
     };
 
-    
+
     return (<>
       <Header />
       <Table

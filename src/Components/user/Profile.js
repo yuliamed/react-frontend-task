@@ -110,7 +110,7 @@ class Profile extends Component {
       dispatch(changePass(this.state.newPass, this.state.token))
         .then(
           (responce) => {
-            alert("We changed your pass!");
+            alert("Пароль изменён!");
             console.log(responce)
             this.setState({ isPassChanging: false });
             this.render();
@@ -122,7 +122,7 @@ class Profile extends Component {
           this.setState({ ...this.state, message: message, });
         })
     } else {
-      alert("You didn't confirm yoour new pass!")
+      alert("Вы не подтвердили свой пароль!")
     }
   }
 
@@ -131,10 +131,11 @@ class Profile extends Component {
       console.log(info.file, info.fileList);
     }
     if (info.file.status === 'done') {
-      message.success(`${info.file.name} file uploaded successfully`);
-    } else if (info.file.status === 'error') {
-      message.error(`${info.file.name} file upload failed.`);
-    }
+      message.success(`${info.file.name} Был загружен успешно`);
+    } 
+    // else if (info.file.status === 'error') {
+    //   message.error(`${info.file.name} не был загружен!.`);
+    // }
 
   }
 
@@ -177,11 +178,11 @@ class Profile extends Component {
   beforeUpload(file) {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
     if (!isJpgOrPng) {
-      message.error('You can only upload JPG/PNG file!')
+      message.error('Вы можете загрузить только JPG/PNG файлы!')
     }
     const isLt2M = file.size / 1024 / 1024 < 2
     if (!isLt2M) {
-      message.error('Image must smaller than 2MB!')
+      message.error('Картинка должна быть до 2MB!')
     }
     return isJpgOrPng && isLt2M;
   }
@@ -193,44 +194,44 @@ class Profile extends Component {
       modal =
         <Form>
           <Form.Item
-            label="Token:"
-            name="Token"
+            label="Токен:"
+            name="Токен"
             rules={[
               {
                 required: true,
               }
             ]}>
             <Input
-              placeholder="Token"
+              placeholder="Токен"
               onChange={e => this.setState({ ...this.state, token: e.target.value })} />
           </Form.Item>
 
 
           <Form.Item
-            label="New pass"
-            name="New pass"
+            label="Новый пароль"
+            name="Новый пароль"
             rules={[
               {
                 required: true,
               }
             ]}>
             <Input.Password
-              placeholder="New pass"
+              placeholder="Новый пароль"
               onChange={e => this.setState({ ...this.state, newPass: e.target.value })} />
           </Form.Item>
 
 
 
           <Form.Item
-            label="Confirm new pass"
-            name="Confirm new pass"
+            label="Подтерждение пароля"
+            name="Подтерждение пароля"
             rules={[
               {
                 required: true,
               }
             ]}>
             <Input.Password
-              placeholder="Confirm new pass"
+              placeholder="Подтерждение пароля"
               onChange={e => this.setState({ ...this.state, confirmNewPass: e.target.value })} />
           </Form.Item>
           <Row>
@@ -272,8 +273,8 @@ class Profile extends Component {
               size={{ xs: 240, sm: 320, md: 400, lg: 640, xl: 800, xxl: 1000 }}
               style={{ maxHeight: 300, maxWidth: 300 }}
               shape="square"
-              src={BASE_USER_PICTURE}
-              //src={this.state.imageData == null ? BASE_USER_PICTURE : `data:image/jpeg;base64,${this.state.imageData}`}
+              //src={BASE_USER_PICTURE}
+              src={this.state.imageData == null ? BASE_USER_PICTURE : `data:image/jpeg;base64,${this.state.imageData}`}
               preview={false}
             />
             <br />
@@ -297,13 +298,10 @@ class Profile extends Component {
                   </Upload>
                 </ImgCrop>
               </Col>
-
-
               <Col> <Button label="Delete photo" style={{
 
               }} onClick={e => { this.onDeleteImage(e) }}><DeleteOutlined />
               </Button>
-
               </Col>
             </Row>
             <br />
@@ -318,19 +316,19 @@ class Profile extends Component {
               ></Input>
             </Form.Item>
             <Form.Item label="Имя">
-              <Input placeholder="Name"
+              <Input placeholder="Имя"
                 value={user.name}
-                autoComplete="name"
-                name="name"
+                autoComplete="Имя"
+                name="Имя"
                 type="text"
                 onInput={e => this.handleChange(e)}></Input>
             </Form.Item>
 
             <Form.Item label="Фамилия">
-              <Input placeholder="Surname"
+              <Input placeholder="Фамилия"
                 value={user.surname}
                 type="text"
-                name="surname"
+                name="Фамилия"
                 onChange={e => this.handleChange(e)}>
 
               </Input></Form.Item>

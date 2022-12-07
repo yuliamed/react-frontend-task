@@ -15,6 +15,7 @@ import UserCard from '../../UserCard';
 import ModalCancelOrder from '../ModalCancelOrder';
 import { getNamedOptionListFromMap, getNamesListFromMap } from '../../../common/processMap';
 import { createArrWithName, createOptionArr } from '../../../common/processArrays';
+import SelectionOrderDescriptionComponent from '../../../order/SelectionOrderDescriptionComponent';
 
 const { Panel } = Collapse;
 const { TextArea } = Input;
@@ -127,316 +128,316 @@ class WithNavigate extends Component {
               display: 'vertical',
             }}>
             <Panel header="Информация о заказе" key="1" >
-              <Divider orientation="left">Основная информация</Divider>
-              <MainInfoComponent creationDate={this.state.order.creationDate}
-                status={this.state.order.status}
-                autoPicker={this.state.order.autoPicker} />
-              <Divider orientation="left">Характеристика</Divider>
+              {this.props.isAdmin ? <><SelectionOrderDescriptionComponent order={this.state.order}/></> : <>
+                <Divider orientation="left">Основная информация</Divider>
+                <MainInfoComponent creationDate={this.state.order.creationDate}
+                  status={this.state.order.status}
+                  autoPicker={this.state.order.autoPicker} />
+                <Divider orientation="left">Характеристика</Divider>
+                <Row align='end'>
+                  <Col style={{ marginBottom: "15px" }}>
+                    {this.state.isDisabled ?
+                      <Button type="primary" shape="round"
+                        onClick={() => { this.onEditInfo() }} >
+                        <EditOutlined size={"large"} />
+                        Редактировать
+                      </Button>
+                      : <Button type="primary" shape="round"
+                        onClick={() => { this.onSaveEditedInfo() }} >
+                        <SaveOutlined size={"large"} />
+                        Сохранить
+                      </Button>}
+                  </Col>
+                </Row>
+                <Row style={{ marginBottom: "10px" }}>
+                  <Col >
+                    <p>Минимальный год:</p>
+                  </Col>
+                  <Col span={10}>
+                    <InputNumber
+                      disabled={this.state.isDisabled}
+                      min={1900}
+                      max={2022}
+                      style={{ margin: '0 16px' }}
+                      value={this.state.order.minYear}
 
-              <Row align='end'>
-                <Col style={{ marginBottom: "15px" }}>
-                  {this.state.isDisabled ?
-                    <Button type="primary" shape="round"
-                      onClick={() => { this.onEditInfo() }} >
-                      <EditOutlined size={"large"} />
-                      Редактировать
-                    </Button>
-                    : <Button type="primary" shape="round"
-                      onClick={() => { this.onSaveEditedInfo() }} >
-                      <SaveOutlined size={"large"} />
-                      Сохранить
-                    </Button>}
-                </Col>
-              </Row>
-              <Row style={{ marginBottom: "10px" }}>
-                <Col >
-                  <p>Минимальный год:</p>
-                </Col>
-                <Col span={10}>
-                  <InputNumber
-                    disabled={this.state.isDisabled}
-                    min={1900}
-                    max={2022}
-                    style={{ margin: '0 16px' }}
-                    value={this.state.order.minYear}
+                      onChange={(value) => {
+                        this.setState((state) => ({
+                          ...state,
+                          order: {
+                            ...state.order,
+                            minYear: value
+                          }
+                        }))
+                      }}
+                    />
+                  </Col>
+                  <p>Пробег: </p>
+                  <Col span={4}>
+                    <InputNumber
+                      min={100}
+                      disabled={this.state.isDisabled}
+                      style={{ margin: '0 16px' }}
+                      value={this.state.order.mileage}
+                      onChange={(value) => {
+                        this.setState((state) => ({
+                          ...state,
+                          order: {
+                            ...state.order,
+                            mileage: value
+                          }
+                        }))
+                      }}
+                    />
+                  </Col>
+                  <Col span={1}>
+                    <p>км</p>
+                  </Col>
 
-                    onChange={(value) => {
-                      this.setState((state) => ({
+                </Row>
+                <Row >
+                  <Col>
+                    <p>Цена машины:</p>
+                  </Col>
+                </Row>
+                <Row style={{ marginBottom: "20px" }}>
+                  <p>от: </p>
+                  <Col span={4}>
+                    <InputNumber
+                      disabled={this.state.isDisabled}
+                      style={{ margin: '0 16px' }}
+                      value={this.state.order.rangeFrom}
+                      onChange={(value) => {
+                        this.setState((state) => ({
+                          ...state,
+                          order: {
+                            ...state.order,
+                            rangeFrom: value
+                          }
+                        }))
+                      }}
+                    />
+                  </Col>
+                  <p>до: </p>
+                  <Col span={4}>
+                    <InputNumber
+                      disabled={this.state.isDisabled}
+                      style={{ margin: '0 16px' }}
+                      value={this.state.order.rangeTo}
+                    />
+                  </Col>
+                  <Col span={4}>
+
+                    <Select
+                      disabled={this.state.isDisabled}
+                      style={{ margin: '0 16px' }}
+                      placeholder="Please select"
+                      defaultValue={this.state.order.currencyType.name}
+                      onChange={(value) => this.setState((state) => ({
                         ...state,
                         order: {
                           ...state.order,
-                          minYear: value
+                          currencyType: createArrWithName([value])[0]
                         }
-                      }))
-                    }}
-                  />
-                </Col>
-                <p>Пробег: </p>
-                <Col span={4}>
-                  <InputNumber
-                    min={100}
-                    disabled={this.state.isDisabled}
-                    style={{ margin: '0 16px' }}
-                    value={this.state.order.mileage}
-                    onChange={(value) => {
-                      this.setState((state) => ({
-                        ...state,
-                        order: {
-                          ...state.order,
-                          mileage: value
-                        }
-                      }))
-                    }}
-                  />
-                </Col>
-                <Col span={1}>
-                  <p>км</p>
-                </Col>
+                      }))}
+                    >
+                      {createOptionArr(CurrencyArr)}
+                    </Select>
+                  </Col>
+                </Row>
 
-              </Row>
-              <Row >
-                <Col>
-                  <p>Цена машины:</p>
-                </Col>
-              </Row>
-              <Row style={{ marginBottom: "20px" }}>
-                <p>от: </p>
-                <Col span={4}>
-                  <InputNumber
-                    disabled={this.state.isDisabled}
-                    style={{ margin: '0 16px' }}
-                    value={this.state.order.rangeFrom}
-                    onChange={(value) => {
-                      this.setState((state) => ({
-                        ...state,
-                        order: {
-                          ...state.order,
-                          rangeFrom: value
-                        }
-                      }))
-                    }}
-                  />
-                </Col>
-                <p>до: </p>
-                <Col span={4}>
-                  <InputNumber
-                    disabled={this.state.isDisabled}
-                    style={{ margin: '0 16px' }}
-                    value={this.state.order.rangeTo}
-                  />
-                </Col>
-                <Col span={4}>
+                <Row >
+                  <Col>
+                    <p>Объём двигателя:</p>
+                  </Col>
+                </Row>
+                <Row style={{ marginBottom: "20px" }}>
+                  <p>минимум: </p>
+                  <Col span={4}>
+                    <InputNumber
+                      min={0.5}
+                      max={20}
+                      disabled={this.state.isDisabled}
+                      style={{ margin: '0 16px' }}
+                      value={this.state.order.minEngineVolume}
+                      onChange={(value) => {
+                        this.setState((state) => ({
+                          ...state,
+                          order: {
+                            ...state.order,
+                            minEngineVolume: value
+                          }
+                        }))
+                      }}
+                    />
+                  </Col>
+                  <p>максимум: </p>
+                  <Col span={4}>
+                    <InputNumber
+                      min={1}
+                      disabled={this.state.isDisabled}
+                      max={20}
+                      style={{ margin: '0 16px' }}
+                      value={this.state.order.maxEngineVolume}
+                      onChange={(value) => {
+                        this.setState((state) => ({
+                          ...state,
+                          order: {
+                            ...state.order,
+                            maxEngineVolume: value
+                          }
+                        }))
+                      }}
+                    />
+                  </Col>
+                  <Col span={4}>
+                    <p>L</p>
+                  </Col>
+                </Row>
 
+                <Form.Item
+                  label="Типы дивигателя"
+                >
                   <Select
                     disabled={this.state.isDisabled}
-                    style={{ margin: '0 16px' }}
-                    placeholder="Please select"
-                    defaultValue={this.state.order.currencyType.name}
+                    mode="multiple"
+                    allowClear
+                    style={{
+                      width: '100%',
+                    }}
+                    placeholder="Выбрать"
+                    defaultValue={getNamesListFromMap(this.state.order.engines)}
                     onChange={(value) => this.setState((state) => ({
                       ...state,
                       order: {
                         ...state.order,
-                        currencyType: createArrWithName([value])[0]
+                        engines: createArrWithName(value)
                       }
                     }))}
                   >
-                    {createOptionArr(CurrencyArr)}
+                    {getNamedOptionListFromMap(EngineTypeMap)}
                   </Select>
-                </Col>
-              </Row>
 
-              <Row >
-                <Col>
-                  <p>Объём двигателя:</p>
-                </Col>
-              </Row>
-              <Row style={{ marginBottom: "20px" }}>
-                <p>минимум: </p>
-                <Col span={4}>
-                  <InputNumber
-                    min={0.5}
-                    max={20}
+                </Form.Item>
+
+                <Form.Item
+                  label="Типы кузова"
+                >
+                  <Select
                     disabled={this.state.isDisabled}
-                    style={{ margin: '0 16px' }}
-                    value={this.state.order.minEngineVolume}
-                    onChange={(value) => {
-                      this.setState((state) => ({
-                        ...state,
-                        order: {
-                          ...state.order,
-                          minEngineVolume: value
-                        }
-                      }))
+                    mode="multiple"
+                    allowClear
+                    style={{
+                      width: '100%',
                     }}
-                  />
-                </Col>
-                <p>максимум: </p>
-                <Col span={4}>
-                  <InputNumber
-                    min={1}
-                    disabled={this.state.isDisabled}
-                    max={20}
-                    style={{ margin: '0 16px' }}
-                    value={this.state.order.maxEngineVolume}
-                    onChange={(value) => {
-                      this.setState((state) => ({
-                        ...state,
-                        order: {
-                          ...state.order,
-                          maxEngineVolume: value
-                        }
-                      }))
-                    }}
-                  />
-                </Col>
-                <Col span={4}>
-                  <p>L</p>
-                </Col>
-              </Row>
-
-              <Form.Item
-                label="Типы дивигателя"
-              >
-                <Select
-                  disabled={this.state.isDisabled}
-                  mode="multiple"
-                  allowClear
-                  style={{
-                    width: '100%',
-                  }}
-                  placeholder="Выбрать"
-                  defaultValue={getNamesListFromMap(this.state.order.engines)}
-                  onChange={(value) => this.setState((state) => ({
-                    ...state,
-                    order: {
-                      ...state.order,
-                      engines: createArrWithName(value)
-                    }
-                  }))}
-                >
-                  {getNamedOptionListFromMap(EngineTypeMap)}
-                </Select>
-
-              </Form.Item>
-
-              <Form.Item
-                label="Типы кузова"
-              >
-                <Select
-                  disabled={this.state.isDisabled}
-                  mode="multiple"
-                  allowClear
-                  style={{
-                    width: '100%',
-                  }}
-                  placeholder="Выбрать"
-                  defaultValue={getNamesListFromMap(this.state.order.bodies)}
-                  onChange={(value) => this.setState((state) => ({
-                    ...state,
-                    order: {
-                      ...state.order,
-                      bodies: createArrWithName(value)
-                    }
-                  }))}
-                >
-                  {getNamedOptionListFromMap(BodyTypeMapWithEngKeys)}
-                </Select>
-
-              </Form.Item>
-
-              <Form.Item
-                label="Марки"
-              >
-                <Select
-                  disabled={this.state.isDisabled}
-                  mode="multiple"
-                  allowClear
-                  style={{
-                    width: '100%',
-                  }}
-                  placeholder="Выбрать"
-                  defaultValue={() => {
-                    let arr = this.getArrByNames(this.state.order.brands);
-                    this.setState({ newBrands: arr });
-                    return arr;
-                  }}
-                  onChange={(value) => this.setState((state) => ({
-                    ...state,
-                    order: {
-                      ...state.order,
-                      brands: createArrWithName(value)
-                    }
-                  }))}
-                >
-                  {createOptionArr(BrandNameArr)}
-                </Select>
-
-              </Form.Item>
-
-              <Form.Item
-                label="Приводы"
-              >
-                <Select
-                  disabled={this.state.isDisabled}
-                  mode="multiple"
-                  allowClear
-                  style={{
-                    width: '100%',
-                  }}
-                  placeholder="Выбрать"
-                  defaultValue={getNamesListFromMap(this.state.order.drives)}
-                  onChange={(value) => this.setState((state) => ({
-                    ...state,
-                    order: {
-                      ...state.order,
-                      drives: createArrWithName(value)
-                    }
-                  }))}
-                >
-                  {getNamedOptionListFromMap(DriveTypeMap)}
-                </Select>
-
-              </Form.Item>
-
-              <Form.Item
-                label="Трансмиссия"
-              >
-                <Select
-                  disabled={this.state.isDisabled}
-                  mode="multiple"
-                  allowClear
-                  style={{
-                    width: '100%',
-                  }}
-                  placeholder="Выбрать"
-                  defaultValue={getNamesListFromMap(this.state.order.transmissions)}
-                  onChange={(value) => this.setState((state) => ({
-                    ...state,
-                    order: {
-                      ...state.order,
-                      transmissions: createArrWithName(value)
-                    }
-                  }))}
-                >
-                  {getNamedOptionListFromMap(TransmissionMap)}
-                </Select>
-              </Form.Item>
-              <Form.Item
-                label="Дополнительная информация"
-              >
-                <TextArea placeholder="Дополнительная информация о заказе" disabled={this.state.isDisabled} defaultValue={this.state.order.additionalInfo}
-                  onChange={(value) => {
-                    console.log("value")
-                    this.setState((state) => ({
+                    placeholder="Выбрать"
+                    defaultValue={getNamesListFromMap(this.state.order.bodies)}
+                    onChange={(value) => this.setState((state) => ({
                       ...state,
                       order: {
                         ...state.order,
-                        additionalInfo: value.target.value
+                        bodies: createArrWithName(value)
                       }
-                    }))
-                  }} />
-              </Form.Item>
+                    }))}
+                  >
+                    {getNamedOptionListFromMap(BodyTypeMapWithEngKeys)}
+                  </Select>
 
+                </Form.Item>
+
+                <Form.Item
+                  label="Марки"
+                >
+                  <Select
+                    disabled={this.state.isDisabled}
+                    mode="multiple"
+                    allowClear
+                    style={{
+                      width: '100%',
+                    }}
+                    placeholder="Выбрать"
+                    defaultValue={() => {
+                      let arr = this.getArrByNames(this.state.order.brands);
+                      this.setState({ newBrands: arr });
+                      return arr;
+                    }}
+                    onChange={(value) => this.setState((state) => ({
+                      ...state,
+                      order: {
+                        ...state.order,
+                        brands: createArrWithName(value)
+                      }
+                    }))}
+                  >
+                    {createOptionArr(BrandNameArr)}
+                  </Select>
+
+                </Form.Item>
+
+                <Form.Item
+                  label="Приводы"
+                >
+                  <Select
+                    disabled={this.state.isDisabled}
+                    mode="multiple"
+                    allowClear
+                    style={{
+                      width: '100%',
+                    }}
+                    placeholder="Выбрать"
+                    defaultValue={getNamesListFromMap(this.state.order.drives)}
+                    onChange={(value) => this.setState((state) => ({
+                      ...state,
+                      order: {
+                        ...state.order,
+                        drives: createArrWithName(value)
+                      }
+                    }))}
+                  >
+                    {getNamedOptionListFromMap(DriveTypeMap)}
+                  </Select>
+
+                </Form.Item>
+
+                <Form.Item
+                  label="Трансмиссия"
+                >
+                  <Select
+                    disabled={this.state.isDisabled}
+                    mode="multiple"
+                    allowClear
+                    style={{
+                      width: '100%',
+                    }}
+                    placeholder="Выбрать"
+                    defaultValue={getNamesListFromMap(this.state.order.transmissions)}
+                    onChange={(value) => this.setState((state) => ({
+                      ...state,
+                      order: {
+                        ...state.order,
+                        transmissions: createArrWithName(value)
+                      }
+                    }))}
+                  >
+                    {getNamedOptionListFromMap(TransmissionMap)}
+                  </Select>
+                </Form.Item>
+                <Form.Item
+                  label="Дополнительная информация"
+                >
+                  <TextArea placeholder="Дополнительная информация о заказе" disabled={this.state.isDisabled} defaultValue={this.state.order.additionalInfo}
+                    onChange={(value) => {
+                      console.log("value")
+                      this.setState((state) => ({
+                        ...state,
+                        order: {
+                          ...state.order,
+                          additionalInfo: value.target.value
+                        }
+                      }))
+                    }} />
+                </Form.Item>
+              </>}
             </Panel>
             <Panel header="Информация об автоподборщике" key="3">{
               this.state.order.autoPicker == null ? <Tag color="magenta">does not set yet </Tag> :

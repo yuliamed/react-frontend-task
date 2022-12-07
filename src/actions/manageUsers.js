@@ -27,10 +27,10 @@ export const findAll =
             ).then(
                 (response) => {
                     console.log("Response find all " + response.objects)
-                    
+
                     dispatch({
                         type: FIND_ALL,
-                        
+
                     });
                     return response;
                 },
@@ -51,13 +51,13 @@ export const findAll =
             );
         };
 
-export const findAllAutoPickers = () =>(dispatch)=>{
-    return ManageUsersService.findAllAutoPickers().then((resp)=>{
+export const findAllAutoPickers = () => (dispatch) => {
+    return ManageUsersService.findAllAutoPickers().then((resp) => {
         dispatch({
             type: FIND_ALL
         })
         return resp;
-        
+
     }, (error) => {
         const message =
             (error.response &&
@@ -173,5 +173,41 @@ export const addUserRole = (id, p_typeOfRole) => (dispatch) => {
             });
             return Promise.reject();
         }
+    );
+};
+
+export const changeRoleList = (id, list) => (dispatch) => {
+    let arr = [];
+    for (let i = 0; i < list.length; i++) {
+        arr.push({ typeOfRole: list[i] })
+    }
+    return ManageUsersService.changeRoleList(id,
+        {
+            roles: arr
+        }
+    ).then(
+        (response) => {
+            // dispatch({
+            //     type: ADD_USER_ROLE_SUCCESS,
+            // });
+            return response;
+        },
+        // (error) => {
+        //     const message =
+        //         (error.response &&
+        //             error.response.data &&
+        //             error.response.data.message) ||
+        //         error.message ||
+        //         error.toString();
+        //     dispatch({
+        //         type: ADD_USER_ROLE_FAIL,
+        //     });
+        //     console.log("Error message " + message);
+        //     dispatch({
+        //         type: SET_MESSAGE,
+        //         payload: message,
+        //     });
+        //     return Promise.reject();
+        // }
     );
 };

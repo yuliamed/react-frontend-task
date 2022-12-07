@@ -12,7 +12,13 @@ import { getColoredTagFromMap } from '../common/processMap';
 import { OrderStatusMap } from '../../constants/enums';
 let thisObj;
 
-
+let filterForStatus=[];
+OrderStatusMap.forEach((value, key, map) => {
+  filterForStatus.push({
+    text: value,
+    value: value,
+  },)
+})
 
 class WithNavigate extends Component {
   constructor(props) {
@@ -58,7 +64,7 @@ class WithNavigate extends Component {
   }
 
   render() {
-
+    
     const columns = [
       {
         title: 'ID',
@@ -79,11 +85,11 @@ class WithNavigate extends Component {
 
         filters: [
           {
-            text: "Selection",
+            text: "Подбор",
             value: null,
           },
           {
-            text: "Inspection",
+            text: "Осмотр",
             value: "1",
           },
         ],
@@ -109,26 +115,9 @@ class WithNavigate extends Component {
         key: "status",
         dataIndex: ["status"],
         render: status => getColoredTagFromMap(OrderStatusMap, status.name, getTagColor(status.name)),
-        filters: [
-          {
-            text: ORDER_STATUSES.CREATED,
-            value: ORDER_STATUSES.CREATED,
-          },
-          {
-            text: ORDER_STATUSES.IN_PROCESS,
-            value: ORDER_STATUSES.IN_PROCESS,
-          },
-          {
-            text: ORDER_STATUSES.CANCELED,
-            value: ORDER_STATUSES.CANCELED,
-          },
-          {
-            text: ORDER_STATUSES.CLOSED,
-            value: ORDER_STATUSES.CLOSED,
-          },
-        ],
+        filters: filterForStatus,
         onFilter: (value, record) => record.status.name.indexOf(value) === 0,
-        defaultFilteredValue: [ORDER_STATUSES.CREATED, ORDER_STATUSES.IN_PROCESS]
+       defaultFilteredValue: [ORDER_STATUSES.CREATED, ORDER_STATUSES.IN_PROCESS]
       },
       {
         title: 'Действие',

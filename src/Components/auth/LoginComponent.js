@@ -216,7 +216,8 @@ class WithNavigate extends React.Component {
               </Form.Item>
               <Space direction="vertical" wrap>
                 <Form.Item  >
-                  <Button type="primary" shape="round" htmlType="submit" disabled={isButtonDisabled} hidden={this.state.isPassChanging}>
+                  <Button type="primary" shape="round" htmlType="submit" 
+                  disabled={isButtonDisabled} hidden={this.state.isPassChanging}>
                     Вход
                   </Button>
                   {message && (

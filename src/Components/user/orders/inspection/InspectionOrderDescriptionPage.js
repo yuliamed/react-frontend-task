@@ -12,6 +12,7 @@ import { ORDER_STATUSES } from '../../../../constants/const';
 import UserCard from '../../UserCard';
 import InspectionReportDescription from '../../report/InspectionReportDescription';
 import ModalCancelOrder from '../ModalCancelOrder';
+import InspectionOrderDescriptionComponent from '../../../order/InspectionOrderDescriptionComponent';
 const { Panel } = Collapse;
 const { TextArea } = Input;
 const { Option } = Select;
@@ -146,69 +147,71 @@ class WithNavigate extends Component {
             }}>
             <Panel header="Информация о заказе" key="1" >
 
-              <Divider orientation="left">Основная информация</Divider>
-              <MainInfoComponent creationDate={this.state.order.creationDate}
-                status={this.state.order.status}
-                autoPicker={this.state.order.autoPicker} />
-              <Divider orientation="left">Характеристика</Divider>
-              <Row align='end'>
-                <Col >
-                  {this.state.isDisabled ?
-                    <Button type="primary" shape="round" onClick={() => { this.onEditInfo() }} ><EditOutlined size={"large"} /> Редактировать</Button>
-                    : <Button type="primary" shape="round" onClick={() => { this.onSaveEditedInfo() }} ><SaveOutlined size={"large"} /> Сохранить</Button>}
+              {this.props.isAdmin ? <><InspectionOrderDescriptionComponent order = {this.state.order}/></> : <>
 
-                </Col>
-              </Row>
-              <br />
-              <Form>
-                <Form.Item
-                  label="Ссылка"
-                  name="Ссылка"
-                  rules={[{ required: true },
-                  { type: 'url', warningOnly: true },
-                  { type: 'string', min: 6 }
-                  ]}
+                <Divider orientation="left">Основная информация</Divider>
+                <MainInfoComponent creationDate={this.state.order.creationDate}
+                  status={this.state.order.status}
+                  autoPicker={this.state.order.autoPicker} />
+                <Divider orientation="left">Характеристика</Divider>
+                <Row align='end'>
+                  <Col >
+                    {this.state.isDisabled ?
+                      <Button type="primary" shape="round" onClick={() => { this.onEditInfo() }} ><EditOutlined size={"large"} /> Редактировать</Button>
+                      : <Button type="primary" shape="round" onClick={() => { this.onSaveEditedInfo() }} ><SaveOutlined size={"large"} /> Сохранить</Button>}
 
-                >
-                  <Input
-                    disabled={this.state.isDisabled}
-                    defaultValue={this.state.order.autoUrl}
-                    onChange={(value) => {
-                      this.setState((state) => ({
-                        ...state,
-                        order: {
-                          ...state.order,
-                          autoUrl: value
-                        }
-                      }))
-                    }}
-                  />
-                </Form.Item>
-                <Form.Item
-                  name="Дополнительная информация"
-                  label="Дополнительная информация"
-                  rules={[
-                    { type: 'string', max: 512 }
-                  ]}
-                >
-                  <TextArea
-                    allowClear
-                    disabled={this.state.isDisabled}
-                    value={this.state.order.additionalInfo}
-                    placeholder="Информация о заказе"
-                    onChange={(value) => {
-                      console.log("value")
-                      this.setState((state) => ({
-                        ...state,
-                        order: {
-                          ...state.order,
-                          additionalInfo: value.target.value
-                        }
-                      }))
-                    }}
-                  />
-                </Form.Item>
-              </Form>
+                  </Col>
+                </Row>
+                <br />
+                <Form>
+                  <Form.Item
+                    label="Ссылка"
+                    name="Ссылка"
+                    rules={[{ required: true },
+                    { type: 'url', warningOnly: true },
+                    { type: 'string', min: 6 }
+                    ]}
+
+                  >
+                    <Input
+                      disabled={this.state.isDisabled}
+                      defaultValue={this.state.order.autoUrl}
+                      onChange={(value) => {
+                        this.setState((state) => ({
+                          ...state,
+                          order: {
+                            ...state.order,
+                            autoUrl: value
+                          }
+                        }))
+                      }}
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    name="Дополнительная информация"
+                    label="Дополнительная информация"
+                    rules={[
+                      { type: 'string', max: 512 }
+                    ]}
+                  >
+                    <TextArea
+                      allowClear
+                      disabled={this.state.isDisabled}
+                      value={this.state.order.additionalInfo}
+                      placeholder="Информация о заказе"
+                      onChange={(value) => {
+                        console.log("value")
+                        this.setState((state) => ({
+                          ...state,
+                          order: {
+                            ...state.order,
+                            additionalInfo: value.target.value
+                          }
+                        }))
+                      }}
+                    />
+                  </Form.Item>
+                </Form></>}
             </Panel>
             <Panel header="Информация об автоподборщике" key="3">
               {this.state.order.autoPicker == null ? <Tag color="magenta">Не установлен</Tag> :

@@ -44,6 +44,11 @@ export const OrderStatusMap = new Map([
     ['CREATED', 'Создан'], ['IN_PROCESS', 'В обработке'], ['CLOSED', 'Закрыт'], ['CANCELED', 'Отменён']
 ])
 
+export const UserRolesMap = new Map([
+    ['ADMIN', 'Адинистратор'], ['AUTO_PICKER', 'Автоподборщик'], ['USER', 'Пользователь']
+])
+
+
 export const TransmissionArr = [
     'MACHINE', 'MECHANICAL', 'ROBOT', 'VARIATOR'
 ]
