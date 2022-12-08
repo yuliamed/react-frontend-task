@@ -82,7 +82,7 @@ class WithNavigate extends Component {
 
     dispatch(updateOrder(this.state.order.creator.id,
       this.state.order.id, this.state.order))
-      .this((resp) => {
+      .then((resp) => {
         this.setState({ order: resp })
       })
     console.log(this.state.newTransmissions)
@@ -115,7 +115,7 @@ class WithNavigate extends Component {
               display: 'vertical',
             }}>
             <Row justify="end">
-              <Button type="primary" hidden={this.state.order.status.name == ORDER_STATUSES.CANCELED || this.state.order.status.name == ORDER_STATUSES.CLOSED} danger shape="round" size={"large"}
+              <Button type="primary" hidden={this.state.order.status.name != ORDER_STATUSES.CREATED} danger shape="round" size={"large"}
                 onClick={(e) => this.onCancelOrder(e)}><CloseSquareOutlined />Отменить</Button>
             </Row>
           </Col>
@@ -128,7 +128,7 @@ class WithNavigate extends Component {
               display: 'vertical',
             }}>
             <Panel header="Информация о заказе" key="1" >
-              {this.props.isAdmin ? <><SelectionOrderDescriptionComponent order={this.state.order}/></> : <>
+              {this.props.isAdmin ? <><SelectionOrderDescriptionComponent order={this.state.order} /></> : <>
                 <Divider orientation="left">Основная информация</Divider>
                 <MainInfoComponent creationDate={this.state.order.creationDate}
                   status={this.state.order.status}

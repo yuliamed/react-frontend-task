@@ -132,7 +132,7 @@ class WithNavigate extends Component {
                 display: 'vertical',
               }}>
               <Row justify="end">
-                <Button type="primary" danger shape="round" size={"large"}
+                <Button type="primary" danger shape="round" size={"large"} hidden={this.state.order.status.name != ORDER_STATUSES.CREATED}
                   onClick={(e) => this.onCancelOrder(e)}><CloseSquareOutlined />Отменить</Button>
               </Row>
             </Col>
@@ -197,7 +197,7 @@ class WithNavigate extends Component {
                     <TextArea
                       allowClear
                       disabled={this.state.isDisabled}
-                      value={this.state.order.additionalInfo}
+                      defaultValue={this.state.order.additionalInfo}
                       placeholder="Информация о заказе"
                       onChange={(value) => {
                         console.log("value")
