@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Divider, Descriptions, Row, Col, Collapse, Button, } from 'antd';
+import { Divider, Descriptions, Row, Col, Collapse, Button, Modal } from 'antd';
 import { connect } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { LeftOutlined, } from '@ant-design/icons';
@@ -10,6 +10,8 @@ import { Content } from 'antd/lib/layout/layout';
 import InspectionReportComponent from '../../report/InspectionReportComponent';
 import { cleanSelectionReport, getInspectionOrder } from '../../../actions/orders/autopicker/manageOrders';
 import { getInspectionReport } from '../../../actions/orders/autopicker/manageInspectionReport';
+import { ORDER_STATUSES } from '../../../constants/const';
+import { changeOrderStatus } from '../../../actions/orders/userOrder';
 const { Panel } = Collapse;
 let thisObj;
 class WithNavigate extends Component {
@@ -21,9 +23,15 @@ class WithNavigate extends Component {
       isLoading: true,
       isDisabled: true,
       isOrderCancelling: false,
+      isModalCancelingOrderOpen: false,
+      isEdittingAllowed: true,
     }
     this.onEditInfo = this.onEditInfo.bind(this);
     this.onSaveEditedInfo = this.onSaveEditedInfo.bind(this);
+    this.onClosingOrderProccess = this.onClosingOrderProccess.bind(this);
+    this.handleOk = this.handleOk.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
+    this.onChangeOrderStatus = this.onChangeOrderStatus.bind(this);
     thisObj = this;
   }
 
@@ -36,6 +44,31 @@ class WithNavigate extends Component {
     }
     )
   }
+
+  onClosingOrderProccess() {
+    console.log("closing");
+    this.setState({ isModalCancelingOrderOpen: true });
+  }
+
+  onChangeOrderStatus(status) {
+    const { dispatch } = this.props;
+    dispatch(changeOrderStatus(localStorage.getItem("userId"), this.state.order.id, status))
+      .then((resp) =>
+        this.setState({ order: resp }));
+    //this.render();
+  }
+
+  handleOk() {
+    this.onChangeOrderStatus(ORDER_STATUSES.CLOSED);
+    this.setState({ isModalCancelingOrderOpen: false, isEdittingAllowed: false });
+    const { dispatch } = this.props;
+    dispatch(cleanSelectionReport());
+    this.props.navigate(-1)
+  };
+
+  handleCancel() {
+    this.setState({ isModalCancelingOrderOpen: false });
+  };
 
   onEditInfo(e) {
     this.setState({ isDisabled: false })
@@ -93,7 +126,7 @@ class WithNavigate extends Component {
             >
 
               <Divider orientation="left">Основная информация</Divider>
-              
+
               <MainInfoComponent creationDate={this.state.order.creationDate}
                 status={this.state.order.status}
                 autoPicker={this.state.order.autoPicker} />
@@ -114,11 +147,19 @@ class WithNavigate extends Component {
 
             </Panel>
             <Panel header="Отчёт по заказу" key="4">
-              <InspectionReportComponent />
+              <InspectionReportComponent onCloseProccess={() => this.onClosingOrderProccess()}
+              orderId={this.state.order.id}
+              report={this.state.order.report}
+              isEdittingAllowed={this.state.isEdittingAllowed} />
             </Panel>
           </Collapse>
         </Content>
-
+        <Modal title="Закрытие заказа"
+          visible={this.state.isModalCancelingOrderOpen}
+          onOk={() => this.handleOk()}
+          onCancel={() => this.handleCancel()}>
+          <h2>Действительно закрыть заказ?</h2>
+        </Modal>
       </>
     );
   }

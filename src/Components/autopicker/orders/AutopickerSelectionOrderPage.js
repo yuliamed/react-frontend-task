@@ -111,6 +111,9 @@ class WithNavigate extends Component {
   handleOk() {
     this.setState({ isModalCancelingOrderOpen: false, isEdittingAllowed: false });
     this.onChangeOrderStatus(ORDER_STATUSES.CLOSED);
+    const { dispatch } = this.props;
+    dispatch(cleanSelectionReport());
+    this.props.navigate(-1)
   };
 
   handleCancel() {

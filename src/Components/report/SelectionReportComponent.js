@@ -124,7 +124,7 @@ class SelectionReportComponent extends Component {
           onClick={() =>
             this.onCreatNewReport()
           }>
-          Сохдать Отчёт
+          Создать Отчёт
         </Button> :
         order.status.name == ORDER_STATUSES.CLOSED
           || order.status.name == ORDER_STATUSES.CANCELED ? <></> :
@@ -152,7 +152,7 @@ class SelectionReportComponent extends Component {
             }
           </Col>
           <Col >
-            <div hidden={order.status.name == ORDER_STATUSES.CLOSED || order.status.name == ORDER_STATUSES.CANCELED || !this.props.isEdittingAllowed}>
+            <div hidden={order.status.name != ORDER_STATUSES.IN_PROCESS|| !this.props.isEdittingAllowed  }>
               <Button
                 style={{ background: START_REPORT_PROCESS, borderColor: START_REPORT_PROCESS }}
                 shape="circle"

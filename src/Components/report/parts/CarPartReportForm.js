@@ -28,7 +28,9 @@ class CarPartReportForm extends Component {
     this.onDeleteDescription = this.onDeleteDescription.bind(this);
     thisObj = this;
   }
-
+  validateMessages = {
+    required: '${label} is required!',
+  };
   async componentDidMount() {
     const { report } = this.props;
     console.log(report);
@@ -91,7 +93,8 @@ class CarPartReportForm extends Component {
       }
 
     return (
-      <><Form>
+      <><Form
+        validateMessages={this.validateMessages}>
         {this.props.isCreating ? <></> :
           <Row style={{ margin: '10px' }} align="end">
             {this.state.isDisabled ?
@@ -138,7 +141,8 @@ class CarPartReportForm extends Component {
         </Form.Item>
         <Form.Item
           style={{ width: '80%' }}
-
+          rules={[{ required: true },
+          ]}
           label="Комментарий"
         >
           <TextArea placeholder="Информация по машине"
@@ -156,6 +160,8 @@ class CarPartReportForm extends Component {
         <Form.Item
           style={{ width: '80%' }}
           label="Рекомендации"
+          rules={[{ required: true },
+          ]}
         >
           <TextArea placeholder="Рекомендации по машине"
             defaultValue={
@@ -197,6 +203,6 @@ function mapStateToProps(state) {
     report, order
   };
 }
- export default connect(mapStateToProps)(CarPartReportForm);
+export default connect(mapStateToProps)(CarPartReportForm);
 
 //export default (CarPartReportForm);

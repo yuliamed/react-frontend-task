@@ -3,11 +3,9 @@ import { findAll, getInspectionOrder, getSelectionReport, } from '../../actions/
 import { getInspectionReport } from '../../actions/orders/autopicker/manageInspectionReport'
 import Header from '../common/headers/Header'
 import { connect } from "react-redux";
-import { Button, Typography, Table, Tag, Popconfirm } from 'antd';
-import { ORDER_STATUSES } from '../../constants/const';
+import { Button, Table, Tag,} from 'antd';
 import { SELECTION_ORDER_COLOR, INSPECTION_ORDER_COLOR, getTagColor } from '../../constants/colors';
 import { useNavigate } from 'react-router-dom';
-import { getOrderById } from '../../actions/orders/userSelectionOrder';
 import { getColoredTagFromMap } from '../common/processMap';
 import { OrderStatusMap } from '../../constants/enums';
 let thisObj;
@@ -16,7 +14,7 @@ let filterForStatus=[];
 OrderStatusMap.forEach((value, key, map) => {
   filterForStatus.push({
     text: value,
-    value: value,
+    value: key,
   },)
 })
 
@@ -117,7 +115,7 @@ class WithNavigate extends Component {
         render: status => getColoredTagFromMap(OrderStatusMap, status.name, getTagColor(status.name)),
         filters: filterForStatus,
         onFilter: (value, record) => record.status.name.indexOf(value) === 0,
-       defaultFilteredValue: [ORDER_STATUSES.CREATED, ORDER_STATUSES.IN_PROCESS]
+       //defaultFilteredValue: [OrderStatusMap., OrderStatusMap.get("IN_PROCESS").key ]
       },
       {
         title: 'Действие',

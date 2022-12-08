@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { Row, Col, Button, Divider, Collapse, } from 'antd';
 import { connect } from "react-redux";
-import { SaveOutlined,} from '@ant-design/icons';
+import { SaveOutlined, CheckCircleOutlined} from '@ant-design/icons';
 import { START_REPORT_PROCESS } from '../../constants/colors';
-import { saveEditedSelectionReport,  } from '../../actions/orders/autopicker/manageOrders';
+import { saveEditedSelectionReport, } from '../../actions/orders/autopicker/manageOrders';
 import { changeOrderStatus } from '../../actions/orders/userOrder';
 import { ORDER_STATUSES } from '../../constants/const';
 import { editBodyReport, editBodyPartDescription, editTransmissionReport, editEngineReport, saveEditedMainDataReport, saveEditedBodyReport, saveEditedSalonReport, saveEditedElectroReport, saveEditedPendantReport, saveEditedTransmissionReport, saveEditedEngineReport, createInspectionReport, saveNewInspectionReport, editMainReportData, saveEditedComputerErrorsReport, editComputerErrorsReport } from '../../actions/orders/autopicker/manageInspectionReport';
@@ -20,8 +20,10 @@ class InspectionReportComponent extends Component {
     this.state = {
       orderId: null,
       isDisabled: true,
+      isEdittingAllowed: true,
       isReportCreating: false,
       int: 0,
+      order: null
     }
     thisObj = this;
     this.onAddNewReportForm = this.onAddNewReportForm.bind(this);
@@ -41,12 +43,118 @@ class InspectionReportComponent extends Component {
 
   async componentDidMount() {
     const { order } = this.props;
-    thisObj.setState({ orderId: order.id })
+    thisObj.setState({ orderId: order.id, order: order })
     // const { autoPicker, order } = this.props;
     // console.log(autoPicker);
     // dispatch(getSelectionReport(order.report))
   }
 
+  render() {
+    const { report, order} = this.props;
+    console.log(report);
+    let visibleButton =
+      report == null ?
+        <Button shape="round"
+          type="primary"
+          style={{ background: START_REPORT_PROCESS, borderColor: START_REPORT_PROCESS }}
+          onClick={() =>
+            this.onCreatNewReport()
+          }>
+          Создать отчёт
+        </Button> : <></>
+    return (
+      report == null ? visibleButton :
+        <div style={{ marginLeft: "4%", marginRight: "4%" }}>
+          <Row align='end' style={{ marginLeft: "50px" }}>
+            <Col >
+              {this.state.isReportCreating ?
+                <Button type="primary"
+                  shape="round"
+                  onClick={() => { this.onSaveReport() }} >
+                  <SaveOutlined size={"large"} />
+                  Сохранить
+                </Button> : <></>}
+            </Col>
+            <Col >
+              <div hidden={order.status.name != ORDER_STATUSES.IN_PROCESS 
+                || this.props.isEdittingAllowed}>
+                <Button
+                  style={{ background: START_REPORT_PROCESS, borderColor: START_REPORT_PROCESS }}
+                  shape="circle"
+                  type="primary" onClick={() => this.props.onCloseProccess()}>
+                  <CheckCircleOutlined />
+                </Button>
+                </div>
+            </Col>
+          </Row>
+          <br />
+          <Divider orientation="left">Основная информация</Divider>
+          <MainCarCharacteristic report={report}
+            onChange={(report) => this.onChangeMainInfo(report)}
+            isCreating={this.state.isReportCreating}
+            saveEditedInfo={(info) => this.saveEditedMainInfo(info)} />
+          <Collapse defaultActiveKey={["1"]}>
+            <Panel header="Состояние кузова" key="1" >
+              <CarPartReportForm reportPart={report.bodyReport}
+                onEditBodyDescription={this.onEditBodyDescription}
+                isCreating={this.state.isReportCreating}
+                onChangeBodyReport={(rep) => this.changeBodyReport(rep)}
+                onSaveReport={(rep) => this.onSaveBodyReport(rep)} />
+            </Panel>
+            <Panel header="Состояние салона" key="2">
+              <CarPartReportForm reportPart={report.salonReport}
+                onEditBodyDescription={this.onEditBodyDescription}
+                isCreating={this.state.isReportCreating}
+                onChangeBodyReport={(rep) => this.changeBodyReport(rep)}
+                onSaveReport={(rep) => this.onSavePendantReport(rep)} />
+            </Panel>
+            <Panel header="Состояние электрики" key="3">
+              <CarPartReportForm
+                reportPart={report.electricalEquipmentReport
+                }
+                onEditBodyDescription={this.onEditBodyDescription}
+                isCreating={this.state.isReportCreating}
+                onChangeBodyReport={(rep) => this.changeBodyReport(rep)}
+                onSaveReport={(rep) => this.onSaveElectricReport(rep)} />
+            </Panel>
+            <Panel header="Состояние подвески" key="4">
+              <CarPartReportForm reportPart={report.pendantReport}
+                onEditBodyDescription={this.onEditBodyDescription}
+                isCreating={this.state.isReportCreating}
+                onChangeBodyReport={(rep) => this.changeBodyReport(rep)}
+                onSaveReport={(rep) => this.onSavePendantReport(rep)} />
+            </Panel>
+            <Panel header="Состояние трансмиссии" key="5">
+              <TransmissionReportComponent report={report.transmissionReport.noteOnWorkSet}
+                onEditNoteOnWork={this.onEditTransNoteOnWork}
+                onEditNoteSet={this.onEditNoteToTransmission}
+                isCreating={this.state.isReportCreating}
+                onSaveReport={(rep) => this.onSaveTransmissionReport(rep)}
+              />
+            </Panel>
+            <Panel header="Состояние двигателя" key="6">
+              <EngineReport isCreating={this.state.isReportCreating} report={report.engineReport}
+                onChangeReport={this.onEditEngineReport}
+                onEditNoteOnWork={this.onEditEngineNoteOnWork}
+                onSaveReport={(rep) => this.onSaveEngineReport(rep)}
+              />
+            </Panel>
+            <Panel header="Компьюреные ошибки" key="7">
+              <ComputerErrorReportComponent isCreating={this.state.isReportCreating}
+                report={report.carComputerErrors}
+                onChangeReport={this.onEditCarErrorsReport}
+                onEditNoteSet={this.onEditCarError}
+                onSaveReport={(rep) => this.onSaveComperErrorsReport(rep)}
+              />
+            </Panel>
+          </Collapse >
+          {/* <Divider orientation="left">Body report</Divider> */}
+
+        </div>
+    )
+  }
+
+  
   onEditInfo() {
     this.setState({ isDisabled: false })
   }
@@ -59,7 +167,8 @@ class InspectionReportComponent extends Component {
       .then(() => {
         this.setState({ isDisabled: true, isReportCreating: false })
       })
-      .catch((error)=>alert("Всё фигня, переделывай! = " + error))
+      // todo тут выводить надо нормальную ошибку
+      .catch((error) => alert("Есть ошибки в заполнении полей! = " + error))
 
   }
 
@@ -248,103 +357,9 @@ class InspectionReportComponent extends Component {
     dispatch(saveEditedEngineReport(localStorage.getItem("userId"), this.state.orderId, report));
   }
 
-  onSaveComperErrorsReport(report){
+  onSaveComperErrorsReport(report) {
     const { dispatch } = this.props;
     dispatch(saveEditedComputerErrorsReport(localStorage.getItem("userId"), this.state.orderId, report));
-  }
-
-  render() {
-    const { report, } = this.props;
-    console.log(report);
-    let visibleButton =
-      report == null ?
-        <Button shape="round"
-          type="primary"
-          style={{ background: START_REPORT_PROCESS, borderColor: START_REPORT_PROCESS }}
-          onClick={() =>
-            this.onCreatNewReport()
-          }>
-          Создать отчёт
-        </Button> : <></>
-    return (
-      report == null ? visibleButton :
-        <div style={{ marginLeft: "4%", marginRight: "4%" }}>
-          <Row align='end' style={{ marginLeft: "50px" }}>
-            <Col >
-              {this.state.isReportCreating ?
-                <Button type="primary"
-                  shape="round"
-                  onClick={() => { this.onSaveReport() }} >
-                  <SaveOutlined size={"large"} />
-                  Сохранить
-                </Button> : <></>}
-            </Col>
-          </Row>
-          <br />
-          <Divider orientation="left">Основная информация</Divider>
-          <MainCarCharacteristic report={report}
-            onChange={(report) => this.onChangeMainInfo(report)}
-            isCreating={this.state.isReportCreating}
-            saveEditedInfo={(info) => this.saveEditedMainInfo(info)} />
-          <Collapse defaultActiveKey={["1"]}>
-            <Panel header="Состояние кузова" key="1" >
-              <CarPartReportForm reportPart={report.bodyReport}
-                onEditBodyDescription={this.onEditBodyDescription}
-                isCreating={this.state.isReportCreating}
-                onChangeBodyReport={(rep) => this.changeBodyReport(rep)}
-                onSaveReport={(rep) => this.onSaveBodyReport(rep)} />
-            </Panel>
-            <Panel header="Состояние салона" key="2">
-              <CarPartReportForm reportPart={report.salonReport}
-                onEditBodyDescription={this.onEditBodyDescription}
-                isCreating={this.state.isReportCreating}
-                onChangeBodyReport={(rep) => this.changeBodyReport(rep)}
-                onSaveReport={(rep) => this.onSavePendantReport(rep)} />
-            </Panel>
-            <Panel header="Состояние электрики" key="3">
-              <CarPartReportForm
-                reportPart={report.electricalEquipmentReport
-                }
-                onEditBodyDescription={this.onEditBodyDescription}
-                isCreating={this.state.isReportCreating}
-                onChangeBodyReport={(rep) => this.changeBodyReport(rep)}
-                onSaveReport={(rep) => this.onSaveElectricReport(rep)} />
-            </Panel>
-            <Panel header="Состояние подвески" key="4">
-              <CarPartReportForm reportPart={report.pendantReport}
-                onEditBodyDescription={this.onEditBodyDescription}
-                isCreating={this.state.isReportCreating}
-                onChangeBodyReport={(rep) => this.changeBodyReport(rep)}
-                onSaveReport={(rep) => this.onSavePendantReport(rep)} />
-            </Panel>
-            <Panel header="Состояние трансмиссии" key="5">
-              <TransmissionReportComponent report={report.transmissionReport.noteOnWorkSet}
-                onEditNoteOnWork={this.onEditTransNoteOnWork}
-                onEditNoteSet={this.onEditNoteToTransmission}
-                isCreating={this.state.isReportCreating}
-                onSaveReport={(rep) => this.onSaveTransmissionReport(rep)}
-              />
-            </Panel>
-            <Panel header="Состояние двигателя" key="6">
-              <EngineReport isCreating={this.state.isReportCreating} report={report.engineReport}
-                onChangeReport={this.onEditEngineReport}
-                onEditNoteOnWork={this.onEditEngineNoteOnWork}
-                onSaveReport={(rep) => this.onSaveEngineReport(rep)}
-              />
-            </Panel>
-            <Panel header="Компьюреные ошибки" key="7">
-              <ComputerErrorReportComponent isCreating={this.state.isReportCreating}
-                report={report.carComputerErrors}
-                onChangeReport={this.onEditCarErrorsReport}
-                onEditNoteSet={this.onEditCarError}
-                onSaveReport={(rep) => this.onSaveComperErrorsReport(rep)}
-              />
-            </Panel>
-          </Collapse >
-          {/* <Divider orientation="left">Body report</Divider> */}
-
-        </div>
-    )
   }
 }
 
