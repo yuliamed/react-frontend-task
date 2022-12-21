@@ -22,7 +22,9 @@ class CarPartDescriptionReportForm extends Component {
       isDisabled: this.props.isDisabled,
       fileList: null,
       path: "",
-      filePath: ""
+      filePath: "",
+      description: "",
+      comment: "",
     };
     thisObj = this;
   }
@@ -78,6 +80,10 @@ class CarPartDescriptionReportForm extends Component {
     this.setState({ fileList: file, filePath: str });
   };
 
+  validateMessages = {
+    required: '${label} обязательно!',
+  };
+
   onPreview = async (file) => {
     let src = file.url;
     if (!src) {
@@ -92,6 +98,11 @@ class CarPartDescriptionReportForm extends Component {
     const imgWindow = window.open(src);
     imgWindow?.document.write(image.outerHTML);
   };
+
+  checkSaving() {
+    if (this.state.comment == "" || this.state.description == "") return false
+    return true
+  }
 
   render() {
     let description = this.props.description;
@@ -124,8 +135,14 @@ class CarPartDescriptionReportForm extends Component {
           <CancelButton onClick={() => this.onClickRemoveDescription()}
             hidden={this.props.isDisabled} />
         </Row>
-        <Form>
+        <Form
+          onChange={() => this.props.onChange(this.checkSaving())}
+          validateMessages={this.validateMessages}>
           <Form.Item
+            name="Название части машины"
+            rules={[{
+              required: true,
+            }]}
             label="Название части машины"
           >
             <Input
@@ -135,12 +152,17 @@ class CarPartDescriptionReportForm extends Component {
                 (value) => {
                   description.describingPart = value.target.value;
                   this.props.onEdit(description);
+                  this.setState({ description: value })
                 }}
             >
             </Input>
           </Form.Item>
 
           <Form.Item
+            name="Комментарий"
+            rules={[{
+              required: true,
+            }]}
             label="Комментарий"
           >
             <TextArea placeholder="Комментарии по машине"
@@ -151,6 +173,7 @@ class CarPartDescriptionReportForm extends Component {
                   const { dispatch } = this.props;
                   description.comment = value.target.value;
                   dispatch(editBodyPartDescription(description, this.props.id))
+                  this.setState({ comment: value })
                 }} />
           </Form.Item>
           <Form.Item

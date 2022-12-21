@@ -231,7 +231,7 @@ class WithNavigate extends Component {
                     <Select
                       disabled={this.state.isDisabled}
                       style={{ margin: '0 16px' }}
-                      placeholder="Please select"
+                      placeholder="Выбрать"
                       defaultValue={this.state.order.currencyType.name}
                       onChange={(value) => this.setState((state) => ({
                         ...state,
@@ -375,7 +375,7 @@ class WithNavigate extends Component {
                 </Form.Item>
 
                 <Form.Item
-                  label="Приводы"
+                  label="Типы привода"
                 >
                   <Select
                     disabled={this.state.isDisabled}
@@ -400,7 +400,7 @@ class WithNavigate extends Component {
                 </Form.Item>
 
                 <Form.Item
-                  label="Трансмиссия"
+                  label="Типы коробки передач"
                 >
                   <Select
                     disabled={this.state.isDisabled}
@@ -427,7 +427,6 @@ class WithNavigate extends Component {
                 >
                   <TextArea placeholder="Дополнительная информация о заказе" disabled={this.state.isDisabled} defaultValue={this.state.order.additionalInfo}
                     onChange={(value) => {
-                      console.log("value")
                       this.setState((state) => ({
                         ...state,
                         order: {

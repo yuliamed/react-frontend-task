@@ -50,7 +50,7 @@ class UserInfoComponent extends Component {
     })
 
     this.setState({ isRolesListChanging: false });
-    alert("User " + this.state.user.name + " " + this.state.user.surname + " " + "was changed!");
+    alert("Роль пользователя " + this.state.user.name + " " + this.state.user.surname + " " + "были изменены!");
 
   }
 
@@ -58,7 +58,7 @@ class UserInfoComponent extends Component {
     const { dispatch } = this.props;
     e.preventDefault();
     dispatch(banUser(id, isBanned)).then((resp) => {
-      alert("User " + resp.name + " " + resp.surname + " " + "was changed!");
+      alert("Пользователь " + resp.name + " " + resp.surname + " " + "был изменён!");
       this.setState({ user: resp });
       this.render();
     })
@@ -78,7 +78,7 @@ class UserInfoComponent extends Component {
     const { dispatch } = this.props;
     e.preventDefault();
     dispatch(approveUser(id)).then((resp) => {
-      alert("User " + resp.name + " " + resp.surname + " " + "was approved!");
+      alert("Пользователь " + resp.name + " " + resp.surname + " " + "был подтверждён!");
       this.setState({ user: resp });
       this.render();
     })

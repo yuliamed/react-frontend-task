@@ -50,7 +50,7 @@ class InspectionOrderCreatingComponent extends Component {
       autoPickerId: this.state.autoPickerId
     }
     dispatch(createOrder(this.state.userID, orderParams)).then((resp) => {
-      alert("Order created!");
+      alert("Заказ был создан!");
     })
     this.onSave();
     this.render();
@@ -61,7 +61,7 @@ class InspectionOrderCreatingComponent extends Component {
     thisObj.setState({ userID: this.props.user_id })
     dispatch(findAllAutoPickers()).then((resp) => {
       console.log(resp)
-      thisObj.setState({ autoPickers: resp.objects })
+      thisObj.setState({ autoPickers: resp.data })
     })
   }
 
@@ -159,13 +159,13 @@ class InspectionOrderCreatingComponent extends Component {
             </Content>
           </Layout>
         </Card >
-        <Modal title="Are you sure??" visible={this.state.isOrderCancelling}
+        <Modal title="Отмена заказа" visible={this.state.isOrderCancelling}
           onOk={() => {
             this.cancelOrder();
             this.setState({ isOrderCancelling: false })
           }}
           onCancel={() => this.setState({ isOrderCancelling: false })}>
-          <h2>Do you really want to save this order? </h2>
+          <h2>Вы действительно хотите отменить этот заказ? </h2>
         </Modal>
       </ >
     );

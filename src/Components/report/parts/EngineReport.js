@@ -86,21 +86,21 @@ export default class EngineReport extends Component {
                 shape="round"
                 onClick={() => { this.onEditInfo() }} >
                 <EditOutlined size={"large"} />
-                Edit
+                Редактировать
               </Button>
               : <Button type="primary"
                 shape="round"
                 onClick={() => { this.onSaveEditedInfo() }} >
                 <SaveOutlined size={"large"} />
-                Save
+                Сохранить
               </Button>}
           </Row>}
         <Form.Item
           style={{ width: '80%' }}
 
-          label="Pure Oil"
+          label="Уровень масла"
         >
-          <Input placeholder="Pure oil"
+          <Input placeholder="Уровень масла"
             disabled={this.state.isDisabled}
             defaultValue={
               this.props.report.oilPure
@@ -122,7 +122,7 @@ export default class EngineReport extends Component {
             onClick={() => {
               this.onAddNewNote();
             }}>
-            <PlusCircleOutlined />Add Report
+            <PlusCircleOutlined />Добавить отчёт
           </Button>
         </Row>
         {descriptions}

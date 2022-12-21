@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Form, Input, Button, Layout, Space } from 'antd';
+import { Form, Input, Button, Layout, Space, Col } from 'antd';
 import UserService from "../../services/userService";
 import { connect } from "react-redux";
 import { signIn } from "../../actions/auth";
@@ -61,12 +61,12 @@ class WithNavigate extends React.Component {
     UserService.recoverPass(this.state.email).then(
       () => {
 
-        alert("Check your email and input reset token to change password!");
+        alert("Проверьте указанную почту и введите токен из полученного сообщения!");
         this.setState({ isPassChanging: true });
         this.render();
       }
     ).catch(() => {
-      alert("Error with your email or network!");
+      alert("Проблемы с отпрвкой сообщения на вашу пойту!");
       this.setState({ isPassChanging: false });
       this.render();
     });
@@ -80,7 +80,7 @@ class WithNavigate extends React.Component {
         .then(
           () => {
 
-            alert("We changed your pass!");
+            alert("Пароль был изменён!");
             this.setState({ isPassChanging: false });
             this.render();
           }
@@ -92,17 +92,22 @@ class WithNavigate extends React.Component {
         })
 
     } else {
-      alert("You didn't confirm yoour new pass!")
+      alert("Вы не подтвердили свой пароль!")
     }
   }
   validateMessages = {
 
-    required: '${label} is required!',
+    required: '${label} является обязательным полем!',
     types: {
-      email: '${label} not a valid',
-      number: '${label} is not a valid number!',
+      email: '${label} неверно',
+      number: '${label} неверно!',
     },
   };
+
+  onCancelNewPass(e) {
+    this.setState({ isPassChanging: false });
+    this.render();
+  }
 
   render() {
     const { isLoggedIn, message } = this.props;
@@ -110,6 +115,8 @@ class WithNavigate extends React.Component {
     if (this.state.isPassChanging) {
       modal =
         <div >
+          <br/>
+          <br/>
           <p>
             <Form.Item
               label="Token:"
@@ -126,33 +133,36 @@ class WithNavigate extends React.Component {
           </p>
           <p >
             <Form.Item
-              label="New pass:"
-              name="New pass"
+              label="Новый пароль:"
+              name="Новый пароль"
               rules={[
                 {
                   required: true,
                 }
               ]}>
               <Input.Password
-                placeholder="New pass"
+                placeholder="Новый пароль"
                 onChange={e => this.setState({ ...this.state, newPass: e.target.value })} />
             </Form.Item>
           </p>
           <p>
             <Form.Item
-              label="Confirm new pass:"
-              name="Confirm new pass"
+              label="Подтвердите новый пароль:"
+              name="Подтвердите новый пароль"
               rules={[
                 {
                   required: true,
                 }
               ]}>
               <Input.Password
-                placeholder="Confirm new pass"
+                placeholder="Подтвердите новый пароль"
                 onChange={e => this.setState({ ...this.state, confirmNewPass: e.target.value })} />
             </Form.Item>
           </p>
-          <Button onClick={(e) => this.onSaveNewPass(e)} >Save new pass</Button>
+          <Button onClick={(e) => this.onSaveNewPass(e)} >Сохранить</Button>
+          <Col>
+              <Button onClick={(e) => this.onCancelNewPass(e)} >Отмена</Button>
+            </Col>
         </div>
     }
     return (

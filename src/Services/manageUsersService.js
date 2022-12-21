@@ -29,10 +29,17 @@ class ManageUsersService {
             });
     }
 
+    // findAllAutoPickers() {
+    //     return commonReq
+    //         (GET, "/admin/users" + "?typeOfRole=" + "AUTO_PICKER" + "&isActive=" + "true").then((response) => {
+    //             return response.data;
+    //         });
+    // }
+
     findAllAutoPickers() {
         return commonReq
-            (GET, "/admin/users" + "?typeOfRole=" + "AUTO_PICKER" + "&isActive=" + "true").then((response) => {
-                return response.data;
+            (GET, "/admin/users/auto-pickers").then((response) => {
+                return response;
             });
     }
 

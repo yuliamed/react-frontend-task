@@ -79,7 +79,7 @@ class UserOrdersComponent extends Component {
     }
 
     let orders = <Empty description="You haven`t got any orders(" />
-    if (this.state.orders.length == 0) orders = <h2>You haven`t got any orders(</h2>
+    if (this.state.orders.length == 0) orders = <h2>У вас нет заказов(</h2>
     else {
       orders = <Space direction="vertical" wrap>
         {

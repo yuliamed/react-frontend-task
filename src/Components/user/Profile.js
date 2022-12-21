@@ -132,7 +132,7 @@ class Profile extends Component {
     }
     if (info.file.status === 'done') {
       message.success(`${info.file.name} Был загружен успешно`);
-    } 
+    }
     // else if (info.file.status === 'error') {
     //   message.error(`${info.file.name} не был загружен!.`);
     // }
@@ -191,7 +191,8 @@ class Profile extends Component {
     const { user, louding } = this.state;
     let modal = null;
     if (this.state.isPassChanging) {
-      modal =
+      modal = <><br />
+        <br />
         <Form>
           <Form.Item
             label="Токен:"
@@ -236,10 +237,10 @@ class Profile extends Component {
           </Form.Item>
           <Row>
             <Col>
-              <Button onClick={(e) => this.onSaveNewPass(e)} >Save new pass</Button>
+              <Button onClick={(e) => this.onSaveNewPass(e)} >Созранить новый пароль</Button>
             </Col>
             <Col>
-              <Button onClick={(e) => this.onCancelNewPass(e)} >Cancel</Button>
+              <Button onClick={(e) => this.onCancelNewPass(e)} >Отмена</Button>
             </Col>
           </Row>
 
@@ -249,6 +250,7 @@ class Profile extends Component {
               { color: "red" }
             }>Error of changing pass - {this.state.message}</label>
         </Form>
+      </>
     }
 
     return (

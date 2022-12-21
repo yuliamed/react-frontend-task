@@ -3,11 +3,12 @@ import { connect } from "react-redux";
 import { CloseOutlined, SaveOutlined } from '@ant-design/icons';
 import { Card, Layout, Form, Input, Modal, Select, Row, Col, InputNumber } from 'antd';
 import { createOrder } from "../../../../actions/orders/userSelectionOrder"
-import { BodyTypeArr, BrandNameArr, TransmissionArr, EngineTypeArr, DriveTypeArr, CurrencyArr, } from "../../../../constants/enums"
+import { BodyTypeArr, BrandNameArr, TransmissionArr, EngineTypeArr, DriveTypeArr, CurrencyArr, EngineTypeMap, BodyTypeMapWithEngKeys, DriveTypeMap, TransmissionMap, } from "../../../../constants/enums"
 import AutoPickerSelector from "../AutoPickerSelector";
 import { findAllAutoPickers } from "../../../../actions/manageUsers";
-import { createArrWithName } from "../../../common/processArrays";
+import { createArrWithName, createOptionArr } from "../../../common/processArrays";
 import { validateMessages } from "../../../common/validateForms";
+import { getNamedOptionListFromMap } from "../../../common/processMap";
 const { Content } = Layout;
 const { TextArea } = Input;
 
@@ -24,6 +25,7 @@ class SelectionOrderCreatingComponent extends Component {
       isOrderCancelling: false,
       isOrderCancelled: false,
       isSavingAllowed: false,
+      isOrderSaving: false, 
       autoPickers: [],
     };
     this.onSave = props.on_save;
@@ -75,7 +77,7 @@ class SelectionOrderCreatingComponent extends Component {
     this.setState({ userID: this.props.user_id })
     dispatch(findAllAutoPickers()).then((resp) => {
       console.log(resp)
-      this.setState({ autoPickers: resp.objects })
+      this.setState({ autoPickers: resp.data })
     })
   }
 
@@ -98,11 +100,14 @@ class SelectionOrderCreatingComponent extends Component {
           title="Заказ на подбор авто"
           actions={[
             <SaveOutlined title="Сохранить заказ"
-                onClick={(e) => this.onSaveOrder(e)}
-                disabled={true} />
+              onClick={(e) => {
+                this.setState({ isOrderSaving: true })
+                this.onSaveOrder(e)
+              }}
+              disabled={true} />
             ,
-            <CloseOutlined title="отменить заказ" 
-            onClick={(e) => this.onCancelOrder(e)}
+            <CloseOutlined title="отменить заказ"
+              onClick={(e) => this.onCancelOrder(e)}
             />,
           ]}
         >
@@ -219,7 +224,7 @@ class SelectionOrderCreatingComponent extends Component {
                               )
                             }
                           >
-                            {this.createOptionArr(CurrencyArr)}
+                            {createOptionArr(CurrencyArr)}
                           </Select>
                         </Form.Item>
                       </Row>
@@ -253,7 +258,6 @@ class SelectionOrderCreatingComponent extends Component {
                           label="Максимум:">
                           <InputNumber
                             min={1}
-
                             max={20}
                             style={{ margin: '0 16px' }}
                             onChange={(value) => {
@@ -282,7 +286,6 @@ class SelectionOrderCreatingComponent extends Component {
                           width: '100%',
                         }}
                         placeholder="Выберете"
-
                         onChange={(value) => this.setState((state) => ({
                           ...state,
                           order: {
@@ -291,16 +294,13 @@ class SelectionOrderCreatingComponent extends Component {
                           }
                         }))}
                       >
-                        {this.createOptionArr(EngineTypeArr)}
+                        {getNamedOptionListFromMap(EngineTypeMap)}
                       </Select>
-
                     </Form.Item>
 
                     <Form.Item
-                      label="Типы кузовов"
-                    >
+                      label="Типы кузовов"                    >
                       <Select
-
                         mode="multiple"
                         allowClear
                         style={{
@@ -315,13 +315,13 @@ class SelectionOrderCreatingComponent extends Component {
                           }
                         }))}
                       >
-                        {this.createOptionArr(BodyTypeArr)}
+                        {getNamedOptionListFromMap(BodyTypeMapWithEngKeys)}
                       </Select>
 
                     </Form.Item>
 
                     <Form.Item
-                      label="Бренды"
+                      label="Марки"
                     >
                       <Select
                         mode="multiple"
@@ -330,7 +330,6 @@ class SelectionOrderCreatingComponent extends Component {
                           width: '100%',
                         }}
                         placeholder="Выберете"
-
                         onChange={(value) => this.setState((state) => ({
                           ...state,
                           order: {
@@ -339,7 +338,7 @@ class SelectionOrderCreatingComponent extends Component {
                           }
                         }))}
                       >
-                        {this.createOptionArr(BrandNameArr)}
+                        {createOptionArr(BrandNameArr)}
                       </Select>
 
                     </Form.Item>
@@ -348,14 +347,12 @@ class SelectionOrderCreatingComponent extends Component {
                       label="Типы привода"
                     >
                       <Select
-
                         mode="multiple"
                         allowClear
                         style={{
                           width: '100%',
                         }}
                         placeholder="Выберете"
-
                         onChange={(value) => this.setState((state) => ({
                           ...state,
                           order: {
@@ -364,7 +361,7 @@ class SelectionOrderCreatingComponent extends Component {
                           }
                         }))}
                       >
-                        {this.createOptionArr(DriveTypeArr)}
+                        {getNamedOptionListFromMap(DriveTypeMap)}
                       </Select>
 
                     </Form.Item>
@@ -373,14 +370,12 @@ class SelectionOrderCreatingComponent extends Component {
                       label="Типы коробки передач"
                     >
                       <Select
-
                         mode="multiple"
                         allowClear
                         style={{
                           width: '100%',
                         }}
                         placeholder="Выберете"
-
                         onChange={(value) => this.setState((state) => ({
                           ...state,
                           order: {
@@ -389,7 +384,7 @@ class SelectionOrderCreatingComponent extends Component {
                           }
                         }))}
                       >
-                        {this.createOptionArr(TransmissionArr)}
+                        {getNamedOptionListFromMap(TransmissionMap)}
                       </Select>
 
                     </Form.Item>
@@ -423,13 +418,21 @@ class SelectionOrderCreatingComponent extends Component {
             </Content>
           </Layout>
         </Card>
-        <Modal title="Really??" visible={this.state.isOrderCancelling}
+        <Modal title="Вы уверены??" visible={this.state.isOrderCancelling}
           onOk={() => {
             this.cancelOrder();
             this.setState({ isOrderCancelling: false })
           }}
           onCancel={() => this.setState({ isOrderCancelling: false })}>
-          <h2>Do you really want to cancel this order? </h2><br></br><h4></h4>
+          <h2>Вы действительно хотите отменить заказ? </h2><br></br><h4></h4>
+        </Modal>
+        <Modal title="Вы уверены??" visible={this.state.isOrderSaving}
+          onOk={() => {
+            this.cancelOrder();
+            this.setState({ isOrderSaving: false })
+          }}
+          onCancel={() => this.setState({ isOrderSaving: false })}>
+          <h2>Вы действительно хотите оформить заказ? </h2><br></br><h4></h4>
         </Modal>
       </ >
     );

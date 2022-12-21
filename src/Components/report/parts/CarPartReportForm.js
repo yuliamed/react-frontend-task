@@ -20,6 +20,7 @@ class CarPartReportForm extends Component {
         generalRecommendation: "",
         generalComment: "",
         descriptions: [],
+        isSavingAllowed: false,
       },
       markValue: null,
       isDisabled: true,
@@ -28,9 +29,11 @@ class CarPartReportForm extends Component {
     this.onDeleteDescription = this.onDeleteDescription.bind(this);
     thisObj = this;
   }
+
   validateMessages = {
-    required: '${label} is required!',
+    required: '${label} обязательны!',
   };
+
   async componentDidMount() {
     const { report } = this.props;
     console.log(report);
@@ -39,6 +42,12 @@ class CarPartReportForm extends Component {
       reportPart: this.props.reportPart,
       isDisabled: !this.props.isCreating
     })
+    this.checkSaving();
+  }
+
+  checkSaving() {
+    if (this.state.generalRecommendation == "" || this.state.generalComment == "") this.setState({ isSavingAllowed: false });
+    this.setState({ isSavingAllowed: true })
   }
 
   onEditInfo() {
@@ -74,9 +83,13 @@ class CarPartReportForm extends Component {
     this.setState({ report: newReport });
   }
 
+  onChangeCarPartDescription(isAllowed) {
+    if (!isAllowed) this.setState({ isSavingAllowed: false });
+    this.setState({ isSavingAllowed: false });
+  }
+
   render() {
     const { order, } = this.props;
-    //const { order } = this.props.userOrder;
     let bodyReport = this.props.reportPart;
     let descriptions = [];
     if (bodyReport != null && bodyReport.descriptions.length != 0)
@@ -88,12 +101,14 @@ class CarPartReportForm extends Component {
               onRemove={this.onDeleteDescription}
               isDisabled={this.state.isDisabled}
               description={bodyReport.descriptions[i]}
-              onEdit={this.props.onEditBodyDescription} /></div>
+              onEdit={this.props.onEditBodyDescription}
+              onChange={this.onChangeCarPartDescription} /></div>
         );
       }
 
     return (
       <><Form
+        onChange={() => this.checkSaving()}
         validateMessages={this.validateMessages}>
         {this.props.isCreating ? <></> :
           <Row style={{ margin: '10px' }} align="end">
@@ -104,7 +119,7 @@ class CarPartReportForm extends Component {
                 <EditOutlined size={"large"} />
                 Редактировать
               </Button>
-              : <Button type="primary"
+              : <Button loading={!this.state.isSavingAllowed} type="primary"
                 shape="round"
                 onClick={() => { this.onSaveEditedInfo() }} >
                 <SaveOutlined size={"large"} />
@@ -115,6 +130,7 @@ class CarPartReportForm extends Component {
           name="Оценка"
           rules={[{ required: true },
           ]}
+
         >
           <Row style={{ margin: '10px' }}>
             <Col span={12}>
@@ -144,6 +160,7 @@ class CarPartReportForm extends Component {
           rules={[{ required: true },
           ]}
           label="Комментарий"
+          name="Комментарий"
         >
           <TextArea placeholder="Информация по машине"
             defaultValue={
@@ -159,6 +176,7 @@ class CarPartReportForm extends Component {
         </Form.Item>
         <Form.Item
           style={{ width: '80%' }}
+          name="Рекомендации"
           label="Рекомендации"
           rules={[{ required: true },
           ]}

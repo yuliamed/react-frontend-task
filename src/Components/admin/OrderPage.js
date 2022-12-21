@@ -53,7 +53,7 @@ class WithNavigate extends Component {
     )
     dispatch(findAllAutoPickers()).then((resp) => {
       console.log(resp)
-      thisObj.setState({ autoPickers: resp.objects })
+      thisObj.setState({ autoPickers: resp.data })
     })
   }
 

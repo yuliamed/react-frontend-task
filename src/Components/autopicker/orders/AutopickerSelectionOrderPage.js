@@ -170,7 +170,8 @@ class WithNavigate extends Component {
               <SelectionReportComponent onCloseProccess={() => this.onClosingOrderProccess()}
                 orderId={this.state.order.id}
                 report={this.state.order.report}
-                isEdittingAllowed={this.state.isEdittingAllowed} />
+                isEdittingAllowed={this.state.order.status.name == ORDER_STATUSES.CANCELED ||
+                  this.state.order.status.name == ORDER_STATUSES.CLOSED ? false : this.state.isEdittingAllowed} />
             </Panel>
           </Collapse>
 

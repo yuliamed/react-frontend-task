@@ -145,6 +145,7 @@ class SelectionReportComponent extends Component {
 
     return (
       <>
+       
         <Row align='end'>
           <Col span={4}>
             {this.props.isEdittingAllowed ?

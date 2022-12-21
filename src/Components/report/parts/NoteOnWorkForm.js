@@ -40,8 +40,8 @@ export default class NoteOnWorkForm extends Component {
         </Row>
         <Form>
           <Form.Item
-            label="Part name"
-            name="Name"
+            label="Название части "
+            name="Название части "
             rules={[{ required: true },
             ]}
           >
@@ -58,10 +58,10 @@ export default class NoteOnWorkForm extends Component {
           </Form.Item>
           <Form.Item
             style={{ width: '80%' }}
-            label="Description"
-            name="Description"
+            label="Описание"
+            name="Описание"
           >
-            <TextArea placeholder="Description about work"
+            <TextArea placeholder="Описание работы"
               defaultValue={
                 this.state.noteOnWork.description
 

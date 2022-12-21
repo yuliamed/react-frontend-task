@@ -91,7 +91,6 @@ class AdminComponent extends Component {
             console.log(this.state.pagination.page + " " + this.state.pagination.elementsCount)
 
             this.findUsers(page - 1, elementsCount);
-            console.log("NEW LIST " + this.state.users)
 
           }}
           current={this.state.pagination.page + 1}
