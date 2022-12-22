@@ -37,7 +37,7 @@ class SelectionReportDescription extends Component {
 
         <Descriptions contentStyle={{ "font-weight": 'bold' }}>
           <Descriptions.Item
-            label="Car URL"
+            label="Ссылка на автомобиль"
             style={{ margin: '0 16px' }}
           >
             <a>{this.props.reportPart.carUrl}</a>
@@ -45,7 +45,7 @@ class SelectionReportDescription extends Component {
         </Descriptions>
         <Descriptions contentStyle={{ "font-weight": 'bold' }}>
           <Descriptions.Item
-            label="Additional comment"
+            label="Дополнительный комментарий"
             style={{ margin: '0 16px' }}
           >
             {this.props.reportPart.comment}

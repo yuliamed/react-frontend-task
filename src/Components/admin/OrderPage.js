@@ -89,6 +89,7 @@ class WithNavigate extends Component {
       this.props.navigate("/admin/users/" + this.state.userId + "/selection-order/" + order.id, { push: true });
     else this.props.navigate("/admin/users/" + this.state.userId + "/inspection-order/" + order.id, { push: true });
   }
+  
   isEditing = (record) => {
     return record === this.state.editingOrder;
   }

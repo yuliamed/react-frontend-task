@@ -70,14 +70,14 @@ class CarPartDescriptionReportForm extends Component {
             const { dispatch } = this.props;
             description.photoUrl = res;
             dispatch(editBodyPartDescription(description, this.props.id))
-            this.setState({ fileList: file, filePath: res });
+            this.setState({ filePath: res });
           });
         break;
       default:
         file = null;
     }
     console.log(str);
-    this.setState({ fileList: file, filePath: str });
+    this.setState({ filePath: str });
   };
 
   validateMessages = {
@@ -109,12 +109,12 @@ class CarPartDescriptionReportForm extends Component {
 
     let upload = <ImgCrop rotate style={{ width: "300px", height: "300px" }}>
       <Upload
-        onPreview={this.onPreview}
+        //onPreview={this.onPreview}
         disabled={this.props.isDisabled}
         style={{ width: "300px", height: "300px" }}
         customRequest={dummyRequest}
         listType="picture-card"
-        file={this.state.fileList}
+        //file={this.state.fileList}
         onChange={(photo) => this.onChange(photo)}
       >
         {this.state.fileList == null && '+ Upload'}
@@ -123,7 +123,7 @@ class CarPartDescriptionReportForm extends Component {
 
     let imageForm = <Avatar
       size={{ xs: 240, sm: 320, md: 400, lg: 640, xl: 800, xxl: 1000 }}
-      style={{ maxHeight: 400, maxWidth: 400 }}
+      style={{ maxHeight: 300, maxWidth: 300 }}
       shape="square"
       src={`data:image/jpeg;base64,${this.state.fileList}`}
       preview={false}
