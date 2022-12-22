@@ -19,7 +19,9 @@ import {
   SAVE_EDITTED_COMPUTER_ERRORS_REPORT,
   CREATE_INSPECTION_REPORT, CLEAN_REPORT,
   SAVE_NEW_INSPECTION_REPORT_SUCCESS,
-  EDIT_INSPECTION_COMPUTER_ERRORS_REPORT
+  EDIT_INSPECTION_COMPUTER_ERRORS_REPORT,
+  EDIT_PEDANT_PART_DESCRIPTION,
+
 } from "./types";
 
 import { SET_MESSAGE } from "../../types";
@@ -70,6 +72,28 @@ export const editBodyReport =
       return report;
     };
 
+export const editPedantReport =
+  (report) =>
+    (dispatch) => {
+      console.log(report);
+      dispatch({
+        type: EDIT_INSPECTION_PENDANT_REPORT,
+        payload: report
+      });
+      return report;
+    };
+
+export const editElectroReport =
+  (report) =>
+    (dispatch) => {
+      console.log(report);
+      dispatch({
+        type: EDIT_INSPECTION_ELECTRIC_REPORT,
+        payload: report
+      });
+      return report;
+    };
+
 export const editBodyPartDescription =
   (description, id) =>
     (dispatch) => {
@@ -78,6 +102,45 @@ export const editBodyPartDescription =
       }
       dispatch({
         type: EDIT_BODY_PART_DESCRIPTION,
+        payload: value
+      });
+      return description;
+    };
+
+export const editElectricPartDescription =
+  (description, id) =>
+    (dispatch) => {
+      let value = {
+        description: description, id: id
+      }
+      dispatch({
+        type: EDIT_INSPECTION_ELECTRIC_REPORT,
+        payload: value
+      });
+      return description;
+    };
+
+    export const editSalonPartDescription =
+    (description, id) =>
+      (dispatch) => {
+        let value = {
+          description: description, id: id
+        }
+        dispatch({
+          type: EDIT_INSPECTION_SALON_REPORT,
+          payload: value
+        });
+        return description;
+      };
+
+export const editPedantPartDescription =
+  (description, id) =>
+    (dispatch) => {
+      let value = {
+        description: description, id: id
+      }
+      dispatch({
+        type: EDIT_PEDANT_PART_DESCRIPTION,
         payload: value
       });
       return description;

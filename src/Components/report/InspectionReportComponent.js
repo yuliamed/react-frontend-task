@@ -6,7 +6,7 @@ import { START_REPORT_PROCESS } from '../../constants/colors';
 import { saveEditedSelectionReport, } from '../../actions/orders/autopicker/manageOrders';
 import { changeOrderStatus } from '../../actions/orders/userOrder';
 import { ORDER_STATUSES } from '../../constants/const';
-import { editBodyReport, editBodyPartDescription, editTransmissionReport, editEngineReport, saveEditedMainDataReport, saveEditedBodyReport, saveEditedSalonReport, saveEditedElectroReport, saveEditedPendantReport, saveEditedTransmissionReport, saveEditedEngineReport, createInspectionReport, saveNewInspectionReport, editMainReportData, saveEditedComputerErrorsReport, editComputerErrorsReport } from '../../actions/orders/autopicker/manageInspectionReport';
+import { editBodyReport, editBodyPartDescription, editTransmissionReport, editEngineReport, saveEditedMainDataReport, saveEditedBodyReport, saveEditedSalonReport, saveEditedElectroReport, saveEditedPendantReport, saveEditedTransmissionReport, saveEditedEngineReport, createInspectionReport, saveNewInspectionReport, editMainReportData, saveEditedComputerErrorsReport, editComputerErrorsReport, editPedantPartDescription, editPedantReport, editElectroReport, editElectricPartDescription, editSalonReport, editSalonPartDescription } from '../../actions/orders/autopicker/manageInspectionReport';
 import CarPartReportForm from './parts/CarPartReportForm';
 import TransmissionReportComponent from './parts/TransmissionReportComponent';
 import EngineReport from './parts/EngineReport';
@@ -83,7 +83,7 @@ class InspectionReportComponent extends Component {
                 <div hidden={order.status.name != ORDER_STATUSES.IN_PROCESS
                   //|| this.props.isEdittingAllowed
                 }
-                  >
+                >
                   <Button
                     style={{ background: START_REPORT_PROCESS, borderColor: START_REPORT_PROCESS }}
                     shape="circle"
@@ -109,25 +109,25 @@ class InspectionReportComponent extends Component {
               </Panel>
               <Panel header="Состояние салона" key="2">
                 <CarPartReportForm reportPart={report.salonReport}
-                  onEditBodyDescription={this.onEditBodyDescription}
+                  onEditBodyDescription={this.onEditSalonDescription}
                   isCreating={this.state.isReportCreating}
-                  onChangeBodyReport={(rep) => this.changeBodyReport(rep)}
-                  onSaveReport={(rep) => this.onSavePendantReport(rep)} />
+                  onChangeBodyReport={(rep) => this.changeSalonReport(rep)}
+                  onSaveReport={(rep) => this.onSaveSalonReport(rep)} />
               </Panel>
               <Panel header="Состояние электрики" key="3">
                 <CarPartReportForm
                   reportPart={report.electricalEquipmentReport
                   }
-                  onEditBodyDescription={this.onEditBodyDescription}
+                  onEditBodyDescription={this.onEditElectroDescription}
                   isCreating={this.state.isReportCreating}
-                  onChangeBodyReport={(rep) => this.changeBodyReport(rep)}
+                  onChangeBodyReport={(rep) => this.changeElectroReport(rep)}
                   onSaveReport={(rep) => this.onSaveElectricReport(rep)} />
               </Panel>
               <Panel header="Состояние подвески" key="4">
                 <CarPartReportForm reportPart={report.pendantReport}
-                  onEditBodyDescription={this.onEditBodyDescription}
+                  onEditBodyDescription={this.onEditPedantDescription}
                   isCreating={this.state.isReportCreating}
-                  onChangeBodyReport={(rep) => this.changeBodyReport(rep)}
+                  onChangeBodyReport={(rep) => this.changePedantReport(rep)}
                   onSaveReport={(rep) => this.onSavePendantReport(rep)} />
               </Panel>
               <Panel header="Состояние трансмиссии" key="5">
@@ -272,9 +272,42 @@ class InspectionReportComponent extends Component {
     this.setState({ isDisabled: !this.state.isDisabled })
   }
 
+  changePedantReport(bodyReport) {
+    const { dispatch } = this.props;
+    dispatch(editPedantReport(bodyReport))
+    this.setState({ isDisabled: !this.state.isDisabled })
+  }
+
+  changeSalonReport(bodyReport) {
+    const { dispatch } = this.props;
+    dispatch(editSalonReport(bodyReport))
+    this.setState({ isDisabled: !this.state.isDisabled })
+  }
+
+  onEditSalonDescription(description, id) {
+    const { dispatch } = this.props;
+    dispatch(editSalonPartDescription(description, id))
+  }
+
+  changeElectroReport(bodyReport) {
+    const { dispatch } = this.props;
+    dispatch(editElectroReport(bodyReport))
+    this.setState({ isDisabled: !this.state.isDisabled })
+  }
+
   onEditBodyDescription(description, id) {
     const { dispatch } = this.props;
     dispatch(editBodyPartDescription(description, id))
+  }
+
+  onEditElectroDescription(description, id) {
+    const { dispatch } = this.props;
+    dispatch(editElectricPartDescription(description, id))
+  }
+
+  onEditPedantDescription(description, id) {
+    const { dispatch } = this.props;
+    dispatch(editPedantPartDescription(description, id))
   }
 
   onEditTransNoteOnWork(noteOnWork, id) {

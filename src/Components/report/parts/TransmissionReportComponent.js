@@ -78,13 +78,13 @@ export default class TransmissionReportComponent extends Component {
                 shape="round"
                 onClick={() => { this.onEditInfo() }} >
                 <EditOutlined size={"large"} />
-                Edit
+                Редактировать
               </Button>
               : <Button type="primary"
                 shape="round"
                 onClick={() => { this.onSaveEditedInfo() }} >
                 <SaveOutlined size={"large"} />
-                Save
+                Сохранить
               </Button>}
           </Row>
         }
@@ -97,7 +97,7 @@ export default class TransmissionReportComponent extends Component {
             onClick={() => {
               this.onAddNewNoteToTransmission();
             }}>
-            <PlusCircleOutlined />Add Report
+            <PlusCircleOutlined />Добавить
           </Button></Row>
         {descriptions}
       </Card>

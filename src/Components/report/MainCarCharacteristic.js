@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Col, Row, Button, Checkbox, Form, Input, Select, InputNumber, Space, DatePicker } from 'antd';
-import { BodyTypeArr, BrandNameArr, TransmissionArr, EngineTypeArr, DriveTypeArr, CurrencyArr, } from "../../constants/enums"
+import { BodyTypeArr, BrandNameArr, TransmissionArr, EngineTypeArr, DriveTypeArr, CurrencyArr, EngineTypeMap, BodyTypeMapWithEngKeys, DriveTypeMap, TransmissionMap, } from "../../constants/enums"
 import { EditOutlined, SaveOutlined } from '@ant-design/icons';
 import moment from 'moment';
+import { createOptionArr } from "../common/processArrays";
+import { getNamedOptionListFromMap } from "../common/processMap";
 const { Option } = Select;
 let thisObj;
 
@@ -117,7 +119,7 @@ class MainCarCharacteristic extends Component {
                 }}
 
               >
-                {this.createOptionArr(BrandNameArr)}
+                {createOptionArr(BrandNameArr)}
               </Select>
 
             </Form.Item>
@@ -192,7 +194,7 @@ class MainCarCharacteristic extends Component {
             <Form.Item
               name="VIN номер"
               label="VIN номер: "
-              style={{ marginRight: '20px', width: 150 }}
+              style={{ marginRight: '20px', width: 250 }}
               rules={[{ required: true },]}>
               <Input
                 disabled={this.state.isDisabled}
@@ -322,7 +324,7 @@ class MainCarCharacteristic extends Component {
                   this.onChange(newReport);
                 }}
               >
-                {this.createOptionArr(EngineTypeArr)}
+                {getNamedOptionListFromMap(EngineTypeMap)}
               </Select>
 
             </Form.Item>
@@ -346,7 +348,7 @@ class MainCarCharacteristic extends Component {
                   this.onChange(newReport);
                 }}
               >
-                {this.createOptionArr(BodyTypeArr)}
+                {getNamedOptionListFromMap(BodyTypeMapWithEngKeys)}
               </Select>
             </Form.Item>
             <Form.Item
@@ -368,7 +370,7 @@ class MainCarCharacteristic extends Component {
                   this.onChange(newReport);
                 }}
               >
-                {this.createOptionArr(DriveTypeArr)}
+                {getNamedOptionListFromMap(DriveTypeMap)}
               </Select>
 
             </Form.Item>
@@ -392,7 +394,7 @@ class MainCarCharacteristic extends Component {
                   this.onChange(newReport);
                 }}
               >
-                {this.createOptionArr(TransmissionArr)}
+                {getNamedOptionListFromMap(TransmissionMap)}
               </Select>
 
             </Form.Item>
