@@ -1,18 +1,12 @@
 import React, { Component } from 'react'
-import { Upload, Input, Form, Card, Row, Avatar, } from 'antd'
-import ImgCrop from 'antd-img-crop';
+import { Input, Form, Card, Row, } from 'antd'
 import CancelButton from "../common/buttons/CancelButton"
-import { editBodyPartDescription, editBodyReport, getPhoto, savePhoto } from '../../actions/orders/autopicker/manageInspectionReport';
+import { editBodyPartDescription, editBodyReport, getPhoto, } from '../../actions/orders/autopicker/manageInspectionReport';
 import { connect } from "react-redux";
+import UploadPhoto from './parts/UploadPhoto';
 
 const { TextArea } = Input;
 let thisObj = null;
-
-const dummyRequest = ({ file, onSuccess }) => {
-  setTimeout(() => {
-    onSuccess("ok");
-  }, 0);
-};
 
 class CarPartDescriptionReportForm extends Component {
 
@@ -52,51 +46,8 @@ class CarPartDescriptionReportForm extends Component {
     this.props.onRemove(this.props.index)
   }
 
-  onChange = info => {
-    let file = null;
-    let str = null;
-    const { dispatch } = this.props;
-    switch (info.file.status) {
-      case "uploading":
-        file = info.file;
-        break;
-      case "done":
-        file = info.file;
-        // let data = new FormData();
-        // data.append("file", file);
-        dispatch(savePhoto(localStorage.getItem("userId"), 9, file.originFileObj))
-          .then(res => {
-            let description = this.props.description;
-            const { dispatch } = this.props;
-            description.photoUrl = res;
-            dispatch(editBodyPartDescription(description, this.props.id))
-            this.setState({ filePath: res });
-          });
-        break;
-      default:
-        file = null;
-    }
-    console.log(str);
-    this.setState({ filePath: str });
-  };
-
   validateMessages = {
     required: '${label} обязательно!',
-  };
-
-  onPreview = async (file) => {
-    let src = file.url;
-    if (!src) {
-      src = await new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file.originFileObj);
-        reader.onload = () => resolve(reader.result);
-      });
-    }
-    const image = new Image();
-    image.src = src;
-    const imgWindow = window.open(src);
-    imgWindow?.document.write(image.outerHTML);
   };
 
   checkSaving() {
@@ -104,31 +55,16 @@ class CarPartDescriptionReportForm extends Component {
     return true
   }
 
+  setPhotoUrl(url) {
+    let description = this.props.description;
+    const { dispatch } = this.props;
+    description.photoUrl = url;
+    dispatch(editBodyPartDescription(description, this.props.id))
+    this.setState({ filePath: url });
+  }
+
   render() {
     let description = this.props.description;
-
-    let upload = <ImgCrop rotate style={{ width: "300px", height: "300px" }}>
-      <Upload
-        //onPreview={this.onPreview}
-        disabled={this.props.isDisabled}
-        style={{ width: "300px", height: "300px" }}
-        customRequest={dummyRequest}
-        listType="picture-card"
-        //file={this.state.fileList}
-        onChange={(photo) => this.onChange(photo)}
-      >
-        {this.state.fileList == null && '+ Upload'}
-      </Upload>
-    </ImgCrop>
-
-    let imageForm = <Avatar
-      size={{ xs: 240, sm: 320, md: 400, lg: 640, xl: 800, xxl: 1000 }}
-      style={{ maxHeight: 300, maxWidth: 300 }}
-      shape="square"
-      src={`data:image/jpeg;base64,${this.state.fileList}`}
-      preview={false}
-    />
-
     return (
       <><Card style={{ width: 450 }}>
         <Row justify="end" style={{ marginBottom: "15px" }}>
@@ -191,8 +127,8 @@ class CarPartDescriptionReportForm extends Component {
           </Form.Item>
           <Form.Item
             label="Фотография">
-            {description.photoUrl == null ? upload : imageForm}
-
+            {/* {description.photoUrl == null ? upload : imageForm} */}
+            <UploadPhoto isDisabled={this.props.isDisabled} setUrl={(url) => this.setPhotoUrl(url)} />
           </Form.Item>
 
         </Form></Card></>
@@ -210,9 +146,9 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps)(CarPartDescriptionReportForm);
 
-// import { Upload } from 'antd';
+// import { Upload, Button, Modal } from 'antd';
 // import ImgCrop from 'antd-img-crop';
-// import React, { useState } from 'react';
+// //import React, { useState } from 'react';
 // import autoPickerReportService from '../../services/orders/autopicker/autoPickerReportService';
 // const CarPartDescriptionReportForm = () => {
 //   const [fileList, setFileList] = useState();
@@ -259,3 +195,119 @@ export default connect(mapStateToProps)(CarPartDescriptionReportForm);
 //   );
 // };
 // export default CarPartDescriptionReportForm;
+
+
+// import React, { Component } from 'react'
+// import { connect } from "react-redux";
+// import { editBodyPartDescription, editBodyReport, getPhoto, savePhoto } from '../../actions/orders/autopicker/manageInspectionReport';
+// class CarPartDescriptionReportForm extends Component {
+//   state = {
+//     previewVisible: false,
+//     previewImage: "",
+//     fileList: [],
+//   };
+
+//   handleCancel = () => this.setState({ previewVisible: false });
+
+//   handlePreview = file => {
+//     this.setState({
+//       previewImage: file.thumbUrl,
+//       previewVisible: true
+//     });
+//   };
+
+//   handleUpload = ({ fileList }) => {
+//     //---------------^^^^^----------------
+//     // this is equivalent to your "const img = event.target.files[0]"
+//     // here, antd is giving you an array of files, just like event.target.files
+//     // but the structure is a bit different that the original file
+//     // the original file is located at the `originFileObj` key of each of this files
+//     // so `event.target.files[0]` is actually fileList[0].originFileObj
+//     console.log('fileList', fileList);
+
+//     // you store them in state, so that you can make a http req with them later
+//     this.setState({ fileList: fileList });
+//   };
+
+//   handleSubmit = event => {
+//     event.preventDefault();
+//     const { dispatch } = this.props;
+//     // let formData = new FormData();
+//     // add one or more of your files in FormData
+//     // again, the original file is located at the `originFileObj` key
+//     // formData.append("file", this.state.fileList[0].originFileObj);
+
+//     // axios
+//     //   .post("http://api.foo.com/bar", formData)
+//     //   .then(res => {
+//     //     console.log("res", res);
+//     //   })
+//     //   .catch(err => {
+//     //     console.log("err", err);
+//     //   });
+
+//     //file = info.file;
+//     // let data = new FormData();
+//     // data.append("file", file);
+//     dispatch(savePhoto(localStorage.getItem("userId"), 22, this.state.fileList[0].originFileObj))
+//       .then(res => {
+//         let description = this.props.description;
+//         const { dispatch } = this.props;
+//         description.photoUrl = res;
+//         console.log(res);
+//         // dispatch(editBodyPartDescription(description, this.props.id))
+//         // this.setState({ filePath: res });
+//       })
+//   }
+
+
+//   render() {
+//     const { previewVisible, previewImage, fileList } = this.state;
+//     const uploadButton = (
+//       <div>
+//         {/* <Icon type="plus" /> */}
+//         <div className="ant-upload-text" >Upload</div>
+//       </div>
+//     );
+//     return (
+//       <div>
+//         <Upload
+//           disabled={fileList.length >= 1}
+//           listType="picture-card"
+//           fileList={fileList}
+//           onPreview={this.handlePreview}
+//           onChange={this.handleUpload}
+//           beforeUpload={() => false} // return false so that antd doesn't upload the picture right away
+//         >
+//           {uploadButton}
+//         </Upload>
+
+//         <Button onClick={this.handleSubmit} // this button click will trigger the manual upload
+//         >
+//           Submit
+//         </Button>
+
+//         <Modal
+//           visible={previewVisible}
+//           footer={null}
+//           onCancel={this.handleCancel}
+//         >
+//           <img alt="example" style={{ width: "100%" }} src={previewImage} />
+//         </Modal>
+//       </div>
+//     );
+//   }
+
+// }
+
+// function mapStateToProps(state) {
+//   const { report } = state.autoPicker;
+//   const { order } = state.userOrder;
+//   return {
+//     report, order
+//   };
+// }
+
+// export default connect(mapStateToProps)(CarPartDescriptionReportForm);
+
+

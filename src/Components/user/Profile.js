@@ -87,12 +87,12 @@ class Profile extends Component {
   onChangePass(e) {
     UserService.recoverPass(this.state.user.email).then(
       () => {
-        alert("Check your email and input reset token to change password!");
+        alert("Проверьте почту и введите токен, который мы Вам прислали!");
         this.setState({ isPassChanging: true });
         this.render();
       }
     ).catch(() => {
-      alert("Error with your email or network!");
+      alert("Проблемы с сетью!");
       this.setState({ isPassChanging: false });
       this.render();
     });
@@ -319,11 +319,18 @@ class Profile extends Component {
             </Form.Item>
             <Form.Item label="Имя">
               <Input placeholder="Имя"
+              
                 value={user.name}
-                autoComplete="Имя"
+                //autoComplete="Имя"
                 name="Имя"
                 type="text"
-                onInput={e => this.handleChange(e)}></Input>
+                onInput={value => {this.setState((state) => ({
+                  ...state,
+                  user: {
+                    ...state.user,
+                    name: value.target.value
+                  }
+                }))}}></Input>
             </Form.Item>
 
             <Form.Item label="Фамилия">
@@ -331,7 +338,13 @@ class Profile extends Component {
                 value={user.surname}
                 type="text"
                 name="Фамилия"
-                onChange={e => this.handleChange(e)}>
+                onChange={value => {this.setState((state) => ({
+                  ...state,
+                  user: {
+                    ...state.user,
+                    surname: value.target.value
+                  }
+                }))}}>
 
               </Input></Form.Item>
 

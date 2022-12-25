@@ -223,4 +223,3 @@ function mapStateToProps(state) {
 }
 export default connect(mapStateToProps)(CarPartReportForm);
 
-//export default (CarPartReportForm);
