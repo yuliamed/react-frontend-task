@@ -54,7 +54,7 @@ export const TransmissionArr = [
 ]
 
 export const TransmissionMap = new Map([
-    ['MACHINE',''],  ['MECHANICAL','Механическия'], ['ROBOT','Роботизированная'], ['VARIATOR','Виатор']
+    ['MACHINE','Автоматическая'],  ['MECHANICAL','Механическия'], ['ROBOT','Роботизированная'], ['VARIATOR','Виатор']
 ])
 
 export const BrandNameArr = [

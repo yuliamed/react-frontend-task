@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Col, Row, Button, Checkbox, Form, Input, Select, InputNumber, Space, DatePicker, Descriptions } from 'antd';
-import { BodyTypeArr, BrandNameArr, TransmissionArr, EngineTypeArr, DriveTypeArr, CurrencyArr, } from "../../../constants/enums"
+import { BodyTypeArr, BrandNameArr, TransmissionArr, EngineTypeArr, DriveTypeArr, CurrencyArr, EngineTypeMap, DriveTypeMap, BodyTypeMapWithEngKeys, TransmissionMap, } from "../../../constants/enums"
 import { EditOutlined, SaveOutlined } from '@ant-design/icons';
 import moment from 'moment';
+import { getTagFromMap, getTagListFromMap } from "../../common/processMap";
 const { Option } = Select;
 let thisObj;
 
@@ -75,7 +76,7 @@ class MainInfoReport extends Component {
           <Descriptions.Item
             label="Пробег реален? "
             style={{ marginRight: '20px', width: 150 }}>
-            {report.isMileageReal ? "Yes" : "No"}
+            {report.isMileageReal ? "Да" : "Нет"}
           </Descriptions.Item>
 
           <Descriptions.Item
@@ -88,7 +89,7 @@ class MainInfoReport extends Component {
           <Descriptions.Item
             label="VIN Номер настоящий?"
             style={{ marginRight: '20px', width: 150 }}>
-            {report.isVinNumberReal ? "Yes" : "No"}
+            {report.isVinNumberReal ? "Да" : "Нет"}
           </Descriptions.Item>
 
           <Descriptions.Item
@@ -122,25 +123,25 @@ class MainInfoReport extends Component {
             style={{ marginRight: '20px' }}
             label="Тип двигателя"
           >
-            {report.engine.name}
+            {getTagFromMap(EngineTypeMap, report.engine.name)}
           </Descriptions.Item>
 
           <Descriptions.Item
             style={{ marginRight: '20px' }}
             label="Тип кузова"
-          >{report.body.name}
+          >{getTagFromMap(BodyTypeMapWithEngKeys, report.body.name)}
           </Descriptions.Item>
 
           <Descriptions.Item
             style={{ marginRight: '20px' }}
             label="Привод"
-          >{report.drive.name}
+          >{getTagFromMap(DriveTypeMap, report.drive.name)}
           </Descriptions.Item>
 
           <Descriptions.Item
             style={{ marginRight: '20px' }}
             label="Тип трансмиссии"
-          >{report.transmission.name}
+          >{getTagFromMap(TransmissionMap, report.transmission.name)}
           </Descriptions.Item>
 
         </Descriptions>
