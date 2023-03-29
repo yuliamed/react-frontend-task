@@ -17,10 +17,10 @@ export function getTagListFromMap(baseMape, arr) {
 
 export function getTagFromMap(baseMape, value) {
   let newArr = <Tag >пусто</Tag>;
-
-  let rus_name = baseMape.get(value);
-  newArr = (<Tag >{rus_name}</Tag>)
-
+  if (value !== null) {
+    let rus_name = baseMape.get(value);
+    newArr = (<Tag >{rus_name}</Tag>)
+  }
   return newArr;
 }
 
@@ -32,11 +32,20 @@ export function getColoredTagFromMap(baseMape, value, color) {
 }
 
 export function getNamesListFromMap(arr) {
+  console.log(arr);
   let newArr = [];
   for (let i = 0; i < arr.length; i++) {
     let rus_name = (arr[i].name);
     newArr.push(rus_name);
   }
+  return newArr;
+}
+
+export function getNameFromSetValue(arr) {
+  console.log(arr);
+  let newArr = [];
+  let rus_name = (arr.name);
+  newArr.push(rus_name);
   return newArr;
 }
 

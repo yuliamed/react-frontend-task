@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Form, Card, Row, } from 'antd'
+import { Input, Form, Card, Row, Image } from 'antd'
 import CancelButton from "../common/buttons/CancelButton"
 import { editBodyPartDescription, editBodyReport, getPhoto, } from '../../actions/orders/autopicker/manageInspectionReport';
 import { connect } from "react-redux";
@@ -61,10 +61,15 @@ class CarPartDescriptionReportForm extends Component {
     description.photoUrl = url;
     dispatch(editBodyPartDescription(description, this.props.id))
     this.setState({ filePath: url });
+    dispatch(getPhoto(localStorage.getItem("userId"), this.props.orderId, url)).then(
+      (responce) => {
+        this.setState({ fileList: responce });
+      })
   }
 
   render() {
     let description = this.props.description;
+    
     return (
       <><Card style={{ width: 450 }}>
         <Row justify="end" style={{ marginBottom: "15px" }}>
@@ -127,8 +132,16 @@ class CarPartDescriptionReportForm extends Component {
           </Form.Item>
           <Form.Item
             label="Фотография">
-            {/* {description.photoUrl == null ? upload : imageForm} */}
-            <UploadPhoto isDisabled={this.props.isDisabled} setUrl={(url) => this.setPhotoUrl(url)} />
+            {//description.photoUrl 
+              this.state.fileList == null ? <UploadPhoto isDisabled={this.props.isDisabled} setUrl={(url) => this.setPhotoUrl(url)} />
+                :
+                <Image
+                  width={200}
+                  src={`data:image/jpeg;base64, ${this.state.fileList}`}
+                />
+              // console.log(this.state.fileList)
+            }
+            {/* <UploadPhoto isDisabled={this.props.isDisabled} setUrl={(url) => this.setPhotoUrl(url)} /> */}
           </Form.Item>
 
         </Form></Card></>

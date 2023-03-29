@@ -57,7 +57,7 @@ class SelectionOrderCreatingComponent extends Component {
       alert("Order created!");
       this.setState({ order: resp })
     })
-    console.log(this.state.newTransmissions);
+    console.log(this.state.newTransmission);
     this.onSave();
     this.render();
   }
@@ -299,9 +299,8 @@ class SelectionOrderCreatingComponent extends Component {
                     </Form.Item>
 
                     <Form.Item
-                      label="Типы кузовов"                    >
+                      label="Тип кузова">
                       <Select
-                        mode="multiple"
                         allowClear
                         style={{
                           width: '100%',
@@ -321,10 +320,9 @@ class SelectionOrderCreatingComponent extends Component {
                     </Form.Item>
 
                     <Form.Item
-                      label="Марки"
+                      label="Марка"
                     >
                       <Select
-                        mode="multiple"
                         allowClear
                         style={{
                           width: '100%',
@@ -344,10 +342,27 @@ class SelectionOrderCreatingComponent extends Component {
                     </Form.Item>
 
                     <Form.Item
-                      label="Типы привода"
+                      label="Модель"
+                    >
+                      <Input
+                            style={{ margin: '0 16px' }}
+                            onChange={(value) => {
+                              this.setState((state) => ({
+                                ...state,
+                                order: {
+                                  ...state.order,
+                                  model: value
+                                }
+                              }))
+                            }}
+                          />
+
+                    </Form.Item>
+
+                    <Form.Item
+                      label="Тип привод"
                     >
                       <Select
-                        mode="multiple"
                         allowClear
                         style={{
                           width: '100%',
@@ -367,10 +382,9 @@ class SelectionOrderCreatingComponent extends Component {
                     </Form.Item>
 
                     <Form.Item
-                      label="Типы коробки передач"
+                      label="Тип коробки передач"
                     >
                       <Select
-                        mode="multiple"
                         allowClear
                         style={{
                           width: '100%',

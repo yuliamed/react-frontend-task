@@ -29,6 +29,13 @@ export function createArrWithName(arr) {
     return newArr;
 }
 
+export function createReqWithName(name) {
+    let obj = {
+        name: name
+    }
+    return obj;
+}
+
 export function createOptionArrWithIdsKey(arr) {
     const children = [];
 
@@ -41,7 +48,7 @@ export function createOptionArrWithIdsKey(arr) {
 export function getTagListFromArr(arr) {
     let newArr = [];
     for (let i = 0; i < arr.length; i++) {
-      newArr.push(<Tag >{arr[i].name}</Tag>)
+        newArr.push(<Tag >{arr[i].name}</Tag>)
     }
     return newArr;
-  }
+}

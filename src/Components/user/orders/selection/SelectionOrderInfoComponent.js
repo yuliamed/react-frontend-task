@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Divider, Descriptions, Select, } from 'antd';
 import { BodyTypeMapWithEngKeys, DriveTypeMap, EngineTypeMap, TransmissionMap } from '../../../../constants/enums';
-import { getTagListFromMap } from '../../../common/processMap'
+import { getTagListFromMap, getTagFromMap } from '../../../common/processMap'
 import { getTagListFromArr } from '../../../common/processArrays'
 let thisObj;
 
@@ -81,48 +81,48 @@ class SelectionOrderInfoComponent extends Component {
             {getTagListFromMap(EngineTypeMap, this.state.order.engines)}
           </Descriptions.Item>
         </Descriptions>
-        {this.state.order.bodies != [] ?
+        {this.state.order.body != null ?
           <Descriptions>
             <Descriptions.Item
-              label="Типы кузовов"
+              label="Тип кузова"
               style={{
                 width: '100%',
               }}
             >
-              {getTagListFromMap(BodyTypeMapWithEngKeys, this.state.order.bodies)}
+              {getTagFromMap(BodyTypeMapWithEngKeys, this.state.order.body)}
             </Descriptions.Item>
           </Descriptions> : <></>}
-        {this.state.order.brands != [] ?
+        {this.state.order.brand != null ?
           <Descriptions>
             <Descriptions.Item
-              label="Марки"
+              label="Марка"
               style={{
                 width: '100%',
               }}
             >
-              {getTagListFromArr(this.state.order.brands)}
+              {getTagFromMap(this.state.order.brand)}
             </Descriptions.Item>
           </Descriptions> : <></>}
-        {this.state.order.drives != [] ?
+        {this.state.order.drive != null ?
           <Descriptions>
             <Descriptions.Item
-              label="Приводы"
+              label="Привод"
               style={{
                 width: '100%',
               }}
             >
-              {getTagListFromMap(DriveTypeMap, this.state.order.drives)}
+              {getTagFromMap(DriveTypeMap, this.state.order.drive)}
             </Descriptions.Item>
           </Descriptions> : <></>}
-        {this.state.order.transmissions != [] ?
+        {this.state.order.transmission != null ?
           <Descriptions >
             <Descriptions.Item
-              label="Трансмиссии"
+              label="Трансмиссия"
               style={{
                 width: '100%',
               }}
             >
-              {getTagListFromMap(TransmissionMap, this.state.order.transmissions)}
+              {getTagFromMap(TransmissionMap, this.state.order.transmission)}
             </Descriptions.Item>
           </Descriptions>
           : <></>}

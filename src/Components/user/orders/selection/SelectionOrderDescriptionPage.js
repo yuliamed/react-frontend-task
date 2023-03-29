@@ -13,8 +13,8 @@ import { ORDER_STATUSES } from '../../../../constants/const';
 import SelectionReportComponent from '../../../report/SelectionReportComponent';
 import UserCard from '../../UserCard';
 import ModalCancelOrder from '../ModalCancelOrder';
-import { getNamedOptionListFromMap, getNamesListFromMap } from '../../../common/processMap';
-import { createArrWithName, createOptionArr } from '../../../common/processArrays';
+import { getNamedOptionListFromMap, getNamesListFromMap, getNameFromSetValue } from '../../../common/processMap';
+import { createArrWithName, createOptionArr, createReqWithName } from '../../../common/processArrays';
 import SelectionOrderDescriptionComponent from '../../../order/SelectionOrderDescriptionComponent';
 
 const { Panel } = Collapse;
@@ -296,6 +296,72 @@ class WithNavigate extends Component {
                 </Row>
 
                 <Form.Item
+                  label="Марка"
+                >
+                  <Select
+                    disabled={this.state.isDisabled}
+                    allowClear
+                    style={{
+                      width: '100%',
+                    }}
+                    placeholder="Выбрать"
+                    defaultValue={
+                      this.state.order.brand == null ? null : getNameFromSetValue(this.state.order.brand)
+                    }
+                    onChange={(value) => this.setState((state) => ({
+                      ...state,
+                      order: {
+                        ...state.order,
+                        brand: createArrWithName(value)
+                      }
+                    }))}
+                  >
+                    {createOptionArr(BrandNameArr)}
+                  </Select>
+
+                </Form.Item>
+
+                <Form.Item
+                  label="Тип кузова"
+                >
+                  <Select
+                    disabled={this.state.isDisabled}
+                    allowClear
+                    style={{
+                      width: '100%',
+                    }}
+                    placeholder="Выбрать"
+                    defaultValue={this.state.order.body == null ? null : getNameFromSetValue(this.state.order.body)}
+                    onChange={(value) => this.setState((state) => ({
+                      ...state,
+                      order: {
+                        ...state.order,
+                        body: createReqWithName(value)
+                      }
+                    }))}
+                  >
+                    {getNamedOptionListFromMap(BodyTypeMapWithEngKeys)}
+                  </Select>
+
+                </Form.Item>
+
+                <Form.Item
+                  label="Модель"
+                >
+                 <TextArea placeholder="Модель" disabled={this.state.isDisabled} defaultValue={this.state.order.model}
+                    onChange={(value) => {
+                      this.setState((state) => ({
+                        ...state,
+                        order: {
+                          ...state.order,
+                          model: value.target.value
+                        }
+                      }))
+                    }} />
+
+                </Form.Item>
+
+                <Form.Item
                   label="Типы дивигателя"
                 >
                   <Select
@@ -321,76 +387,21 @@ class WithNavigate extends Component {
                 </Form.Item>
 
                 <Form.Item
-                  label="Типы кузова"
+                  label="Тип привода"
                 >
                   <Select
                     disabled={this.state.isDisabled}
-                    mode="multiple"
                     allowClear
                     style={{
                       width: '100%',
                     }}
                     placeholder="Выбрать"
-                    defaultValue={getNamesListFromMap(this.state.order.bodies)}
+                    defaultValue={this.state.order.drive == null ? null : getNameFromSetValue(this.state.order.drive)}
                     onChange={(value) => this.setState((state) => ({
                       ...state,
                       order: {
                         ...state.order,
-                        bodies: createArrWithName(value)
-                      }
-                    }))}
-                  >
-                    {getNamedOptionListFromMap(BodyTypeMapWithEngKeys)}
-                  </Select>
-
-                </Form.Item>
-
-                <Form.Item
-                  label="Марки"
-                >
-                  <Select
-                    disabled={this.state.isDisabled}
-                    mode="multiple"
-                    allowClear
-                    style={{
-                      width: '100%',
-                    }}
-                    placeholder="Выбрать"
-                    defaultValue={() => {
-                      let arr = this.getArrByNames(this.state.order.brands);
-                      this.setState({ newBrands: arr });
-                      return arr;
-                    }}
-                    onChange={(value) => this.setState((state) => ({
-                      ...state,
-                      order: {
-                        ...state.order,
-                        brands: createArrWithName(value)
-                      }
-                    }))}
-                  >
-                    {createOptionArr(BrandNameArr)}
-                  </Select>
-
-                </Form.Item>
-
-                <Form.Item
-                  label="Типы привода"
-                >
-                  <Select
-                    disabled={this.state.isDisabled}
-                    mode="multiple"
-                    allowClear
-                    style={{
-                      width: '100%',
-                    }}
-                    placeholder="Выбрать"
-                    defaultValue={getNamesListFromMap(this.state.order.drives)}
-                    onChange={(value) => this.setState((state) => ({
-                      ...state,
-                      order: {
-                        ...state.order,
-                        drives: createArrWithName(value)
+                        drive: createArrWithName(value)
                       }
                     }))}
                   >
@@ -404,18 +415,17 @@ class WithNavigate extends Component {
                 >
                   <Select
                     disabled={this.state.isDisabled}
-                    mode="multiple"
                     allowClear
                     style={{
                       width: '100%',
                     }}
                     placeholder="Выбрать"
-                    defaultValue={getNamesListFromMap(this.state.order.transmissions)}
+                    defaultValue={this.state.order.transmission == null ? null : getNameFromSetValue(this.state.order.transmission)}
                     onChange={(value) => this.setState((state) => ({
                       ...state,
                       order: {
                         ...state.order,
-                        transmissions: createArrWithName(value)
+                        transmission: createArrWithName(value)
                       }
                     }))}
                   >
