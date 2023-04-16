@@ -189,7 +189,13 @@ class WithNavigate extends Component {
           // <Typography.Link onClick={() => this.onEditOrder(id)}>
           //   Edit
           // </Typography.Link>
-          <Button onClick={() => this.onEditOrder(order)}>Просмотреть</Button>
+          {
+            if (order.status.name == ORDER_STATUSES.CLOSED || order.status.name == ORDER_STATUSES.CANCELED) {
+              return <Button onClick={() => this.onEditOrder(order)}>Просмотреть</Button>;
+            } else {
+              return <Button onClick={() => this.onEditOrder(order)}>Редатировать</Button>;
+            }
+          }
         ,
 
       },

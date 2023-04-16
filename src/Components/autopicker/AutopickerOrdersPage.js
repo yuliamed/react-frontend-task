@@ -3,14 +3,16 @@ import { findAll, getInspectionOrder, getSelectionReport, } from '../../actions/
 import { getInspectionReport } from '../../actions/orders/autopicker/manageInspectionReport'
 import Header from '../common/headers/Header'
 import { connect } from "react-redux";
-import { Button, Table, Tag,} from 'antd';
+import { Button, Table, Tag, } from 'antd';
 import { SELECTION_ORDER_COLOR, INSPECTION_ORDER_COLOR, getTagColor } from '../../constants/colors';
 import { useNavigate } from 'react-router-dom';
 import { getColoredTagFromMap } from '../common/processMap';
 import { OrderStatusMap } from '../../constants/enums';
+import { printFIO } from '../common/utilUser';
+import { ORDER_STATUSES } from '../../constants/const';
 let thisObj;
 
-let filterForStatus=[];
+let filterForStatus = [];
 OrderStatusMap.forEach((value, key, map) => {
   filterForStatus.push({
     text: value,
@@ -62,7 +64,7 @@ class WithNavigate extends Component {
   }
 
   render() {
-    
+
     const columns = [
       {
         title: 'ID',
@@ -106,7 +108,7 @@ class WithNavigate extends Component {
       {
         title: 'Заказчик',
         dataIndex: ['creator'],
-        render: creator => creator.name + " " + creator.surname,
+        render: creator => printFIO(creator),
       },
       {
         title: 'Статус',
@@ -115,17 +117,23 @@ class WithNavigate extends Component {
         render: status => getColoredTagFromMap(OrderStatusMap, status.name, getTagColor(status.name)),
         filters: filterForStatus,
         onFilter: (value, record) => record.status.name.indexOf(value) === 0,
-       //defaultFilteredValue: [OrderStatusMap., OrderStatusMap.get("IN_PROCESS").key ]
+        //defaultFilteredValue: [OrderStatusMap., OrderStatusMap.get("IN_PROCESS").key ]
       },
       {
         title: 'Действие',
         key: "",
         //dataIndex: ,
         render: (order) =>
-          // <Typography.Link onClick={() => this.onEditOrder(id)}>
-          //   Edit
-          // </Typography.Link>
-          <Button onClick={() => this.onEditOrder(order)}>Редатировать</Button>
+        // <Typography.Link onClick={() => this.onEditOrder(id)}>
+        //   Edit
+        // </Typography.Link>
+        {
+          if (order.status.name == ORDER_STATUSES.CLOSED || order.status.name == ORDER_STATUSES.CANCELED) {
+            return <Button onClick={() => this.onEditOrder(order)}>Просмотреть</Button>;
+          } else {
+            return <Button onClick={() => this.onEditOrder(order)}>Редатировать</Button>;
+          }
+        }
         ,
 
       },
