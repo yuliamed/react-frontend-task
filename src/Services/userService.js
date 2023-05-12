@@ -65,10 +65,6 @@ class UserService {
         {
           email: user_email
         }
-      ).catch(
-        (resp) => {
-          console.log("ERROR FROM SERVICE " + resp.message)
-        }
       ).then((response) => {
         if (response.data) {
           localStorage.setItem("messageRecover", JSON.stringify(response.data));

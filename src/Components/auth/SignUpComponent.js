@@ -16,6 +16,7 @@ class WithNavigate extends React.Component {
     this.state = {
       name: "",
       surname: "",
+      patronymic: "",
       email: "",
       pass: "",
       confirmPass: "",
@@ -74,7 +75,6 @@ class WithNavigate extends React.Component {
         this.props.navigate("../sign-in", { replace: true });
       })
       .catch(() => {
-        console.log("ERROR");
         const { message } = this.props;
         this.setState({ ...this.state, isHiddenError: false, message: message, });
         // this.setState({ ...this.state, message: message, });
@@ -161,7 +161,7 @@ class WithNavigate extends React.Component {
                 <Input
                   placeholder="Васильевич"
                   onChange={
-                    e => this.setState({ ...this.state, name: e.target.value })} />
+                    e => this.setState({ ...this.state, patronymic: e.target.value })} />
               </Form.Item>
 
               <Form.Item

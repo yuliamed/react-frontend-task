@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { Layout, Menu, Col, Row } from "antd";
 import { getItem } from "./menu-common";
+import { useDispatch } from "react-redux";
 const { Header, } = Layout;
 
 const items = [
@@ -14,8 +15,9 @@ const items = [
     ),
 
 ]
-const UserHeaderContainer = () => {
-
+const PublicHeaderContainer = () => {
+    const dispatch = useDispatch();
+    
     return (
         <Header><Row>
             <Col flex="1 1 200px"><a>Главная страница</a></Col>
@@ -34,4 +36,4 @@ const UserHeaderContainer = () => {
     )
 }
 
-export default UserHeaderContainer;
+export default PublicHeaderContainer;

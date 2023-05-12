@@ -1,17 +1,22 @@
 import { NavLink } from "react-router-dom";
 import { Layout, Menu, Row, Col } from "antd";
 import { getItem, profileMenu } from "./menu-common";
+import { useDispatch } from "react-redux";
+import { clear } from "../../../actions/auth";
 const { Header, } = Layout;
 
 const UserHeaderContainer = () => {
     let id = localStorage.getItem("userId");
+    const dispatch = useDispatch();
+    console.log("object");
+    dispatch(clear);
     const items = [
         getItem(
             <NavLink to={'/users/' + id + '/orders'}>Мои заказы</NavLink>,
             "user orders",
         ),
         getItem(
-            <NavLink to={'/users/' + id + '/new-order'}>Навые заказы</NavLink>,
+            <NavLink to={'/users/' + id + '/new-order'}>Нoвые заказы</NavLink>,
             "new order",
         ),
     ]

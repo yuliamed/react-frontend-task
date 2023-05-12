@@ -4,10 +4,10 @@ import AdminHeader from "./AdminHeader"
 import AutoPickerHeader from "./AutoPickerHeader"
 import AdminAutoPickerHeader from "./AdminAutoPickerHeader"
 import jwt from 'jwt-decode'
-import { clearMessage } from "../../../actions/message";
-
 
 import { Component } from "react"
+import { clear } from "../../../actions/auth"
+import { connect } from "react-redux"
 
 class Header extends Component {
   constructor(props) {
@@ -19,7 +19,8 @@ class Header extends Component {
     let user = localStorage.getItem("user");
     let decodedToken;
     let roles;
-    clearMessage();
+    const { dispatch } = this.props;
+    dispatch(clear);
     if (user != null) {
       decodedToken = jwt(user);
       roles = decodedToken.role;
@@ -43,5 +44,18 @@ function findRole(roles, role) {
   return false;
 }
 
-export default Header
+function mapStateToProps(state) {
+  const { user } = state.auth;
+  const { account } = state.account;
+  const { message } = state.message;
+  return {
+    user,
+    account,
+    message
+  };
+
+
+}
+
+export default connect(mapStateToProps)(Header);
 

@@ -1,14 +1,16 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Form, Input, Button, Layout, Space, Col } from 'antd';
-import UserService from "../../services/userService";
+import { Form, Input, Button, Layout, Space } from 'antd';
 import { connect } from "react-redux";
-import { signIn } from "../../actions/auth";
+import { recoverPass, signIn } from "../../actions/auth";
 import Header from '../common/headers/Header';
-import { changePass } from "../../actions/account";
+import ChangePassModal from './ChangePassModal';
+import { changePass } from '../../actions/account';
+
 const { Content, Footer } = Layout;
 var isButtonDisabled = true;
 var isHiddenError = true;
+
 class WithNavigate extends React.Component {
 
   constructor(props) {
@@ -35,6 +37,14 @@ class WithNavigate extends React.Component {
     //console.log(isButtonDisabled);
   }
 
+  onCancelNewPass() {
+    this.setState({ isPassChanging: false });
+  }
+
+  onSaveNewPass() {
+    this.setState({ isPassChanging: false });
+  }
+
   onSignIn(e) {
     isHiddenError = true;
     this.setState(
@@ -49,54 +59,29 @@ class WithNavigate extends React.Component {
         e.preventDefault();
         this.props.navigate("../", { replace: true });
       })
-      .catch(() => {
+      .catch((e) => {
         isHiddenError = false;
         this.setState({ ...this.state, louding: false })
-        console.log("!!!catch " + this.state.louding)
+        console.log("!!!catch ")
       });
     e.preventDefault();
   }
 
   onForgetPass(e) {
-    UserService.recoverPass(this.state.email).then(
-      () => {
-
+    isHiddenError = true;
+    const { dispatch } = this.props;
+    dispatch(recoverPass(this.state.email))
+      .then(() => {
         alert("Проверьте указанную почту и введите токен из полученного сообщения!");
         this.setState({ isPassChanging: true });
-        this.render();
-      }
-    ).catch(() => {
-      alert("Проблемы с отпрвкой сообщения на вашу пойту!");
-      this.setState({ isPassChanging: false });
-      this.render();
-    });
+      })
+      .catch(() => {
+        alert("Проблемы с отпрaвкой сообщения на вашу почту!");
+        this.setState({ isPassChanging: false });
+      });
   }
 
-  onSaveNewPass(e) {
-    const { dispatch } = this.props;
-    if (this.state.newPass == this.state.confirmNewPass) {
-      e.preventDefault();
-      dispatch(changePass(this.state.newPass, this.state.token))
-        .then(
-          () => {
-
-            alert("Пароль был изменён!");
-            this.setState({ isPassChanging: false });
-            this.render();
-          }
-        )
-        .catch(() => {
-          const { message } = this.props;
-          isHiddenError = false;
-          this.setState({ ...this.state, message: message, });
-        })
-
-    } else {
-      alert("Вы не подтвердили свой пароль!")
-    }
-  }
   validateMessages = {
-
     required: '${label} является обязательным полем!',
     types: {
       email: '${label} неверно',
@@ -104,67 +89,77 @@ class WithNavigate extends React.Component {
     },
   };
 
-  onCancelNewPass(e) {
-    this.setState({ isPassChanging: false });
-    this.render();
-  }
 
   render() {
     const { isLoggedIn, message } = this.props;
     let modal = null;
     if (this.state.isPassChanging) {
-      modal =
-        <div >
-          <br/>
-          <br/>
-          <p>
-            <Form.Item
-              label="Token:"
-              name="Token"
-              rules={[
-                {
-                  required: true,
-                }
-              ]}>
-              <Input
-                placeholder="Token"
-                onChange={e => this.setState({ ...this.state, token: e.target.value })} />
-            </Form.Item>
-          </p>
-          <p >
-            <Form.Item
-              label="Новый пароль:"
-              name="Новый пароль"
-              rules={[
-                {
-                  required: true,
-                }
-              ]}>
-              <Input.Password
-                placeholder="Новый пароль"
-                onChange={e => this.setState({ ...this.state, newPass: e.target.value })} />
-            </Form.Item>
-          </p>
-          <p>
-            <Form.Item
-              label="Подтвердите новый пароль:"
-              name="Подтвердите новый пароль"
-              rules={[
-                {
-                  required: true,
-                }
-              ]}>
-              <Input.Password
-                placeholder="Подтвердите новый пароль"
-                onChange={e => this.setState({ ...this.state, confirmNewPass: e.target.value })} />
-            </Form.Item>
-          </p>
-          <Button onClick={(e) => this.onSaveNewPass(e)} >Сохранить</Button>
-          <Col>
-              <Button onClick={(e) => this.onCancelNewPass(e)} >Отмена</Button>
-            </Col>
-        </div>
+      modal = <ChangePassModal onCancel={this.onCancelNewPass} onSave={this.onSaveNewPass} email={this.state.email} />;
     }
+
+    let loginForm =
+      <>
+        <Form.Item>
+          <h1>Введите данные</h1>
+        </Form.Item>
+
+        <Form.Item
+          name="Email"
+          label="Email" rules={[
+            {
+              type: 'email',
+              required: true,
+            }]}
+        >
+          <Input placeholder="email"
+            onChange={e =>
+              this.setState({ ...this.state, email: e.target.value })} />
+        </Form.Item>
+        <div hidden={this.state.isPassChanging}>
+          <Form.Item
+
+            label="Пароль"
+            name="Пароль"
+            rules={[{
+              required: true,
+            }]}>
+            <Input.Password placeholder="Пароль"
+              hidden={this.state.isPassChanging}
+              onChange={(e) => {
+                this.setState({ ...this.state, pass: e.target.value })
+              }
+              } />
+          </Form.Item>
+        </div>
+
+        <Form.Item >
+          <label hidden={isHiddenError}>Проверьте данные </label>
+        </Form.Item>
+        <Space direction="vertical" wrap>
+          <Form.Item  >
+            <Button type="primary" shape="round" htmlType="submit"
+              disabled={isButtonDisabled} hidden={this.state.isPassChanging}>
+              Вход
+            </Button>
+            {message && (
+
+              <Form.Item
+                style={
+                  { color: "red" }
+                }>{message}</Form.Item>
+
+            )}
+          </Form.Item>
+
+          <Form.Item >
+            <a onClick={(e) => this.onForgetPass(e)} hidden={this.state.isPassChanging}>Забыли пароль?</a>
+          </Form.Item>
+          {/* <>
+            {modal}
+          </> */}
+        </Space>
+      </ >;
+
     return (
       <div>
         <Header />
@@ -188,64 +183,7 @@ class WithNavigate extends React.Component {
               autoComplete="off"
               validateMessages={this.validateMessages}
             >
-              <Form.Item>
-                <h1>Введите данные</h1>
-              </Form.Item>
-
-              <Form.Item
-                name="Email"
-                label="Email" rules={[
-                  {
-                    type: 'email',
-                    required: true,
-                  }]}
-              >
-                <Input placeholder="email"
-                  onChange={e =>
-                    this.setState({ ...this.state, email: e.target.value })} />
-              </Form.Item>
-              <div hidden={this.state.isPassChanging}>
-                <Form.Item
-
-                  label="Пароль"
-                  name="Пароль"
-                  rules={[{
-                    required: true,
-                  }]}>
-                  <Input.Password placeholder="Пароль"
-                    hidden={this.state.isPassChanging}
-                    onChange={(e) => {
-                      this.setState({ ...this.state, pass: e.target.value })
-                    }
-                    } />
-                </Form.Item>
-              </div>
-
-              <Form.Item >
-                <label hidden={isHiddenError}>Проверьте данные </label>
-              </Form.Item>
-              <Space direction="vertical" wrap>
-                <Form.Item  >
-                  <Button type="primary" shape="round" htmlType="submit" 
-                  disabled={isButtonDisabled} hidden={this.state.isPassChanging}>
-                    Вход
-                  </Button>
-                  {message && (
-
-                    <p className="alert alert-danger" role="alert">
-                      {message}
-                    </p>
-
-                  )}
-                </Form.Item>
-
-                <Form.Item >
-                  <a onClick={(e) => this.onForgetPass(e)} hidden={this.state.isPassChanging}>Забыли пароль?</a>
-                </Form.Item>
-                <>
-                  {modal}
-                </>
-              </Space>
+              {this.state.isPassChanging ? modal : loginForm}
             </Form>
           </Space>
         </Content>
