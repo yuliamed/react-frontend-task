@@ -50,9 +50,7 @@ class WithNavigate extends React.Component {
   onSignUp(e) {
     //isHiddenError = true;
     if (this.state.pass !== this.state.confirmPass) {
-      //isHiddenError = false;
-      this.setState({ ...this.state, message: "Confirm your pass!", isHiddenError: false, });
-      // this.setState({ ...this.state, });
+      this.setState({isHiddenError: false,  });
       return;
     }
 
@@ -77,7 +75,6 @@ class WithNavigate extends React.Component {
       .catch(() => {
         const { message } = this.props;
         this.setState({ ...this.state, isHiddenError: false, message: message, });
-        // this.setState({ ...this.state, message: message, });
 
       });
     e.preventDefault();
@@ -116,8 +113,6 @@ class WithNavigate extends React.Component {
               onSubmitCapture={this.onSignUp}
               validateMessages={this.validateMessages}
             >
-              {/* <Alert message="Warning Text" type="warning" /> */}
-
               <h1 className='form-label'>Регистрация</h1>
               <Form.Item hidden="true">
                 <Alert message={this.state.message} type="error" />

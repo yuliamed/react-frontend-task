@@ -132,9 +132,6 @@ class WithNavigate extends React.Component {
           </Form.Item>
         </div>
 
-        <Form.Item >
-          <label hidden={isHiddenError}>Проверьте данные </label>
-        </Form.Item>
         <Space direction="vertical" wrap>
           <Form.Item  >
             <Button type="primary" shape="round" htmlType="submit"

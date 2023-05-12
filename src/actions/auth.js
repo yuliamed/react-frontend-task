@@ -28,6 +28,7 @@ export const signUp =
           dispatch(saveErrorMessage(USER_WITH_EMAIL_EXIST));
         }
         dispatch({ type: SIGNUP_FAIL, });
+        dispatch(getAndSaveMessage(error));
         console.log("Error message " + message);
         return Promise.reject();
       }
@@ -61,7 +62,12 @@ export const signIn = (email, pass) => (dispatch) => {
       dispatch({
         type: SIGNIN_FAIL,
       });
-      dispatch(saveErrorMessage(AUTHENTICATION_ERROR));
+      let message = getErrorMessage(error)
+      if (message.includes("Check your authentication parameters")) {
+        dispatch(saveErrorMessage(AUTHENTICATION_ERROR))
+        return Promise.reject();
+      }
+      dispatch(getAndSaveMessage(error));
       return Promise.reject();
     }
   );
