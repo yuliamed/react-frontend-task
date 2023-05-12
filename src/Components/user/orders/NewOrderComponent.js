@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Header from "../../common/headers/Header";
-import { Button, Row, Col, Space, Avatar, Image } from "antd";
+import { Button, Row, Col, Space, } from "antd";
 import SelectionOrderCreatingComponent from "./selection/SelectionOrderCreatingComponent";
 import InspectionOrderCreatingComponent from "./inspection/InspectionOrderCreatingComponent";
 class NewOrderComponent extends Component {
@@ -79,7 +79,7 @@ class NewOrderComponent extends Component {
                 }}
                 type="primary"
                 onClick={(e) => this.onCreateNewInspectionOrder(e)}>
-                Осмотр автомобиля
+                Оценка автомобиля
               </Button>
             </Col>
             <Col >

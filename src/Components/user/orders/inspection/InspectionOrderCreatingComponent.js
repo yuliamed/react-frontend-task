@@ -4,14 +4,21 @@ import { CloseOutlined, SaveOutlined } from '@ant-design/icons';
 import { Card, Layout, Form, Input, Modal, Select, Popover } from 'antd';
 import { createOrder } from "../../../../actions/orders/userInspectionOrder"
 import { findAllAutoPickers } from "../../../../actions/manageUsers";
+import { clear } from "../../../../actions/auth";
 const { Content } = Layout;
 const { TextArea } = Input;
 const { Option } = Select;
 let thisObj;
 
-const content = (
+const contentSave = (
   <div>
-    <p>Input values for saving</p>
+    <p>Заполните необходимые поля</p>
+  </div>
+);
+
+const contentCancel = (
+  <div>
+    <p>Отменить</p>
   </div>
 );
 class InspectionOrderCreatingComponent extends Component {
@@ -26,7 +33,8 @@ class InspectionOrderCreatingComponent extends Component {
       isOrderCancelling: false,
       isOrderCancelled: false,
       autoPickers: [],
-      isSavingAllowed: false
+      isSavingAllowed: false,
+      isOrderSaving: false,
     };
     this.onSaveNewOrder = this.onSaveNewOrder.bind(this);
     this.onCancelOrder = this.onCancelOrder.bind(this);
@@ -43,7 +51,7 @@ class InspectionOrderCreatingComponent extends Component {
 
   onSaveNewOrder(e) {
     const { dispatch } = this.props;
-
+    dispatch(clear);
     let orderParams = {
       autoUrl: this.state.autoUrl,
       additionalInfo: this.state.additionalInfo,
@@ -81,19 +89,22 @@ class InspectionOrderCreatingComponent extends Component {
           width: "800px"
         }}
           align="start"
-          title="Заказ на осмотр авто"
+          title="Заказ на оценку авто"
           actions={[
             !this.state.isSavingAllowed ?
-              <Popover content={content} title="Title" trigger="hover">
-                <SaveOutlined title="save order"
-                />
+              <Popover content={contentSave} trigger="hover">
+                <SaveOutlined />
               </Popover> :
-              <SaveOutlined title="save order"
-                onClick={(e) => this.onSaveNewOrder(e)}
+              <SaveOutlined title="Сохранить заказ"
+                onClick={(e) => {
+                  this.setState({ isOrderSaving: true })
+                  //this.onSaveNewOrder(e)
+                }
+                }
                 disabled={true} />
             ,
-            <CloseOutlined title="Cancel order" 
-            onClick={(e) => this.onCancelOrder(e)} />,
+            <CloseOutlined title="Закрыть"
+              onClick={(e) => this.onCancelOrder(e)} />,
           ]}>
           <Layout >
             <Content >
@@ -166,6 +177,15 @@ class InspectionOrderCreatingComponent extends Component {
           }}
           onCancel={() => this.setState({ isOrderCancelling: false })}>
           <h2>Вы действительно хотите отменить этот заказ? </h2>
+        </Modal>
+        <Modal title="Сохранение заказа" visible={this.state.isOrderSaving}
+          onOk={(e) => {
+            this.onSaveNewOrder(e);
+            this.cancelOrder();
+            this.setState({ isOrderSaving: false })
+          }}
+          onCancel={() => this.setState({ isOrderSaving: false })}>
+          <h2>Вы действительно хотите оформить заказ? </h2><br></br><h4></h4>
         </Modal>
       </ >
     );

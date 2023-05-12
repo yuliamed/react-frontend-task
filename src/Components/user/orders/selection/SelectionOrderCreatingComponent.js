@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { CloseOutlined, SaveOutlined } from '@ant-design/icons';
-import { Card, Layout, Form, Input, Modal, Select, Row, Col, InputNumber } from 'antd';
+import { Card, Layout, Form, Input, Modal, Select, Row, Col, InputNumber, Popover } from 'antd';
 import { createOrder } from "../../../../actions/orders/userSelectionOrder"
 import { BodyTypeArr, BrandNameArr, TransmissionArr, EngineTypeArr, DriveTypeArr, CurrencyArr, EngineTypeMap, BodyTypeMapWithEngKeys, DriveTypeMap, TransmissionMap, } from "../../../../constants/enums"
 import AutoPickerSelector from "../AutoPickerSelector";
@@ -9,12 +9,18 @@ import { findAllAutoPickers } from "../../../../actions/manageUsers";
 import { createArrWithName, createOptionArr } from "../../../common/processArrays";
 import { validateMessages } from "../../../common/validateForms";
 import { getNamedOptionListFromMap } from "../../../common/processMap";
+import { clear } from "../../../../actions/auth";
 const { Content } = Layout;
 const { TextArea } = Input;
 
 const { Option } = Select;
-
+const contentSave = (
+  <div>
+    <p>Заполните необходимые поля</p>
+  </div>
+);
 let thisObj;
+var isButtonDisabled = true;
 class SelectionOrderCreatingComponent extends Component {
   constructor(props) {
     super(props);
@@ -25,7 +31,7 @@ class SelectionOrderCreatingComponent extends Component {
       isOrderCancelling: false,
       isOrderCancelled: false,
       isSavingAllowed: false,
-      isOrderSaving: false, 
+      isOrderSaving: false,
       autoPickers: [],
     };
     this.onSave = props.on_save;
@@ -43,8 +49,13 @@ class SelectionOrderCreatingComponent extends Component {
       this.state.order.rangeFrom != null &&
       this.state.order.rangeTo != null &&
       this.state.order.currencyType != null) {
-      this.setState({ isSavingAllowed: true });
+      //this.setState({ isSavingAllowed: true });
+      isButtonDisabled = false;
+    } else {
+      isButtonDisabled = true;
+      //this.setState({ isSavingAllowed: false });
     }
+    console.log(isButtonDisabled);
   }
 
   onCancelOrder(e) {
@@ -53,8 +64,9 @@ class SelectionOrderCreatingComponent extends Component {
 
   onSaveOrder(e) {
     const { dispatch } = this.props;
+    dispatch(clear);
     dispatch(createOrder(this.state.userId, this.state.order)).this((resp) => {
-      alert("Order created!");
+      alert("Заказ был создан!");
       this.setState({ order: resp })
     })
     console.log(this.state.newTransmission);
@@ -90,21 +102,25 @@ class SelectionOrderCreatingComponent extends Component {
   }
 
   render() {
-    console.log("object");
     return (
       <>
         <Card style={{
           width: "800px"
         }}
+          onChange={this.checkAllowingSave()}
           align="start"
           title="Заказ на подбор авто"
           actions={[
-            <SaveOutlined title="Сохранить заказ"
-              onClick={(e) => {
-                this.setState({ isOrderSaving: true })
-                this.onSaveOrder(e)
-              }}
-              disabled={true} />
+            isButtonDisabled ?
+              <Popover content={contentSave} trigger="hover">
+                <SaveOutlined />
+              </Popover> :
+              <SaveOutlined title="Сохранить заказ"
+                onClick={(e) => {
+                  this.setState({ isOrderSaving: true })
+                  //this.onSaveOrder(e)
+                }}
+                disabled={true} />
             ,
             <CloseOutlined title="отменить заказ"
               onClick={(e) => this.onCancelOrder(e)}
@@ -113,7 +129,9 @@ class SelectionOrderCreatingComponent extends Component {
         >
           <Layout >
             <Content >
+              
               <Layout style={{ display: 'flex', padding: 15 }} align="horizontal" >
+                <p >{this.props.message}</p>
                 <Content >
                   <Card title="Информация о заказе" size="small"
                   >
@@ -141,6 +159,7 @@ class SelectionOrderCreatingComponent extends Component {
                                   ...state.order,
                                   minYear: value
                                 }
+
                               }))
                             }}
                           />
@@ -345,17 +364,17 @@ class SelectionOrderCreatingComponent extends Component {
                       label="Модель"
                     >
                       <Input
-                            style={{ margin: '0 16px' }}
-                            onChange={(value) => {
-                              this.setState((state) => ({
-                                ...state,
-                                order: {
-                                  ...state.order,
-                                  model: value
-                                }
-                              }))
-                            }}
-                          />
+                        style={{ margin: '0 16px' }}
+                        onChange={(value) => {
+                          this.setState((state) => ({
+                            ...state,
+                            order: {
+                              ...state.order,
+                              model: value
+                            }
+                          }))
+                        }}
+                      />
 
                     </Form.Item>
 
@@ -432,7 +451,7 @@ class SelectionOrderCreatingComponent extends Component {
             </Content>
           </Layout>
         </Card>
-        <Modal title="Вы уверены??" visible={this.state.isOrderCancelling}
+        <Modal title="Отмена заказа" visible={this.state.isOrderCancelling}
           onOk={() => {
             this.cancelOrder();
             this.setState({ isOrderCancelling: false })
@@ -440,8 +459,9 @@ class SelectionOrderCreatingComponent extends Component {
           onCancel={() => this.setState({ isOrderCancelling: false })}>
           <h2>Вы действительно хотите отменить заказ? </h2><br></br><h4></h4>
         </Modal>
-        <Modal title="Вы уверены??" visible={this.state.isOrderSaving}
-          onOk={() => {
+        <Modal title="Сохранение заказа" visible={this.state.isOrderSaving}
+          onOk={(e) => {
+            this.onSaveOrder(e)
             this.cancelOrder();
             this.setState({ isOrderSaving: false })
           }}
